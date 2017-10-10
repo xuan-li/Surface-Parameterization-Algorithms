@@ -6,6 +6,8 @@
 
 void OpenMeshToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &V, Eigen::MatrixXi &F);
 
+void OpenMeshCoordToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &UV);
+
 void MatrixToOpenMesh(Eigen::MatrixXd &V, Eigen::MatrixXi &F, SurfaceMesh &mesh);
 
 

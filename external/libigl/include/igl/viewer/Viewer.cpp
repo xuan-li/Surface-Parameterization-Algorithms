@@ -1030,7 +1030,3 @@ namespace viewer
   }
 } // end namespace
 }
-
-OTEViewer::OTEViewer()
-{
-}

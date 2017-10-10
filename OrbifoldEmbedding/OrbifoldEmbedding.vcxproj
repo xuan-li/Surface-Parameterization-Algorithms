@@ -111,6 +111,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mesh\Mesh.vcxproj">
+      <Project>{bcbac1b6-dc8f-44d6-85b4-fe3cefd4fcf8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Topology\Topology.vcxproj">
+      <Project>{a229b352-7be1-4948-8f16-054582b62438}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\EuclideanObifoldSolver.h" />
+    <ClInclude Include="src\HyperbolicOrbifoldSolver.h" />
+    <ClInclude Include="src\SingularitySelectAndCut.h" />
+    <ClInclude Include="src\TransfermationBuilder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

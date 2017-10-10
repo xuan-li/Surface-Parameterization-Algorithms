@@ -16,14 +16,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Viewer.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="src\GUIViewer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\viewer.h">
+    <ClInclude Include="src\GUIViewer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

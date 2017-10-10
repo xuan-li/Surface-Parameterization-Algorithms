@@ -22,16 +22,16 @@
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">
       <Project>{bcbac1b6-dc8f-44d6-85b4-fe3cefd4fcf8}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\OrbifoldEmbedding\OrbifoldEmbedding.vcxproj">
-      <Project>{005e2092-3019-435a-8f6e-cae20a3ab43b}</Project>
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
+      <Project>{6f7e9e07-0628-43cb-a558-c648ad5ea11c}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Viewer.cpp" />
+    <ClCompile Include="src\GUIViewer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\viewer.h" />
+    <ClInclude Include="src\GUIViewer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -90,9 +90,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\libigl\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>INCLUDE_TEMPLATES;_USE_MATH_DEFINES;NOMINMAX;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)external/glew/lib/$(Configuration);$(SolutionDir)external/glfw/lib/$(Configuration);$(SolutionDir)external/nanogui/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew.lib;opengl32.lib;nanogui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,12 +125,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\libigl\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>INCLUDE_TEMPLATES;_USE_MATH_DEFINES;NOMINMAX;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)external/glew/lib/$(Configuration);$(SolutionDir)external/glfw/lib/$(Configuration);$(SolutionDir)external/nanogui/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew.lib;opengl32.lib;nanogui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

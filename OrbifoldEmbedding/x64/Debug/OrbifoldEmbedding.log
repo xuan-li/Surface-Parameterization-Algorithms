@@ -1,0 +1,2 @@
+﻿LINK : warning LNK4001: no object files specified; libraries used
+LINK : fatal error LNK1561: entry point must be defined
