@@ -48,6 +48,7 @@ void OTEViewer::LoadMesh()
 	OpenMesh::IO::Options opt;
 	opt += OpenMesh::IO::Options::VertexTexCoord;
 	OpenMesh::IO::read_mesh(mesh_, fname, opt);
+	NormalizeMesh(mesh_);
 	UpdateMeshData(mesh_);
 	UpdateTextureCoordData(mesh_);
 	ShowMesh();

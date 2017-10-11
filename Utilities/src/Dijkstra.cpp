@@ -1,5 +1,5 @@
 #include "Dijkstra.h"
-#include "list"
+#include <list>
 
 #ifndef INF
 #define INF 0x3f3f3f3f
@@ -17,7 +17,7 @@ void DijkstraShortestDist(SurfaceMesh & mesh, OpenMesh::VertexHandle src, OpenMe
 	}
 
 
-	OpenMesh::VPropHandleT<char> touched;
+	OpenMesh::VPropHandleT<bool> touched;
 	mesh.add_property(touched);
 
 

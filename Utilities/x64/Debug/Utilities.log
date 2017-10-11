@@ -1,6 +1,68 @@
-﻿  MeshFormConverter.cpp
-c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(7): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(42): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(43): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Utilities.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Utilities.lib
+﻿  MeshSlicer.cpp
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(7): error C2572: 'MeshSlicer::MeshSlicer': redefinition of default argument: parameter 1
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.h(9): note: see declaration of 'MeshSlicer::MeshSlicer'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(8): error C2572: 'MeshSlicer::MeshSlicer': redefinition of default argument: parameter 2
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.h(9): note: see declaration of 'MeshSlicer::MeshSlicer'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(9): error C2572: 'MeshSlicer::MeshSlicer': redefinition of default argument: parameter 3
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.h(9): note: see declaration of 'MeshSlicer::MeshSlicer'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(10): error C2572: 'MeshSlicer::MeshSlicer': redefinition of default argument: parameter 4
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.h(9): note: see declaration of 'MeshSlicer::MeshSlicer'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(148): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(152): error C2039: 'MaxWedge': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(153): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(153): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(153): error C2039: 'CreateVertex': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(153): error C2039: 'Id': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(154): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(154): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(154): error C2039: 'Idb': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(154): error C2039: 'Id': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(155): error C3861: 'TransferVertexProperties': identifier not found
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(168): error C2039: 'Id': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(168): error C2039: 'Wedge': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(169): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(169): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(169): error C2039: 'IdVertex': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(171): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(171): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(171): error C2039: 'CreateFace': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(171): error C2039: 'Id': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(172): error C3861: 'TransferFaceProperties': identifier not found
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(174): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(174): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(174): error C2232: '->OpenMesh::PolyConnectivity::find_halfedge': left operand has 'class' type, use '.'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(176): error C3861: 'TransferHalfedgeProperties': identifier not found
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(177): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(177): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(177): error C2232: '->OpenMesh::ArrayKernel::edge_handle': left operand has 'class' type, use '.'
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(179): error C3861: 'TransferEdgeProperties': identifier not found
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(182): error C2065: 'm_mesh': undeclared identifier
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(182): error C3861: 'TransferMeshProperties': identifier not found
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(183): error C2819: type 'SurfaceMesh' does not have an overloaded member 'operator ->'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(183): note: did you intend to use '.' instead?
+c:\code\graphics\graphicsproject\utilities\src\meshslicer.cpp(183): error C2039: 'RequestBoundary': is not a member of 'SurfaceMesh'
+  c:\code\graphics\graphicsproject\mesh\src\meshdefinition.h(65): note: see declaration of 'SurfaceMesh'
+  Generating Code...
+  Compiling...
+  Dijkstra.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  MeshFormConverter.cpp

@@ -20,14 +20,14 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 	VertexTraits
 	{
 	public:
-		VertexT() :is_singularity(false) {}
+		VertexT() :is_singularity_(false) {}
 		typename Refs::VertexHandle equivalent_vertex() { return equivalent_vertex_; }
 		void set_equivalent_vertex(typename Refs::VertexHandle v) { equivalent_vertex = v; }
-		bool is_singularity() { return singularity; }
+		bool is_singularity() { return is_singularity_; }
 		void set_singularity(bool s) { is_singularity = s; }
 	private:
 		typename Refs::VertexHandle equivalent_vertex_;
-		bool is_singularity;
+		bool is_singularity_;
 	};
 
 	HalfedgeTraits
@@ -45,7 +45,7 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 	private:
 		double length_;
 	public:
-		EdgeT():length_(0.0), wedge_(0) {}
+		EdgeT():length_(0.0) {}
 		double length() { return length_; }
 		void set_length(double l) { length_ = l; }
 
@@ -68,5 +68,7 @@ public:
 	SurfaceMesh();
 };
 
+
+void NormalizeMesh(SurfaceMesh &mesh);
 
 #endif
