@@ -70,10 +70,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -81,6 +81,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -111,6 +112,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -119,13 +121,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Dijkstra.h" />
+    <ClInclude Include="src\LineCylinder.h" />
     <ClInclude Include="src\MeshFormConverter.h" />
-    <ClInclude Include="src\MeshSlicer.h" />
+    <ClInclude Include="src\MeshMerger.h" />
+    <ClInclude Include="src\TransformationBuilder.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Dijkstra.cpp" />
+    <ClCompile Include="src\LineCylinder.cpp" />
     <ClCompile Include="src\MeshFormConverter.cpp" />
-    <ClCompile Include="src\MeshSlicer.cpp" />
+    <ClCompile Include="src\MeshMerger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">

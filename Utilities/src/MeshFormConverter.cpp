@@ -60,3 +60,19 @@ void MatrixToOpenMesh(Eigen::MatrixXd & V, Eigen::MatrixXi & F, SurfaceMesh & me
 {
 
 }
+
+void HalfedgesToMatrix(SurfaceMesh & mesh, std::vector<OpenMesh::HalfedgeHandle> halfedges, Eigen::MatrixXd & P1, Eigen::MatrixXd & P2)
+{
+	int n_halfedges = halfedges.size();
+	P1.resize(n_halfedges, 3);
+	P2.resize(n_halfedges, 3);
+	for (int i = 0; i < n_halfedges; i++) {
+		OpenMesh::HalfedgeHandle h = halfedges[i];
+		OpenMesh::VertexHandle v1 = mesh.from_vertex_handle(h);
+		OpenMesh::VertexHandle v2 = mesh.to_vertex_handle(h);
+		OpenMesh::Vec3d p1 = mesh.point(v1);
+		OpenMesh::Vec3d p2 = mesh.point(v2);
+		P1.row(i) = Eigen::RowVector3d(p1[0], p1[1], p1[2]);
+		P2.row(i) = Eigen::RowVector3d(p2[0], p2[1], p2[2]);
+	}
+}

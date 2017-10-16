@@ -18,10 +18,13 @@
     <ClCompile Include="src\MeshFormConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MeshSlicer.cpp">
+    <ClCompile Include="src\Dijkstra.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Dijkstra.cpp">
+    <ClCompile Include="src\LineCylinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MeshMerger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,10 +32,16 @@
     <ClInclude Include="src\MeshFormConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MeshSlicer.h">
+    <ClInclude Include="src\Dijkstra.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Dijkstra.h">
+    <ClInclude Include="src\TransformationBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LineCylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshMerger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

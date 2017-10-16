@@ -1,2 +1,4 @@
-﻿LINK : warning LNK4001: no object files specified; libraries used
-LINK : fatal error LNK1561: entry point must be defined
+﻿  OrbifoldMeshSlicer.cpp
+  EuclideanOrbifoldSolver.cpp
+  Generating Code...
+  OrbifoldEmbedding.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\OrbifoldEmbedding.lib

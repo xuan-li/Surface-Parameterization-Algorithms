@@ -1,6 +1,0 @@
-#ifndef SINGULARITY_SELECT_AND_CUT
-#define SINGULARITY_SELECT_AND_CUT
-
-
-
-#endif

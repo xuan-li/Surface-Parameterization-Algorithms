@@ -14,7 +14,14 @@
 #include <MeshDefinition.h>
 
 #include <MeshFormConverter.h>
+#include <LineCylinder.h>
+#include <MeshMerger.h>
 
+#include <EuclideanOrbifoldSolver.h>
+
+
+
+enum ShowOption { ORIGINAL, SLICED, EMBEDDING };
 
 class OTEViewer: public igl::viewer::Viewer
 {
@@ -28,6 +35,7 @@ private:
 	Eigen::MatrixXd V_;
 	Eigen::MatrixXd UV_Z0_; // z equal to zero
 	Eigen::MatrixXi F_;
+	Eigen::MatrixXd TC_;
 	Eigen::MatrixXd UV_;
 
 	// texture RGB channels;
@@ -51,6 +59,14 @@ private:
 	void ShowMesh();
 	void ShowUV();
 
+	void ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector);
+	void ShowBoundaries(SurfaceMesh &mesh);
+
+	void UpdateMeshViewer();
+
+protected: // Flags
+	ShowOption show_option_ = ORIGINAL;
+	bool show_boundaries_ = false;
 };
 
 #endif

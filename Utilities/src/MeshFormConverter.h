@@ -10,5 +10,6 @@ void OpenMeshCoordToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &UV);
 
 void MatrixToOpenMesh(Eigen::MatrixXd &V, Eigen::MatrixXi &F, SurfaceMesh &mesh);
 
+void HalfedgesToMatrix(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> halfedges, Eigen::MatrixXd &P1, Eigen::MatrixXd &P2);
 
 #endif // !MESH_FORM_CONVERTER
