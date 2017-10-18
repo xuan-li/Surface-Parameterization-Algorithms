@@ -12,7 +12,7 @@ SurfaceMesh OrbifoldMeshSlicer::CutAndSelectSingularities()
 	for (auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
 		OpenMesh::VertexHandle v = *viter;
 		auto equivlent_splition = slicer.SplitTo(v);
-		assert(equivlent_splition.size() <= 2);
+		//assert(equivlent_splition.size() <= 2);
 		if (equivlent_splition.size() == 2) {
 			auto v1 = equivlent_splition[0];
 			auto v2 = equivlent_splition[1];

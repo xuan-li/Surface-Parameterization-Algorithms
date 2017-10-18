@@ -55,8 +55,6 @@ private:
 
 	void UpdateMeshData(SurfaceMesh &mesh);  
 	void UpdateTextureCoordData(SurfaceMesh &mesh);
-
-	void ShowMesh();
 	void ShowUV();
 
 	void ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector);

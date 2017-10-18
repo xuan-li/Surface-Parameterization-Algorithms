@@ -28,9 +28,6 @@ void OTEViewer::InitMenu()
 		viewer.ngui->addButton("Euclidean Orbifold", [this]() {
 			EuclideanOrbifoldSolver solver(this->mesh_);
 			this->sliced_mesh_ = solver.Compute();
-			this->UpdateTextureCoordData(this->sliced_mesh_);
-			this->show_option_ = SLICED;
-			this->UpdateMeshViewer();
 		});
 
 		viewer.ngui->addGroup("Viewer Options");
@@ -75,7 +72,6 @@ void OTEViewer::LoadMesh()
 	NormalizeMesh(mesh_);
 	UpdateMeshData(mesh_);
 	UpdateTextureCoordData(mesh_);
-	ShowMesh();
 
 }
 
@@ -113,31 +109,31 @@ void OTEViewer::UpdateMeshData(SurfaceMesh &mesh)
 	TC_.col(0) = Eigen::VectorXd::Constant(TC_.rows(), 1.0);
 	TC_.col(1) = Eigen::VectorXd::Constant(TC_.rows(), 1.0);
 	TC_.col(2) = Eigen::VectorXd::Constant(TC_.rows(), 1.0);
-}
-
-
-void OTEViewer::UpdateTextureCoordData(SurfaceMesh &mesh)
-{
-	OpenMeshCoordToMatrix(mesh, UV_);
-	UV_Z0_.resize(UV_.rows(), 3);
-	UV_Z0_.setZero();
-	UV_Z0_.block(0, 0, UV_.rows(), UV_.cols()) = UV_;
-	data.set_uv(UV_);
-}
-
-void OTEViewer::ShowMesh()
-{
 	if (V_.rows() == 0) return;
 	data.clear();
 	data.set_mesh(V_, F_);
 	data.set_colors(TC_);
 }
 
+
+void OTEViewer::UpdateTextureCoordData(SurfaceMesh &mesh)
+{
+	OpenMeshCoordToMatrix(mesh, UV_);
+	data.set_uv(UV_);
+	if (R_.rows() > 0)
+		data.set_texture(R_, G_, B_, A_);
+}
+
+
 void OTEViewer::ShowUV()
 {
-	if (UV_Z0_.rows() == 0) return;
+	if (UV_.rows() == 0) return;
+	UV_Z0_.resize(UV_.rows(), 3);
+	UV_Z0_.setZero();
+	UV_Z0_.block(0, 0, UV_.rows(), UV_.cols()) = UV_;
 	data.clear();
 	data.set_mesh(UV_Z0_, F_);
+	data.set_uv(UV_);
 	data.set_colors(TC_);
 }
 
@@ -154,8 +150,6 @@ void OTEViewer::ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeH
 	double radius = 0.005;
 
 	HalfedgesToMatrix(mesh, h_vector, P1, P2);
-	std::cout << P1.block(0, 0, 10, 3) << std::endl << std::endl;
-	std::cout << P2.block(0,0,110,3) << std::endl;
 	lineColors.resize(P1.rows(), 3);
 	lineColors.setZero();
 	lineColors.col(0) = Eigen::VectorXd::Constant(P1.rows(), 1);
@@ -189,11 +183,11 @@ void OTEViewer::UpdateMeshViewer()
 {
 	if (show_option_ == ORIGINAL) {
 		UpdateMeshData(mesh_);
-		ShowMesh();
+		UpdateTextureCoordData(mesh_);
 	}
 	else if (show_option_ == SLICED) {
 		UpdateMeshData(sliced_mesh_);
-		ShowMesh();
+		UpdateTextureCoordData(sliced_mesh_);
 		if (show_boundaries_) {
 			ShowBoundaries(sliced_mesh_);
 		}

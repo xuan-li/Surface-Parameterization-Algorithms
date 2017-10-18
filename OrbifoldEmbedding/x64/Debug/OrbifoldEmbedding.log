@@ -1,4 +1,93 @@
-﻿  OrbifoldMeshSlicer.cpp
-  EuclideanOrbifoldSolver.cpp
-  Generating Code...
+﻿  EuclideanOrbifoldSolver.cpp
+c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(170): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(733): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(239): note: see reference to function template instantiation 'void Eigen::SparseLUMatrixUReturnType<Eigen::internal::MappedSuperNodalMatrix<double,int>,Eigen::MappedSparseMatrix<double,0,int>>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(239): note: see reference to function template instantiation 'void Eigen::SparseLUMatrixUReturnType<Eigen::internal::MappedSuperNodalMatrix<double,int>,Eigen::MappedSparseMatrix<double,0,int>>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(786): note: see reference to function template instantiation 'bool Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>::_solve<Derived,Derived>(const Eigen::MatrixBase<Derived> &,Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(786): note: see reference to function template instantiation 'bool Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>::_solve<Derived,Derived>(const Eigen::MatrixBase<Derived> &,Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\misc\solve.h(51): note: see reference to function template instantiation 'void Eigen::internal::solve_retval<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Derived>::evalTo<Dest>(Dest &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\misc\solve.h(51): note: see reference to function template instantiation 'void Eigen::internal::solve_retval<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Derived>::evalTo<Dest>(Dest &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\core\returnbyvalue.h(61): note: see reference to function template instantiation 'void Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>::evalTo<Dest>(Dest &) const' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\core\returnbyvalue.h(61): note: see reference to function template instantiation 'void Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>::evalTo<Dest>(Dest &) const' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\core\matrix.h(311): note: see reference to function template instantiation 'void Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>::evalTo<Eigen::Matrix<double,-1,1,0,-1,1>>(Dest &) const' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\core\matrix.h(311): note: see reference to function template instantiation 'void Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>::evalTo<Eigen::Matrix<double,-1,1,0,-1,1>>(Dest &) const' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>,
+              Dest=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(280): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(280): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
+          with
+          [
+              Rhs=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(734): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu_supernodalmatrix.h(236): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(715): note: see reference to function template instantiation 'void Eigen::internal::MappedSuperNodalMatrix<double,int>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(715): note: see reference to function template instantiation 'void Eigen::internal::MappedSuperNodalMatrix<double,int>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(238): note: see reference to function template instantiation 'void Eigen::SparseLUMatrixLReturnType<Eigen::internal::MappedSuperNodalMatrix<double,int>>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+  c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(238): note: see reference to function template instantiation 'void Eigen::SparseLUMatrixLReturnType<Eigen::internal::MappedSuperNodalMatrix<double,int>>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu_supernodalmatrix.h(237): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
   OrbifoldEmbedding.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\OrbifoldEmbedding.lib

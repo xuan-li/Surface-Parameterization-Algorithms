@@ -1,3 +1,7 @@
-﻿  MeshMerger.cpp
-c:\code\graphics\graphicsproject\utilities\src\meshmerger.cpp(26): warning C4244: 'argument': conversion from '__int64' to 'const int', possible loss of data
+﻿  MeshFormConverter.cpp
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(7): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(42): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(43): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(66): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Utilities.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Utilities.lib

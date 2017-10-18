@@ -43,7 +43,7 @@ void OpenMeshCoordToMatrix(SurfaceMesh & mesh, Eigen::MatrixXd &UV)
 	int nf = mesh.n_faces();
 
 	UV.setZero();
-	UV.resize(nv, 3);
+	UV.resize(nv, 2);
 	/*load vertex data*/
 	for (Mesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		Mesh::VertexHandle v = *viter;

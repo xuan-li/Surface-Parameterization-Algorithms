@@ -5,6 +5,12 @@
 #include "OrbifoldMeshSlicer.h"
 #include "TransformationBuilder.h"
 #include <Eigen/Core>
+#include <Eigen/Sparse>
+
+#ifndef PI
+#define PI 3.141592653
+#endif
+
 
 
 class EuclideanOrbifoldSolver
@@ -15,9 +21,14 @@ public:
 protected:
 	SurfaceMesh &mesh_;
 	SurfaceMesh sliced_mesh_;
-	std::vector<OpenMesh::VertexHandle> cone_vts;
+	std::vector<OpenMesh::VertexHandle> cone_vts_;
 	std::vector<std::vector<OpenMesh::VertexHandle>> segments_vts_;
-	std::map<int, Eigen::Matrix2d> transforms_;
+	OpenMesh::VPropHandleT<Eigen::Matrix2d> vtx_transit_;
+	OpenMesh::VPropHandleT<OpenMesh::VertexHandle> vtx_rotation_center_;
+	Eigen::SparseMatrix<double> A_;
+	Eigen::VectorXd b_;
+	Eigen::VectorXd X_;
+	
 
 protected:
 	void CutToDist();
@@ -29,6 +40,10 @@ protected:
 	void ComputeCornerAngles();
 	void ComputeHalfedgeWeights();
 
+	void ConstructSparseSystem();
+	void SolveLinearSystem();
+	
+	
 
 };
 
