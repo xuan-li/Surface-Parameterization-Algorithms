@@ -20,46 +20,15 @@ void EuclideanOrbifoldSolver::CutToDist()
 {
 	OrbifoldMeshSlicer slicer(mesh_);
 	sliced_mesh_ = slicer.CutAndSelectSingularities();
-	cone_vts_.push_back(slicer.GetConeVertices().front());
+	cone_vts_ = slicer.GetConeVertices();
+	segments_vts_ = slicer.GetSegments();
 
 }
 
 
 void EuclideanOrbifoldSolver::InitOrbifold()
 {
-	using namespace OpenMesh;
-	SurfaceMesh &mesh = sliced_mesh_;
-	cone_vts_.clear();
-	CutToDist();
-	cone_vts_.erase(++cone_vts_.begin(), cone_vts_.end());
-	mesh.RequestBoundary();
-	auto boundary = mesh.GetBoundaries().front();
-	std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
-	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
-		HalfedgeHandle h = *it;
-		if (mesh.from_vertex_handle(h) == cone_vts_[0]) {
-			boundary_list.insert(boundary_list.end(), boundary_list.begin(), it);
-			boundary_list.erase(boundary_list.begin(), it);
-			break;
-		}
-		
-	}
-
-	segments_vts_.clear();
-	std::vector<OpenMesh::VertexHandle> segment;
-	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
-		HalfedgeHandle h = *it;
-		
-		if (mesh.data(mesh.to_vertex_handle(h)).is_singularity()) {
-			cone_vts_.push_back(mesh.to_vertex_handle(h));
-			segments_vts_.push_back(segment);
-			segment.clear();
-			continue;
-		}
-		segment.push_back(mesh.to_vertex_handle(h));
-	}
-	cone_vts_.pop_back();
-
+	
 	InitType1();
 }
 
@@ -67,6 +36,8 @@ void EuclideanOrbifoldSolver::InitType1()
 {
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
+
+	CutToDist();
 
 	OpenMesh::Vec2d v0(0, 0);
 	OpenMesh::Vec2d v1(0, 1);
@@ -155,6 +126,8 @@ void EuclideanOrbifoldSolver::ComputeHalfedgeWeights()
 		if (h1_next.is_valid())
 			weight += 1. / tan(mesh.data(h1_next).angle());
 		weight *= 0.5;
+		if (weight < 0)
+			weight = 0.01;
 		mesh.data(h0).set_weight(weight);
 		mesh.data(h1).set_weight(weight);
 	}
@@ -222,7 +195,7 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 			Matrix2d coeff_equiv;
 			coeff_equiv.setZero();
 			Matrix2d rotation_matrix = mesh.property(vtx_transit_, equiv);
-			std::cout << rotation_matrix << std::endl;
+			//std::cout << rotation_matrix << std::endl;
 			for (auto vviter = mesh.vv_iter(equiv); vviter.is_valid(); ++vviter) {
 				VertexHandle neighbor = *vviter;
 				HalfedgeHandle h = mesh.find_halfedge(equiv, neighbor);
@@ -279,9 +252,6 @@ void EuclideanOrbifoldSolver::SolveLinearSystem()
 	}
 	Eigen::VectorXd x = solver.solve(b_);
 	std::cout << "Error:" << (A_ * x - b_).norm() << std::endl;
-	//std::cout << A_.diagonal()<<std::endl << std::endl;
-	//std::cout << b_ << std::endl << std::endl;
-	//std::cout << x << std::endl << std::endl;
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		Vec2d uv(x(2 * v.idx()), x(2 * v.idx() + 1));

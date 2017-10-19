@@ -32,5 +32,8 @@
     <ClCompile Include="src\OrbifoldMeshSlicer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\HyperbolicOrbifoldSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

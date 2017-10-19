@@ -125,9 +125,6 @@
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">
       <Project>{bcbac1b6-dc8f-44d6-85b4-fe3cefd4fcf8}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Topology\Topology.vcxproj">
-      <Project>{a229b352-7be1-4948-8f16-054582b62438}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{6f7e9e07-0628-43cb-a558-c648ad5ea11c}</Project>
     </ProjectReference>
@@ -139,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EuclideanOrbifoldSolver.cpp" />
+    <ClCompile Include="src\HyperbolicOrbifoldSolver.cpp" />
     <ClCompile Include="src\OrbifoldMeshSlicer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

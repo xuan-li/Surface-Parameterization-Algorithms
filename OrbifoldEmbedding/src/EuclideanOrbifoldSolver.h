@@ -3,7 +3,6 @@
 
 #include <MeshDefinition.h>
 #include "OrbifoldMeshSlicer.h"
-#include "TransformationBuilder.h"
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Topology", "Topology\Topology.vcxproj", "{A229B352-7BE1-4948-8F16-054582B62438}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Utilities\Utilities.vcxproj", "{6F7E9E07-0628-43CB-A558-C648AD5EA11C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mesh", "Mesh\Mesh.vcxproj", "{BCBAC1B6-DC8F-44D6-85B4-FE3CEFD4FCF8}"
@@ -21,14 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A229B352-7BE1-4948-8F16-054582B62438}.Debug|x64.ActiveCfg = Debug|x64
-		{A229B352-7BE1-4948-8F16-054582B62438}.Debug|x64.Build.0 = Debug|x64
-		{A229B352-7BE1-4948-8F16-054582B62438}.Debug|x86.ActiveCfg = Debug|Win32
-		{A229B352-7BE1-4948-8F16-054582B62438}.Debug|x86.Build.0 = Debug|Win32
-		{A229B352-7BE1-4948-8F16-054582B62438}.Release|x64.ActiveCfg = Release|x64
-		{A229B352-7BE1-4948-8F16-054582B62438}.Release|x64.Build.0 = Release|x64
-		{A229B352-7BE1-4948-8F16-054582B62438}.Release|x86.ActiveCfg = Release|Win32
-		{A229B352-7BE1-4948-8F16-054582B62438}.Release|x86.Build.0 = Release|Win32
 		{6F7E9E07-0628-43CB-A558-C648AD5EA11C}.Debug|x64.ActiveCfg = Debug|x64
 		{6F7E9E07-0628-43CB-A558-C648AD5EA11C}.Debug|x64.Build.0 = Debug|x64
 		{6F7E9E07-0628-43CB-A558-C648AD5EA11C}.Debug|x86.ActiveCfg = Debug|Win32

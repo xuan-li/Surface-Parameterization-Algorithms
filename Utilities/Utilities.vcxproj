@@ -81,7 +81,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,7 +112,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -124,6 +124,7 @@
     <ClInclude Include="src\LineCylinder.h" />
     <ClInclude Include="src\MeshFormConverter.h" />
     <ClInclude Include="src\MeshMerger.h" />
+    <ClInclude Include="src\Topology\MeshSlicer.h" />
     <ClInclude Include="src\TransformationBuilder.h" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +132,7 @@
     <ClCompile Include="src\LineCylinder.cpp" />
     <ClCompile Include="src\MeshFormConverter.cpp" />
     <ClCompile Include="src\MeshMerger.cpp" />
+    <ClCompile Include="src\Topology\MeshSlicer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">

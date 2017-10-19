@@ -121,7 +121,7 @@ void OTEViewer::UpdateTextureCoordData(SurfaceMesh &mesh)
 	OpenMeshCoordToMatrix(mesh, UV_);
 	data.set_uv(UV_);
 	if (R_.rows() > 0)
-		data.set_texture(R_, G_, B_, A_);
+		data.set_texture(R_, G_, B_);
 }
 
 
@@ -135,6 +135,7 @@ void OTEViewer::ShowUV()
 	data.set_mesh(UV_Z0_, F_);
 	data.set_uv(UV_);
 	data.set_colors(TC_);
+	data.set_texture(R_, G_, B_);
 }
 
 void OTEViewer::ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector)
@@ -193,6 +194,7 @@ void OTEViewer::UpdateMeshViewer()
 		}
 	}
 	else if (show_option_ == EMBEDDING) {
+		UpdateMeshData(sliced_mesh_);
 		UpdateTextureCoordData(sliced_mesh_);
 		ShowUV();
 	}
