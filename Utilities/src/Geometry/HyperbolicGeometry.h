@@ -5,6 +5,10 @@
 #include <complex>
 #include "Circle.h"
 
+/*
+These codes are used to handle geometry on Poincare disk
+*/
+
 typedef std::complex<double> Complex;
 
 std::function<Complex(Complex const)> ComputeMobiusTransformation(Complex const s0, Complex const s1, Complex const t0, Complex const t1);

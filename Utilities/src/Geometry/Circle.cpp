@@ -36,7 +36,7 @@ Circle CircleFromPoints(std::vector<std::complex<double>> points)
 	double cd = (offset - p3.real() * p3.real() - p3.imag() * p3.imag()) / 2.0;
 	double det = (p1.real() - p2.real()) * (p2.imag() - p3.imag()) - (p2.real() - p3.real())* (p1.imag() - p2.imag());
 
-	assert(abs(det) < 1e-7);
+	//assert(abs(det) > 1e-7);
 
 	double idet = 1 / det;
 

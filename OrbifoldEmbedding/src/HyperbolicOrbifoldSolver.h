@@ -8,6 +8,8 @@
 
 #include <Geometry/HyperbolicGeometry.h>
 
+#include <LBFGS.h>
+
 #ifndef PI
 #define PI 3.141592653
 #endif
@@ -40,9 +42,18 @@ protected:
 	void InitMap();
 
 	void ComputeEdgeLength();
-	void ComputeGradient();
+	double ComputeGradient();
+	OpenMesh::Vec2d ComputeGradientOfDistance2(Complex src, Complex dst);
+	OpenMesh::Vec2d ComputeGradient(OpenMesh::VertexHandle v);
+	OpenMesh::Vec2d ComputeIntrinsicGradient(OpenMesh::VertexHandle v);
 	
+	double ComputeEnergy();
+	Eigen::VectorXd GetCoordsVector();
+	Eigen::VectorXd GetGradientVector();
+	void SetCoords(const Eigen::VectorXd &uv_vector);
+	double OptimizationLoop(double step_length, double error);
 	
+	void Normalize();
 };
 
 #endif // !HYPERBOLIC_ORBIFOLD_SOLVER_H_

@@ -33,10 +33,11 @@ std::function<Complex(Complex const)> ComputeMobiusTransformation(Complex const 
 
 double HyperbolicDistance(Complex p0, Complex p1)
 {
-	return acosh(
-				1 + 2 * abs(p0 - p1) * abs(p0 - p1)/ 
-				( (1. - abs(p0) * abs(p0)) * (1 - abs(p1) * abs(p1)) )
-				);
+	double dist  = acosh(
+		1 + 2 * abs(p0 - p1) * abs(p0 - p1) /
+		((1. - abs(p0) * abs(p0)) * (1 - abs(p1) * abs(p1)))
+	);
+	return dist;
 }
 
 Complex InverseExponentialMap(Complex p0, Complex p1)
@@ -51,5 +52,6 @@ Complex InverseExponentialMap(Complex p0, Complex p1)
 	if (angle1 < angle0)
 		tangent = -tangent;
 	double dist = HyperbolicDistance(p0, p1);
-	return tangent * dist;
+	double ratio = pow(1 - pow(abs(p0), 2), 2) / 4.0;
+	return tangent * dist * ratio;
 }

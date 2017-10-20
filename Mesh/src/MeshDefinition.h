@@ -39,7 +39,7 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 		double weight_;
 		double angle_;
 	public:
-		HalfedgeT() : weight_(0.0) {}
+		HalfedgeT() : weight_(-1.) {}
 		double angle() { return angle_; }
 		void set_angle(double a) { angle_ = a; }
 		double weight() { return weight_; }

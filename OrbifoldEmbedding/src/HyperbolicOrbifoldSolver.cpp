@@ -1,6 +1,7 @@
 #include "HyperbolicOrbifoldSolver.h"
 
 
+
 HyperbolicOrbifoldSolver::HyperbolicOrbifoldSolver(SurfaceMesh & mesh): mesh_(mesh)
 {
 
@@ -8,11 +9,41 @@ HyperbolicOrbifoldSolver::HyperbolicOrbifoldSolver(SurfaceMesh & mesh): mesh_(me
 
 SurfaceMesh HyperbolicOrbifoldSolver::Compute()
 {
+	using namespace Eigen;
+	using namespace LBFGSpp;
+
 	if (mesh_.n_vertices() > 10) {
 		InitOrbifold();
 		ComputeCornerAngles();
 		ComputeHalfedgeWeights();
 		InitMap();
+		Normalize();
+		this->ComputeGradient();
+		std::function<double(const VectorXd&, VectorXd&)> fun=
+			[this](const VectorXd& x, VectorXd& grad) ->double 
+		{
+			this->SetCoords(x);
+			this->Normalize();
+			this->ComputeGradient();
+			grad = this->GetGradientVector();
+			return this->ComputeEnergy();
+		};
+
+		LBFGSParam<double> param;
+		param.epsilon = 1e-7;
+		param.max_iterations = 2000;
+		//param.min_step = 1e-5;
+		LBFGSSolver<double> solver(param);
+		VectorXd x = GetCoordsVector();
+		
+		double fx;
+		int niter = solver.minimize(fun, x, fx);
+
+		std::cout << niter << " iterations" << std::endl;
+		std::cout << "f(x) = " << fx << std::endl;
+
+		//double energy = OptimizationLoop(0.01, 1e-4);
+		//std::cout << "Final Energy:" << energy << std::endl;
 	}
 	return sliced_mesh_;
 }
@@ -86,7 +117,7 @@ void HyperbolicOrbifoldSolver::InitType1()
 		std::cout << t0 << "\t" << t1 << std::endl << std::endl;*/
 
 		auto transformation = ComputeMobiusTransformation(s0, s1, t0, t1);
-		
+		assert(abs(transformation(s1) - t1) < 1e-6);
 		// initiate the boundary's coordinates along the way.
 		Vec2d segment_start = mesh.texcoord2D(cone_vts_[i]);
 		Vec2d segment_end = mesh.texcoord2D(cone_vts_[(i + 1) % cone_vts_.size()]);
@@ -104,7 +135,9 @@ void HyperbolicOrbifoldSolver::InitType1()
 
 double HyperbolicOrbifoldSolver::CosineLaw(double a, double b, double c)
 {
-	double cs = (cosh(a) * cosh(b) - cosh(c)) / (sinh(a) * sinh(b));
+	//double cs = (cosh(a) * cosh(b) - cosh(c)) / (sinh(a) * sinh(b));
+	double cs = (a * a + b * b - c * c) / (2 * a * b);
+	assert(-1 <= cs && cs <= 1);
 	return acos(cs);
 
 }
@@ -187,31 +220,227 @@ void HyperbolicOrbifoldSolver::ComputeEdgeLength()
 	}
 }
 
-void HyperbolicOrbifoldSolver::ComputeGradient()
+double HyperbolicOrbifoldSolver::ComputeGradient()
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	double max_gradient_norm = 0.0;
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		Vec2d gradient = ComputeGradient(v);
+		mesh.data(v).set_gradient(gradient);
+		if (gradient.norm() > max_gradient_norm) {
+			max_gradient_norm = gradient.norm();
+		}
+	}
+	return max_gradient_norm;
+}
+
+OpenMesh::Vec2d HyperbolicOrbifoldSolver::ComputeGradientOfDistance2(Complex src_complex, Complex dst_complex)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	
+	Vec2d src_uv(src_complex.real(), src_complex.imag());
+	Vec2d dst_uv(dst_complex.real(), dst_complex.imag());
+	Vec2d diff = src_uv - dst_uv;
+	double distance = HyperbolicDistance(src_complex, dst_complex);
+
+	double f = 1 + 2 * pow(diff.norm(), 2) / ((1 - pow(src_uv.norm(), 2))*(1 - pow(dst_uv.norm(), 2)));
+	double darccosh = 1 / sqrt(f * f - 1);
+	double constant_df = 4. / ((1 - pow(dst_uv.norm(), 2))*(1 - pow(src_uv.norm(), 2)));
+	Vec2d vector_df = diff + pow(diff.norm(), 2) * src_uv / (1 - pow(src_uv.norm(), 2));
+	return distance * darccosh * constant_df * vector_df;
+}
+
+OpenMesh::Vec2d HyperbolicOrbifoldSolver::ComputeGradient(OpenMesh::VertexHandle v)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+
+	if (mesh.data(v).is_singularity()) {
+		return Vec2d(0, 0);
+	}
+	Vec2d v_uv = mesh.texcoord2D(v);
+	Complex v_complex(v_uv[0], v_uv[1]);
+
+	Vec2d gradient(0, 0);
+
+	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(v); vohiter.is_valid(); ++vohiter) {
+		HalfedgeHandle h = *vohiter;
+		VertexHandle neighbor = mesh.to_vertex_handle(h);
+		auto neighbor_uv = mesh.texcoord2D(neighbor);
+		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
+		double n_w = mesh.data(h).weight();
+		assert(n_w > 0);
+		gradient += n_w * ComputeGradientOfDistance2(v_complex, neighbor_complex);
+	}
+
+	if (!mesh.is_boundary(v)) return gradient;
+
+	VertexHandle equiv = mesh.data(v).equivalent_vertex();
+
+	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(equiv); vohiter.is_valid(); ++vohiter) {
+		HalfedgeHandle h = *vohiter;
+		VertexHandle neighbor = mesh.to_vertex_handle(h);
+		auto neighbor_uv = mesh.texcoord2D(neighbor);
+		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
+		std::function<Complex(Complex const)> transformation = mesh.property(vtx_transit_, equiv);
+		neighbor_complex = transformation(neighbor_complex);
+		double n_w = mesh.data(h).weight();
+		gradient += n_w * ComputeGradientOfDistance2(v_complex, neighbor_complex);
+	}
+	double metric_factor = pow(1 - pow(v_uv.norm(), 2), 2) / 4.;
+	return gradient * metric_factor;
+}
+
+OpenMesh::Vec2d HyperbolicOrbifoldSolver::ComputeIntrinsicGradient(OpenMesh::VertexHandle v)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+
+	if (mesh.data(v).is_singularity()) {
+		return Vec2d(0, 0);
+	}
+	Vec2d v_uv = mesh.texcoord2D(v);
+	Complex v_complex(v_uv[0], v_uv[1]);
+
+	Complex gradient(0, 0);
+	
+	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(v); vohiter.is_valid(); ++vohiter) {
+		HalfedgeHandle h = *vohiter;
+		VertexHandle neighbor = mesh.to_vertex_handle(h);
+		auto neighbor_uv = mesh.texcoord2D(neighbor);
+		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
+		double n_w = mesh.data(h).weight();
+		assert(n_w > 0);
+		gradient -= n_w * InverseExponentialMap(v_complex, neighbor_complex);
+	}
+
+	if (!mesh.is_boundary(v)) return Vec2d(gradient.real(), gradient.imag());
+
+	VertexHandle equiv = mesh.data(v).equivalent_vertex();
+	
+	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(equiv); vohiter.is_valid(); ++vohiter) {
+		HalfedgeHandle h = *vohiter;
+		VertexHandle neighbor = mesh.to_vertex_handle(h);
+		auto neighbor_uv = mesh.texcoord2D(neighbor);
+		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
+		std::function<Complex(Complex const)> transformation = mesh.property(vtx_transit_, equiv);
+		neighbor_complex = transformation(neighbor_complex);
+		double n_w = mesh.data(h).weight();
+		gradient -= n_w * InverseExponentialMap(v_complex, neighbor_complex);
+	}
+
+	return Vec2d(gradient.real(), gradient.imag());
+}
+
+double HyperbolicOrbifoldSolver::ComputeEnergy()
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	double energy = 0;
+	for (auto hiter = mesh.halfedges_begin(); hiter != mesh.halfedges_end(); ++hiter) {
+		HalfedgeHandle h = *hiter;
+		VertexHandle v = mesh.from_vertex_handle(h);
+		VertexHandle tv = mesh.to_vertex_handle(h);
+		Vec2d v_uv = mesh.texcoord2D(v);
+		Vec2d tv_uv = mesh.texcoord2D(tv);
+		Complex v_complex(v_uv[0], v_uv[1]);
+		Complex tv_complex(tv_uv[0], tv_uv[1]);
+		double weight = mesh.data(h).weight();
+		energy += weight * pow(HyperbolicDistance(v_complex, tv_complex), 2);
+	}
+	return energy * 0.5;
+}
+
+Eigen::VectorXd HyperbolicOrbifoldSolver::GetCoordsVector()
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	Eigen::VectorXd uv_vector(mesh.n_vertices() * 2);
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		Vec2d uv = mesh.texcoord2D(v);
+		uv_vector(v.idx() * 2) = uv[0];
+		uv_vector(v.idx() * 2 + 1) = uv[1];
+	}
+	return uv_vector;
+}
+
+Eigen::VectorXd HyperbolicOrbifoldSolver::GetGradientVector()
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	Eigen::VectorXd gradient_vector(mesh.n_vertices() * 2);
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		Vec2d grad = mesh.data(v).gradient();
+		gradient_vector(v.idx() * 2) = grad[0];
+		gradient_vector(v.idx() * 2 + 1) = grad[1];
+	}
+	return gradient_vector;
+}
+
+void HyperbolicOrbifoldSolver::SetCoords(const Eigen::VectorXd & uv_vector)
 {
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
-		auto v_uv = mesh.texcoord2D(v);
-		Complex v_complex(v_uv[0], v_uv[1]);
-		if (mesh.data(v).is_singularity()) {
-			mesh.data(v).set_gradient(Vec2d(0, 0));
+		Vec2d uv(uv_vector(v.idx() * 2), uv_vector(v.idx() * 2 + 1));
+		mesh.set_texcoord2D(v, uv);
+	}
+}
+
+double HyperbolicOrbifoldSolver::OptimizationLoop(double step_length, double error)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	//double energy_prev = 1e10;
+	//double energy = ComputeEnergy();
+	int epoch = 0;
+	double gradient_length = 1e10;
+	while (gradient_length > error) {
+		gradient_length = ComputeGradient();
+		if (epoch % 20) {
+			std::cout << "Max Gradient Length:" << gradient_length << "\tEnergy:" << ComputeEnergy() << std::endl;
 		}
-		else if (!mesh.is_boundary(v)) {
-			Complex gradient(0, 0);
-			for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(v); vohiter.is_valid(); ++vohiter) {
-				HalfedgeHandle h = *vohiter;
-				VertexHandle neighbor = mesh.to_vertex_handle(h);
-				auto neighbor_uv = mesh.texcoord2D(neighbor);
-				Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
-				double n_w = mesh.data(h).weight();
-				gradient -= n_w * InverseExponentialMap(v_complex, neighbor_complex);
-			}
-			mesh.data(v).set_gradient(Vec2d(gradient.real(), gradient.imag()));
+		
+		for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+			VertexHandle v = *viter;
+			Vec2d uv = mesh.texcoord2D(v);
+			Vec2d gradient = mesh.data(v).gradient();
+			
+			Complex uv_complex(uv[0], uv[1]);
+			uv -= step_length * gradient;
+			assert(uv.norm() < 1);
+			mesh.set_texcoord2D(v, uv);
+		}
+
+		Normalize();
+		//energy_prev = energy;
+		//energy = ComputeEnergy();
+		epoch++;
+	}
+	return gradient_length;
+}
+
+void HyperbolicOrbifoldSolver::Normalize()
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = sliced_mesh_;
+	for (auto it = segments_vts_.begin(); it != segments_vts_.end(); ++it) {
+		for (auto viter = (*it).begin(); viter != (*it).end(); ++viter) {
+			VertexHandle v = *viter;
+			VertexHandle equiv = mesh.data(v).equivalent_vertex();
+			Vec2d equiv_uv = mesh.texcoord2D(equiv);
+			Complex equiv_complex(equiv_uv[0], equiv_uv[1]);
+			Complex v_complex = mesh.property(vtx_transit_, equiv)(equiv_complex);
+			Vec2d v_uv(v_complex.real(), v_complex.imag());
+			mesh.set_texcoord2D(v, v_uv);
 		}
 	}
-	// TO DO for boundary
 }
 
 void HyperbolicOrbifoldSolver::InitMap()
@@ -260,7 +489,7 @@ void HyperbolicOrbifoldSolver::InitMap()
 		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
 	}
 	Eigen::VectorXd x = solver.solve(b);
-	std::cout << "Error:" << (A * x - b).norm() << std::endl;
+	//std::cout << "Error:" << (A * x - b).norm() << std::endl;
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		if (mesh.is_boundary(v)) continue;
