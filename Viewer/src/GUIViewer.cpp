@@ -29,6 +29,10 @@ void OTEViewer::InitMenu()
 			EuclideanOrbifoldSolver solver(this->mesh_);
 			this->sliced_mesh_ = solver.Compute();
 		});
+		viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
+			HyperbolicOrbifoldSolver solver(this->mesh_);
+			this->sliced_mesh_ = solver.Compute();
+		});
 
 		viewer.ngui->addGroup("Viewer Options");
 

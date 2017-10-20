@@ -18,6 +18,7 @@
 #include <MeshMerger.h>
 
 #include <EuclideanOrbifoldSolver.h>
+#include <HyperbolicOrbifoldSolver.h>
 
 
 

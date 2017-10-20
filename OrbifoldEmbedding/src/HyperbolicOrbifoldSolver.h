@@ -6,6 +6,12 @@
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
+#include <Geometry/HyperbolicGeometry.h>
+
+#ifndef PI
+#define PI 3.141592653
+#endif
+
 class HyperbolicOrbifoldSolver
 {
 public:
@@ -17,18 +23,25 @@ protected:
 	SurfaceMesh sliced_mesh_;
 	std::vector<OpenMesh::VertexHandle> cone_vts_;
 	std::vector<std::vector<OpenMesh::VertexHandle>> segments_vts_;
-	OpenMesh::VPropHandleT<Eigen::Matrix2d> vtx_transit_;
-	OpenMesh::VPropHandleT<OpenMesh::VertexHandle> vtx_rotation_center_;
+	OpenMesh::VPropHandleT<std::function<Complex(Complex const)>> vtx_transit_;
+	
+	int n_cones_;
 
 protected:
-	void CutToDist();
+	void CutToDist(int n_cones);
 
 	void InitOrbifold();
 	void InitType1();
 
 	double CosineLaw(double a, double b, double c);
+	double AngleCosineLaw(double a, double b, double c);
 	void ComputeCornerAngles();
 	void ComputeHalfedgeWeights();
+	void InitMap();
+
+	void ComputeEdgeLength();
+	void ComputeGradient();
+	
 	
 };
 

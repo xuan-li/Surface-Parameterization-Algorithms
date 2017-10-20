@@ -36,15 +36,18 @@
     <ClCompile Include="src\Topology\MeshSlicer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Geometry\HyperbolicGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Geometry\Circle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshFormConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Dijkstra.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TransformationBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\LineCylinder.h">
@@ -55,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="src\Topology\MeshSlicer.h">
       <Filter>Header Files\Topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\HyperbolicGeometry.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\Circle.h">
+      <Filter>Header Files\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -9,10 +9,12 @@ EuclideanOrbifoldSolver::EuclideanOrbifoldSolver(SurfaceMesh & mesh)
 
 SurfaceMesh EuclideanOrbifoldSolver::Compute()
 {
-	InitOrbifold();
-	ComputeHalfedgeWeights();
-	ConstructSparseSystem();
-	SolveLinearSystem();
+	if (mesh_.n_vertices() > 10) {
+		InitOrbifold();
+		ComputeHalfedgeWeights();
+		ConstructSparseSystem();
+		SolveLinearSystem();
+	}
 	return sliced_mesh_;
 }
 
@@ -30,6 +32,7 @@ void EuclideanOrbifoldSolver::InitOrbifold()
 {
 	
 	InitType1();
+
 }
 
 void EuclideanOrbifoldSolver::InitType1()
@@ -71,6 +74,11 @@ void EuclideanOrbifoldSolver::InitType1()
 		}
 	}
 	
+	std::cout << "Cone coordinates:\n";
+	for (int i = 0; i < cone_vts_.size(); ++i) {
+		Vec2d uv = mesh.texcoord2D(cone_vts_[i]);
+		std::cout << uv[0] << "\t" << uv[1] << std::endl;
+	}
 }
 
 double EuclideanOrbifoldSolver::CosineLaw(double a, double b, double c)

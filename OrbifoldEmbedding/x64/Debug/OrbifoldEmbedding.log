@@ -1,5 +1,5 @@
-﻿  EuclideanOrbifoldSolver.cpp
-c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(170): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+﻿  HyperbolicOrbifoldSolver.cpp
+c:\code\graphics\graphicsproject\orbifoldembedding\src\hyperbolicorbifoldsolver.cpp(196): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(733): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
   c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu.h(239): note: see reference to function template instantiation 'void Eigen::SparseLUMatrixUReturnType<Eigen::internal::MappedSuperNodalMatrix<double,int>,Eigen::MappedSparseMatrix<double,0,int>>::solveInPlace<Derived>(Eigen::MatrixBase<Derived> &) const' being compiled
           with
@@ -57,12 +57,12 @@ c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\spars
               Rhs=Eigen::Matrix<double,-1,1,0,-1,1>,
               Dest=Eigen::Matrix<double,-1,1,0,-1,1>
           ]
-  c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(280): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
+  c:\code\graphics\graphicsproject\orbifoldembedding\src\hyperbolicorbifoldsolver.cpp(235): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
           with
           [
               Rhs=Eigen::Matrix<double,-1,1,0,-1,1>
           ]
-  c:\code\graphics\graphicsproject\orbifoldembedding\src\euclideanorbifoldsolver.cpp(280): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
+  c:\code\graphics\graphicsproject\orbifoldembedding\src\hyperbolicorbifoldsolver.cpp(235): note: see reference to function template instantiation 'Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>>(const Eigen::ReturnByValue<Eigen::internal::solve_retval_base<Eigen::SparseLU<Eigen::SparseMatrix<double,0,int>,Eigen::COLAMDOrdering<int>>,Rhs>> &)' being compiled
           with
           [
               Rhs=Eigen::Matrix<double,-1,1,0,-1,1>

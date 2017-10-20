@@ -12,6 +12,7 @@ SurfaceMesh OrbifoldMeshSlicer::CutAndSelectSingularities(int n_cones)
 	SurfaceMesh sliced_mesh = slicer.SliceMeshToDisk();
 	for (auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
 		OpenMesh::VertexHandle v = *viter;
+		sliced_mesh.data(v).set_singularity(false);
 		auto equivlent_splition = slicer.SplitTo(v);
 		//assert(equivlent_splition.size() <= 2);
 		if (equivlent_splition.size() == 2) {

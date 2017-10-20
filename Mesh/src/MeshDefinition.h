@@ -25,9 +25,12 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 		void set_equivalent_vertex(typename Refs::VertexHandle v) { equivalent_vertex_ = v; }
 		bool is_singularity() { return is_singularity_; }
 		void set_singularity(bool s) { is_singularity_ = s; }
+		OpenMesh::Vec2d gradient() { return gradient_; }
+		void set_gradient(OpenMesh::Vec2d t) { gradient_ = t; }
 	private:
 		typename Refs::VertexHandle equivalent_vertex_;
 		bool is_singularity_;
+		OpenMesh::Vec2d gradient_;
 	};
 
 	HalfedgeTraits
