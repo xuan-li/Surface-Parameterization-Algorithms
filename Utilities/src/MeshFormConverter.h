@@ -5,6 +5,7 @@
 #include <MeshDefinition.h>
 
 void OpenMeshToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &V, Eigen::MatrixXi &F);
+void OpenMeshToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &V, Eigen::MatrixXd &V_normal, Eigen::MatrixXi &F, Eigen::MatrixXd &F_normal);
 
 void OpenMeshCoordToMatrix(SurfaceMesh &mesh, Eigen::MatrixXd &UV);
 

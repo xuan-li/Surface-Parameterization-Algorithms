@@ -42,6 +42,15 @@
     <ClCompile Include="src\Geometry\Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Geometry\EuclideanGeometry2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Topology\EuclideanCoveringSpace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Topology\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshFormConverter.h">
@@ -64,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="src\Geometry\Circle.h">
       <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Geometry\EuclideanGeometry2D.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Topology\EuclideanCoveringSpace.h">
+      <Filter>Header Files\Topology</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

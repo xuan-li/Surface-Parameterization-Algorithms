@@ -1,21 +1,21 @@
 #include "MeshFormConverter.h"
 
-typedef SurfaceMesh Mesh;
-
 void OpenMeshToMatrix(SurfaceMesh & mesh, Eigen::MatrixXd & V, Eigen::MatrixXi & F)
 {
 	int nv = mesh.n_vertices();
+	if (nv == 0)
+		return;
 	int nf = mesh.n_faces();
 
 	V.setZero();
 	V.resize(nv, 3);
 
 	/*load vertex data*/
-	for (Mesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
-		Mesh::VertexHandle v = *viter;
+	for (SurfaceMesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		SurfaceMesh::VertexHandle v = *viter;
 
 		int idx = v.idx();
-		Mesh::Point point = mesh.point(v);
+		SurfaceMesh::Point point = mesh.point(v);
 
 		for (int i = 0; i < 3; i++) {
 			V(idx, i) = point[i];
@@ -24,12 +24,56 @@ void OpenMeshToMatrix(SurfaceMesh & mesh, Eigen::MatrixXd & V, Eigen::MatrixXi &
 
 	F.resize(nf, 3);
 	F.setConstant(-1);
-	for (Mesh::FaceIter fiter = mesh.faces_begin(); fiter != mesh.faces_end(); ++fiter) {
-		Mesh::FaceHandle f = *fiter;
+	for (SurfaceMesh::FaceIter fiter = mesh.faces_begin(); fiter != mesh.faces_end(); ++fiter) {
+		SurfaceMesh::FaceHandle f = *fiter;
 		int i = 0;
-		for (Mesh::FaceVertexIter fviter = mesh.fv_iter(f); fviter.is_valid(); ++fviter) {
-			Mesh::VertexHandle v = *fviter;
+		for (SurfaceMesh::FaceVertexIter fviter = mesh.fv_iter(f); fviter.is_valid(); ++fviter) {
+			SurfaceMesh::VertexHandle v = *fviter;
 			F(f.idx(), i) = v.idx();
+			i++;
+		}
+	}
+}
+
+void OpenMeshToMatrix(SurfaceMesh & mesh, Eigen::MatrixXd & V, Eigen::MatrixXd & V_normal, Eigen::MatrixXi & F, Eigen::MatrixXd & F_normal)
+{
+	int nv = mesh.n_vertices();
+	if (nv == 0)
+		return;
+	int nf = mesh.n_faces();
+	mesh.update_normals();
+
+	V.setZero();
+	V.resize(nv, 3);
+	V_normal.resize(nv, 3);
+	F_normal.resize(nf, 3);
+	F.resize(nf, 3);
+	F.setConstant(-1);
+
+	/*load vertex data*/
+	for (SurfaceMesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		SurfaceMesh::VertexHandle v = *viter;
+
+		int idx = v.idx();
+		SurfaceMesh::Point point = mesh.point(v);
+		SurfaceMesh::Normal normal = mesh.normal(v);
+
+		for (int i = 0; i < 3; i++) {
+			V(idx, i) = point[i];
+			V_normal(idx, i) = normal[i];
+		}
+	}
+
+
+	for (SurfaceMesh::FaceIter fiter = mesh.faces_begin(); fiter != mesh.faces_end(); ++fiter) {
+		SurfaceMesh::FaceHandle f = *fiter;
+		SurfaceMesh::Normal normal = mesh.normal(f);
+		int i = 0;
+		for (SurfaceMesh::FaceVertexIter fviter = mesh.fv_iter(f); fviter.is_valid(); ++fviter) {
+			SurfaceMesh::VertexHandle v = *fviter;
+			F(f.idx(), i) = v.idx();
+			if(i < 3)
+				F_normal(f.idx(), i) = normal[i];
 			i++;
 		}
 	}
@@ -45,10 +89,10 @@ void OpenMeshCoordToMatrix(SurfaceMesh & mesh, Eigen::MatrixXd &UV)
 	UV.setZero();
 	UV.resize(nv, 2);
 	/*load vertex data*/
-	for (Mesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
-		Mesh::VertexHandle v = *viter;
+	for (SurfaceMesh::VertexIter viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		SurfaceMesh::VertexHandle v = *viter;
 		int idx = v.idx();
-		Mesh::TexCoord2D point = mesh.texcoord2D(v);
+		SurfaceMesh::TexCoord2D point = mesh.texcoord2D(v);
 
 		for (int i = 0; i < 2; i++) {
 			UV(idx, i) = point[i];

@@ -19,6 +19,7 @@ class HyperbolicOrbifoldSolver
 public:
 	HyperbolicOrbifoldSolver(SurfaceMesh &mesh);
 	SurfaceMesh Compute();
+	std::vector<OpenMesh::VertexHandle> ConeVertices() { return cone_vts_; }
 
 protected:
 	SurfaceMesh &mesh_;

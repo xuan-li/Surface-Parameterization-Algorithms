@@ -30,7 +30,7 @@ SurfaceMesh HyperbolicOrbifoldSolver::Compute()
 		};
 
 		LBFGSParam<double> param;
-		param.epsilon = 1e-7;
+		param.epsilon = 1e-5;
 		param.max_iterations = 2000;
 		//param.min_step = 1e-5;
 		LBFGSSolver<double> solver(param);
@@ -72,14 +72,14 @@ void HyperbolicOrbifoldSolver::InitType1()
 	double radius = AngleCosineLaw(2 * PI / n_cones_, PI / 4., PI / 4.);
 	double ratio = (exp(radius) - 1) / (exp(radius) + 1);
 
-	Vec2d p1(cos(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
-	Vec2d pk(cos(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
+	Vec2d p1(cos(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
+	Vec2d pk(cos(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
 	double edge_length = AngleCosineLaw(PI / 4, PI / 4, 2 * PI / n_cones_);
 	double target_radis = (exp(edge_length/2) - 1) / (exp(edge_length/2) + 1);
 	Complex p1_source(p1[0], p1[1]);
 	Complex pk_source(pk[0], pk[1]);
-	Complex p1_target(target_radis, 0);
-	Complex pk_target(-target_radis, 0);
+	Complex p1_target(-target_radis, 0);
+	Complex pk_target(target_radis, 0);
 
 	if (!vtx_transit_.is_valid()) {
 		mesh.add_property(vtx_transit_);
@@ -87,7 +87,7 @@ void HyperbolicOrbifoldSolver::InitType1()
 	auto transformation = ComputeMobiusTransformation(p1_source, pk_source, p1_target, pk_target);
 
 	for (int i = 0; i < n_cones_; ++i) {
-		Vec2d uv = Vec2d(cos(PI / 2 + (i + 1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (i + 1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
+		Vec2d uv = Vec2d(cos(PI / 2 + (-i + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (-i + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
 		Complex uv_complex = transformation(Complex(uv[0], uv[1]));
 		uv = Vec2d(uv_complex.real(), uv_complex.imag());
 		mesh.set_texcoord2D(cone_vts_[i], uv);

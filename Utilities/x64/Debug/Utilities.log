@@ -1,10 +1,16 @@
-﻿  HyperbolicGeometry.cpp
-  Circle.cpp
+﻿  Dijkstra.cpp
   Generating Code...
   Compiling...
-  Dijkstra.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
   MeshSlicer.cpp
+c:\code\graphics\graphicsproject\utilities\src\topology\meshslicer.cpp(29): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\topology\meshslicer.cpp(152): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   MeshFormConverter.cpp
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(5): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(43): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(86): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(87): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\code\graphics\graphicsproject\utilities\src\meshformconverter.cpp(110): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
   Utilities.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Utilities.lib

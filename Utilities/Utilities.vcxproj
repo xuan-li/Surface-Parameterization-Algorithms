@@ -122,19 +122,24 @@
   <ItemGroup>
     <ClInclude Include="src\Dijkstra.h" />
     <ClInclude Include="src\Geometry\Circle.h" />
+    <ClInclude Include="src\Geometry\EuclideanGeometry2D.h" />
     <ClInclude Include="src\Geometry\HyperbolicGeometry.h" />
     <ClInclude Include="src\LineCylinder.h" />
     <ClInclude Include="src\MeshFormConverter.h" />
     <ClInclude Include="src\MeshMerger.h" />
+    <ClInclude Include="src\Topology\EuclideanCoveringSpace.h" />
     <ClInclude Include="src\Topology\MeshSlicer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Dijkstra.cpp" />
     <ClCompile Include="src\Geometry\Circle.cpp" />
+    <ClCompile Include="src\Geometry\EuclideanGeometry2D.cpp" />
     <ClCompile Include="src\Geometry\HyperbolicGeometry.cpp" />
     <ClCompile Include="src\LineCylinder.cpp" />
     <ClCompile Include="src\MeshFormConverter.cpp" />
     <ClCompile Include="src\MeshMerger.cpp" />
+    <ClCompile Include="src\Topology\EuclideanCoveringSpace.cpp" />
+    <ClCompile Include="src\Topology\main.cpp" />
     <ClCompile Include="src\Topology\MeshSlicer.cpp" />
   </ItemGroup>
   <ItemGroup>

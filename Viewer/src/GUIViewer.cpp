@@ -28,11 +28,14 @@ void OTEViewer::InitMenu()
 		viewer.ngui->addButton("Euclidean Orbifold", [this]() {
 			EuclideanOrbifoldSolver solver(this->mesh_);
 			this->sliced_mesh_ = solver.Compute();
+			this->cone_vts_ = solver.ConeVertices();
+			hyperbolic_ = false;
+			euclidean_ = true;
 		});
-		viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
+		/*viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
 			HyperbolicOrbifoldSolver solver(this->mesh_);
 			this->sliced_mesh_ = solver.Compute();
-		});
+		});*/
 
 		viewer.ngui->addGroup("Viewer Options");
 
@@ -41,7 +44,7 @@ void OTEViewer::InitMenu()
 			"Show Option",
 			[this](const ShowOption & v) {  this->show_option_ = v; this->UpdateMeshViewer(); },
 			[this]()->ShowOption { return this->show_option_; }
-		)->setItems({ "Original", "Sliced", "Embedding" });
+		)->setItems({ "Original", "Sliced", "Embedding", "Covering Space" });
 		
 		viewer.ngui->addVariable<bool>(
 			"Show Boundaries",
@@ -103,12 +106,14 @@ void OTEViewer::SaveMesh()
 	else if (show_option_ == SLICED) {
 		OpenMesh::IO::write_mesh(sliced_mesh_, fname, opt);
 	}
+
+
 	
 }
 
 void OTEViewer::UpdateMeshData(SurfaceMesh &mesh)
 {
-	OpenMeshToMatrix(mesh, V_, F_);
+	OpenMeshToMatrix(mesh, V_,V_normal_, F_, F_normal_);
 	TC_.resize(F_.rows(), 3);
 	TC_.col(0) = Eigen::VectorXd::Constant(TC_.rows(), 1.0);
 	TC_.col(1) = Eigen::VectorXd::Constant(TC_.rows(), 1.0);
@@ -117,6 +122,8 @@ void OTEViewer::UpdateMeshData(SurfaceMesh &mesh)
 	data.clear();
 	data.set_mesh(V_, F_);
 	data.set_colors(TC_);
+	data.set_normals(V_normal_);
+	data.set_normals(F_normal_);
 }
 
 
@@ -140,10 +147,24 @@ void OTEViewer::ShowUV()
 	data.set_uv(UV_);
 	data.set_colors(TC_);
 	data.set_texture(R_, G_, B_);
+
+	Eigen::MatrixXd V_normal = V_normal_;
+	V_normal.col(2) = (V_normal.col(2)).cwiseAbs();
+	Eigen::MatrixXd F_normal = F_normal_;
+	F_normal.col(2) = F_normal.col(2).cwiseAbs();
+	data.set_normals(V_normal);
+	data.set_normals(F_normal);
+}
+
+void OTEViewer::ShowCoveringSpace()
+{
+	EuclideanCoveringSpaceComputer covering_computer(sliced_mesh_, cone_vts_);
+
 }
 
 void OTEViewer::ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector)
 {
+	// This algorithm to generate cylinder is from the library libhedra
 	using namespace OpenMesh;
 
 	if (h_vector.size() == 0) return;
@@ -198,9 +219,13 @@ void OTEViewer::UpdateMeshViewer()
 		}
 	}
 	else if (show_option_ == EMBEDDING) {
-		UpdateMeshData(sliced_mesh_);
+		//UpdateMeshData(sliced_mesh_);
 		UpdateTextureCoordData(sliced_mesh_);
 		ShowUV();
+	}
+
+	else if (show_option_ == COVERING_SPACE) {
+		ShowCoveringSpace();
 	}
 
 }

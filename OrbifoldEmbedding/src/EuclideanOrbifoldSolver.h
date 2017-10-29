@@ -17,6 +17,7 @@ class EuclideanOrbifoldSolver
 public:
 	EuclideanOrbifoldSolver(SurfaceMesh &mesh);
 	SurfaceMesh Compute();
+	std::vector<OpenMesh::VertexHandle> ConeVertices() { return cone_vts_; }
 protected:
 	SurfaceMesh &mesh_;
 	SurfaceMesh sliced_mesh_;

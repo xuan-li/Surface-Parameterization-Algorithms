@@ -12,8 +12,8 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 	typedef OpenMesh::Vec3d Normal;
 	typedef OpenMesh::Vec2d TexCoord2D;
 
-	VertexAttributes(OpenMesh::Attributes::Status | OpenMesh::Attributes::TexCoord2D);
-	FaceAttributes(OpenMesh::Attributes::Status);
+	VertexAttributes(OpenMesh::Attributes::Status | OpenMesh::Attributes::Normal| OpenMesh::Attributes::TexCoord2D);
+	FaceAttributes(OpenMesh::Attributes::Status| OpenMesh::Attributes::Normal);
 	EdgeAttributes(OpenMesh::Attributes::Status);
 	HalfedgeAttributes(OpenMesh::Attributes::Status);
 

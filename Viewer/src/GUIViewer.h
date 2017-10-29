@@ -20,9 +20,11 @@
 #include <EuclideanOrbifoldSolver.h>
 #include <HyperbolicOrbifoldSolver.h>
 
+#include <Topology\EuclideanCoveringSpace.h>
 
 
-enum ShowOption { ORIGINAL, SLICED, EMBEDDING };
+
+enum ShowOption { ORIGINAL, SLICED, EMBEDDING, COVERING_SPACE };
 
 class OTEViewer: public igl::viewer::Viewer
 {
@@ -32,12 +34,17 @@ public:
 private:
 	SurfaceMesh mesh_;
 	SurfaceMesh sliced_mesh_;
+	std::vector<OpenMesh::VertexHandle> cone_vts_;
 
 	Eigen::MatrixXd V_;
+	Eigen::MatrixXd V_normal_;
 	Eigen::MatrixXd UV_Z0_; // z equal to zero
 	Eigen::MatrixXi F_;
+	Eigen::MatrixXd F_normal_;
 	Eigen::MatrixXd TC_;
 	Eigen::MatrixXd UV_;
+
+	
 
 	// texture RGB channels;
 	Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic> R_;
@@ -57,6 +64,7 @@ private:
 	void UpdateMeshData(SurfaceMesh &mesh);  
 	void UpdateTextureCoordData(SurfaceMesh &mesh);
 	void ShowUV();
+	void ShowCoveringSpace();
 
 	void ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector);
 	void ShowBoundaries(SurfaceMesh &mesh);
@@ -66,6 +74,9 @@ private:
 protected: // Flags
 	ShowOption show_option_ = ORIGINAL;
 	bool show_boundaries_ = false;
+
+	bool euclidean_ = false;
+	bool hyperbolic_ = false;
 };
 
 #endif

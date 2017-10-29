@@ -114,6 +114,9 @@ public:
             // New x norm and gradient norm
             xnorm = x.norm();
             gnorm = m_grad.norm();
+			if (k % 20) {
+				std::cout << "Iteration:"<<k<<"\t"<<"Gradient Norm:" << gnorm << "\t" << "Energy:" << fx << std::endl;
+			}
 
             // Convergence test -- gradient
             if(gnorm <= m_param.epsilon * std::max(xnorm, Scalar(1.0)))
