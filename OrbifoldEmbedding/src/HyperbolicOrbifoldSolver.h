@@ -30,6 +30,8 @@ protected:
 	
 	int n_cones_;
 
+	double max_error = 1e-4;
+
 protected:
 	void CutToDist(int n_cones);
 

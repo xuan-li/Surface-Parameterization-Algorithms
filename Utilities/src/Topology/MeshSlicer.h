@@ -2,7 +2,7 @@
 #define MESH_SLICER
 
 #include "MeshDefinition.h"
-#include "Dijkstra.h"
+#include "..\Dijkstra.h"
 
 class MeshSlicer {
 public:

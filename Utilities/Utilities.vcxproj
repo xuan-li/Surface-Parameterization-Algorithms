@@ -81,7 +81,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -112,7 +112,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Mesh\src;$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -128,6 +128,7 @@
     <ClInclude Include="src\MeshFormConverter.h" />
     <ClInclude Include="src\MeshMerger.h" />
     <ClInclude Include="src\Topology\EuclideanCoveringSpace.h" />
+    <ClInclude Include="src\Topology\HyperbolicCoveringSpace.h" />
     <ClInclude Include="src\Topology\MeshSlicer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +140,7 @@
     <ClCompile Include="src\MeshFormConverter.cpp" />
     <ClCompile Include="src\MeshMerger.cpp" />
     <ClCompile Include="src\Topology\EuclideanCoveringSpace.cpp" />
-    <ClCompile Include="src\Topology\main.cpp" />
+    <ClCompile Include="src\Topology\HyperbolicCoveringSpace.cpp" />
     <ClCompile Include="src\Topology\MeshSlicer.cpp" />
   </ItemGroup>
   <ItemGroup>

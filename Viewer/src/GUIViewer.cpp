@@ -8,8 +8,6 @@ void OTEViewer::Init()
 {
 	InitMenu();
 	InitKeyboard();
-
-	
 }
 
 
@@ -32,10 +30,13 @@ void OTEViewer::InitMenu()
 			hyperbolic_ = false;
 			euclidean_ = true;
 		});
-		/*viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
+		viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
 			HyperbolicOrbifoldSolver solver(this->mesh_);
 			this->sliced_mesh_ = solver.Compute();
-		});*/
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = false;
+			hyperbolic_ = true;
+		});
 
 		viewer.ngui->addGroup("Viewer Options");
 
@@ -158,7 +159,31 @@ void OTEViewer::ShowUV()
 
 void OTEViewer::ShowCoveringSpace()
 {
-	EuclideanCoveringSpaceComputer covering_computer(sliced_mesh_, cone_vts_);
+	if (euclidean_) {
+		EuclideanCoveringSpaceComputer covering_computer(sliced_mesh_, cone_vts_);
+		covering_computer.Compute();
+		covering_computer.GenerateMeshMatrix(V_, V_normal_, F_, F_normal_);
+		data.clear();
+		data.set_mesh(V_, F_);
+		V_normal_.col(2) = (V_normal_.col(2)).cwiseAbs();
+		F_normal_.col(2) = (F_normal_.col(2)).cwiseAbs();
+		data.set_normals(V_normal_);
+		data.set_normals(F_normal_);
+		data.set_uv(V_.block(0, 0, V_.rows(),2));
+	}
+
+	if (hyperbolic_) {
+		HyperbolicCoveringSpaceComputer covering_computer(sliced_mesh_, cone_vts_);
+		covering_computer.Compute();
+		covering_computer.GenerateMeshMatrix(V_, V_normal_, F_, F_normal_);
+		data.clear();
+		data.set_mesh(V_, F_);
+		V_normal_.col(2) = (V_normal_.col(2)).cwiseAbs();
+		F_normal_.col(2) = (F_normal_.col(2)).cwiseAbs();
+		data.set_normals(V_normal_);
+		data.set_normals(F_normal_);
+		data.set_uv(V_.block(0, 0, V_.rows(), 2));
+	}
 
 }
 
@@ -219,7 +244,7 @@ void OTEViewer::UpdateMeshViewer()
 		}
 	}
 	else if (show_option_ == EMBEDDING) {
-		//UpdateMeshData(sliced_mesh_);
+		UpdateMeshData(sliced_mesh_);
 		UpdateTextureCoordData(sliced_mesh_);
 		ShowUV();
 	}

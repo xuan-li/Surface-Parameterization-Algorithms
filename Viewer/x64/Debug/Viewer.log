@@ -231,5 +231,8 @@ c:\code\graphics\graphicsproject\external\libigl\include\igl\parallel_for.h(130)
               Index=Index,
               FunctionType=igl::doublearea::<lambda_20194c6ff60897c31b155cf6fd000e2a>
           ]
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
   Viewer.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Viewer.exe
   Viewer.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Viewer.pdb (Partial PDB)

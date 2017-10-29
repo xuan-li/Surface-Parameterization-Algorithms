@@ -30,9 +30,8 @@ SurfaceMesh HyperbolicOrbifoldSolver::Compute()
 		};
 
 		LBFGSParam<double> param;
-		param.epsilon = 1e-5;
+		param.epsilon = max_error;
 		param.max_iterations = 2000;
-		//param.min_step = 1e-5;
 		LBFGSSolver<double> solver(param);
 		VectorXd x = GetCoordsVector();
 		
@@ -42,8 +41,6 @@ SurfaceMesh HyperbolicOrbifoldSolver::Compute()
 		std::cout << niter << " iterations" << std::endl;
 		std::cout << "f(x) = " << fx << std::endl;
 
-		//double energy = OptimizationLoop(0.01, 1e-4);
-		//std::cout << "Final Energy:" << energy << std::endl;
 	}
 	return sliced_mesh_;
 }

@@ -9,9 +9,44 @@ EuclideanCoveringSpaceComputer::EuclideanCoveringSpaceComputer(SurfaceMesh & mes
 void EuclideanCoveringSpaceComputer::Compute()
 {
 	Init();
+
 	while (Update()) {
-		std::cout << "Min Dist:" << *(min_heap_.top()) << std::endl;
+		while (!min_heap_.top()->valid) {
+			auto it = min_heap_.top();
+			min_heap_.pop();
+			boundary_segs_.erase(it);
+		}
+		//std::cout << "Min Dist:" << (min_heap_.top())->dist() << std::endl;
 	}
+}
+
+void EuclideanCoveringSpaceComputer::GenerateMeshMatrix(Eigen::MatrixXd & V, Eigen::MatrixXd & NV, Eigen::MatrixXi & F, Eigen::MatrixXd & NF)
+{
+	OpenMeshToMatrix(mesh_, V, NV, F, NF);
+	
+	int n_copies = orbits_[0].size();
+
+	Eigen::MatrixXd new_V(V.rows()* n_copies, 3);
+	Eigen::MatrixXi new_F(F.rows() * n_copies, 3);
+	Eigen::MatrixXd new_NV(NV.rows() *n_copies, 3);
+	Eigen::MatrixXd new_NF(NF.rows() * n_copies, 3);
+	new_V.setZero();
+	for (int i = 0; i < n_copies; ++i) {
+		new_NV.block(i * V.rows(), 0, V.rows(), 3) = NV;
+		new_NF.block(i * F.rows(), 0, F.rows(), 3) = NF;
+		for(auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter)
+		{
+			OpenMesh::VertexHandle v = *viter;
+			for (int k = 0; k < 2; ++k)
+				new_V(i * V.rows() + v.idx(), k) = orbits_[v.idx()][i][k];
+		}
+		new_F.block(i * F.rows(), 0, F.rows(), 3) = F + Eigen::MatrixXi::Constant(F.rows(), 3, i * V.rows());
+	}
+	V = new_V;
+	F = new_F;
+	NV = new_NV;
+	NF = new_NF;
+
 }
 
 void EuclideanCoveringSpaceComputer::Init()
@@ -34,6 +69,9 @@ void EuclideanCoveringSpaceComputer::Init()
 	}
 	orbits_.clear();
 	orbits_.resize(mesh_.n_vertices());
+
+	auto identity = [&mesh_=mesh_](OpenMesh::VertexHandle v)->OpenMesh::Vec2d {return mesh_.texcoord2D(v); };
+	ExtendOrbits(identity);
 }
 
 void EuclideanCoveringSpaceComputer::ExtendOrbits(std::function<OpenMesh::Vec2d(OpenMesh::VertexHandle)> transformation)
@@ -50,22 +88,23 @@ void EuclideanCoveringSpaceComputer::StitchCommonSegment(std::list<Segment>::ite
 	if ((it1->middle() - it2->middle()).norm() < 1e-5) {
 		it1->valid = false;
 		it2->valid = false;
-		boundary_segs_.erase(it1);
-		boundary_segs_.erase(it2);
 	}
 }
 
 bool EuclideanCoveringSpaceComputer::Update()
 {
 	using namespace OpenMesh;
-	while (!min_heap_.top()->valid) {
-		min_heap_.pop();
-	}
 
+	// pop it and find its neighbors in the segment list;
 	auto it = min_heap_.top();
 	min_heap_.pop();
 	it->valid = false;
+	auto prev_it = FindLastValid(it);
+	auto next_it = FindNextValid(it);
+	
+
 	if (it->dist() > max_dist_) return false;
+
 
 	VertexHandle start = it->start;
 	VertexHandle end = it->end;
@@ -94,13 +133,13 @@ bool EuclideanCoveringSpaceComputer::Update()
 		transfer_to_complex(it->end_coord)
 	);
 	
-	auto transformation_vertex = [=](VertexHandle v)->Vec2d {
+	auto transformation_vertex = [=, &mesh_=mesh_](VertexHandle v)->Vec2d {
 		Vec2d p = mesh_.texcoord2D(v);
 		auto result_complex = transformation_complex(transfer_to_complex(p));
 		return Vec2d(result_complex.real(), result_complex.imag());
 	};
 
-	auto prev_it = std::prev(it);
+	
 
 	VertexHandle viter;
 	VertexHandle viter_bound;
@@ -116,24 +155,50 @@ bool EuclideanCoveringSpaceComputer::Update()
 	while (viter != end_equiv)
 	{
 		Segment seg;
-		seg.valid = true;
 		seg.start = viter;
 		viter = mesh_.property(next_cone_vtx, viter);
 		seg.end = viter;
 
 		seg.start_coord = transformation_vertex(seg.start);
 		seg.end_coord = transformation_vertex(seg.end);
-		
+		seg.valid = true;
 		boundary_segs_.insert(it, seg);
 		min_heap_.push(std::prev(it));
 
 	}
-	it = boundary_segs_.erase(it);
-	StitchCommonSegment(prev_it, std::next(prev_it));
-	StitchCommonSegment(std::prev(it), it);
+
+	boundary_segs_.erase(it);
+	StitchCommonSegment(FindLastValid(next_it), next_it);
+	StitchCommonSegment(FindNextValid(prev_it), prev_it);
 	
 
 	ExtendOrbits(transformation_vertex);
 
 	return true;
+}
+
+std::list<Segment>::iterator EuclideanCoveringSpaceComputer::FindLastValid(std::list<Segment>::iterator it)
+{
+	while (true) {
+		if (it == boundary_segs_.begin())
+			it = std::prev(boundary_segs_.end());
+		else
+			it = std::prev(it);
+		if (it->valid)
+			break;
+	}
+	return it;
+}
+
+std::list<Segment>::iterator EuclideanCoveringSpaceComputer::FindNextValid(std::list<Segment>::iterator it)
+{
+	while (true) {
+		if (std::next(it) == boundary_segs_.end())
+			it = boundary_segs_.begin();
+		else
+			it = std::next(it);
+		if (it->valid)
+			break;
+	}
+	return it;
 }

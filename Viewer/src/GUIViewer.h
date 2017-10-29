@@ -21,7 +21,7 @@
 #include <HyperbolicOrbifoldSolver.h>
 
 #include <Topology\EuclideanCoveringSpace.h>
-
+#include <Topology\HyperbolicCoveringSpace.h>
 
 
 enum ShowOption { ORIGINAL, SLICED, EMBEDDING, COVERING_SPACE };
