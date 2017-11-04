@@ -154,10 +154,12 @@ void BFFSolver::ComputeLaplacian(SurfaceMesh & mesh, bool mode)
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		if (mode && v.idx() == 0){
-			for (int i = 0; i < mesh.n_vertices(); ++i) {
-				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), i, 1.));
-				continue;
+			for (auto viter1 = mesh.vertices_begin(); viter1 != mesh.vertices_end(); ++viter1) {
+				VertexHandle v1 = *viter1;
+				if(mesh.is_boundary(v1))
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v1).reindex(), 1.));
 			}
+			continue;
 		}
 		double s_w = 0;
 		for (SurfaceMesh::VertexVertexIter vviter = mesh.vv_iter(v); vviter.is_valid(); ++vviter) {
@@ -307,35 +309,18 @@ void BFFSolver::BoundaryUToTargetK()
 		}
 	}
 
-	double target_sum = 2 * PI - k.sum();
-
 	SparseLU<SparseMatrix<double>> solver;
 	solver.compute(Delta_.block(0,0,n_interior_, n_interior_));
 	if (solver.info() != Eigen::Success)
 	{
 		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
 	}
-	//Eigen::SparseMatrix<double> A_IB = Delta_.block(0, n_interior_, n_interior_, n_boundary_);
-	//Eigen::SparseMatrix<double> A_BB = Delta_.block(n_interior_, n_interior_, n_boundary_, n_boundary_);
-	//Eigen::SparseMatrix<double> A_BI = Delta_.block(n_interior_, 0, n_boundary_, n_interior_);
-	//VectorXd u_B = u.segment(n_interior_, n_boundary_);
-	//std::cout << u_B << std::endl;
-	//VectorXd omega_I = omega.segment(0, n_interior_);
-	//Eigen::VectorXd to_inverse1 = omega_I - A_IB * u_B;
-	//Eigen::VectorXd inverse1 = solver.solve(to_inverse1);
-	//Eigen::VectorXd B = A_BI * inverse1 - A_BB * u_B;
-	//
-	//Eigen::VectorXd interse2 = solver.solve(A_IB * VectorXd::Constant(n_boundary_, 1.));
-	//Eigen::VectorXd X = -A_BI * interse2 +  A_BB * VectorXd::Constant(n_boundary_, 1.);
-
-	//// solve factor * sum(X) + sum(B) = target_sum;
-	//
-
+	
 	Eigen::VectorXd h = -(Delta_ * u).block(n_interior_,0, n_boundary_, 1);
-	//std::cout << X.sum() << "\t" << B.sum() << "\t" << h.sum() - target_sum << "\t"  << std::endl;;
-
-	//h = h / h.sum() * (k.sum() - 2 * PI);
+	
 	Eigen::VectorXd target_k = k + h;
+
+	std::cout << "Sum of target total curvature:" << target_k.sum() << std::endl;
 	
 	auto boundary = sliced_mesh_.GetBoundaries().front();
 	//std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
@@ -419,9 +404,14 @@ void BFFSolver::ExtendToInterior()
 	b.setZero();
 
 	auto boundary = mesh.GetBoundaries().front();
-	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
-		VertexHandle v = mesh.from_vertex_handle(*it);
+	for (int i = 0; i < boundary.size(); ++i) {
+		VertexHandle v = mesh.to_vertex_handle(boundary[i]);
+		VertexHandle v_prev = mesh.from_vertex_handle(boundary[i]);
+		VertexHandle v_next = mesh.to_vertex_handle(boundary[(i + 1) % boundary.size()]);
+		
 		Vec2d coord = mesh.texcoord2D(v);
+		Vec2d coord_prev = mesh.texcoord2D(v_prev);
+		Vec2d coord_next = mesh.texcoord2D(v_next);
 		b(v.idx(), 0) = coord[0];
 		b(v.idx(), 1) = coord[1];
 	}
