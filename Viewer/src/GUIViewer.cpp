@@ -37,6 +37,13 @@ void OTEViewer::InitMenu()
 			euclidean_ = false;
 			hyperbolic_ = true;
 		});
+		viewer.ngui->addButton("BFF", [this]() {
+			BFFSolver solver(this->mesh_);
+			this->sliced_mesh_ = solver.Compute();
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = true;
+			hyperbolic_ = false;
+		});
 
 		viewer.ngui->addGroup("Viewer Options");
 

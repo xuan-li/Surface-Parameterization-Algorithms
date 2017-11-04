@@ -5,6 +5,7 @@
 #include "OrbifoldMeshSlicer.h"
 #include <Eigen/Core>
 #include <Eigen/Sparse>
+#include <Eigen/Dense>
 
 #ifndef PI
 #define PI 3.141592653

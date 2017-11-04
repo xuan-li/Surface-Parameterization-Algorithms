@@ -1,4 +1,8 @@
-﻿  HyperbolicCoveringSpace.cpp
-c:\code\graphics\graphicsproject\utilities\src\topology\hyperboliccoveringspace.cpp(30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\code\graphics\graphicsproject\utilities\src\topology\hyperboliccoveringspace.cpp(46): warning C4244: 'argument': conversion from '__int64' to 'const int', possible loss of data
+﻿  Dijkstra.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  MeshSlicer.cpp
+  HyperbolicCoveringSpace.cpp
+  EuclideanCoveringSpace.cpp
+  MeshFormConverter.cpp
   Utilities.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\Utilities.lib

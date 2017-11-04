@@ -19,9 +19,11 @@
 
 #include <EuclideanOrbifoldSolver.h>
 #include <HyperbolicOrbifoldSolver.h>
+#include <BFF.h>
 
 #include <Topology\EuclideanCoveringSpace.h>
 #include <Topology\HyperbolicCoveringSpace.h>
+
 
 
 enum ShowOption { ORIGINAL, SLICED, EMBEDDING, COVERING_SPACE };

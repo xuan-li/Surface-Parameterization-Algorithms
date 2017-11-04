@@ -13,9 +13,14 @@ public:
 		std::function<void(OpenMesh::EdgeHandle, OpenMesh::EdgeHandle)> f3 = [](OpenMesh::EdgeHandle e1, OpenMesh::EdgeHandle e2) {},
 		std::function<void(OpenMesh::HalfedgeHandle, OpenMesh::HalfedgeHandle)> f4 = [](OpenMesh::HalfedgeHandle h1, OpenMesh::HalfedgeHandle h2) {} );
 	
-	SurfaceMesh SliceMeshToDisk();
+	void SliceMeshToDisk(SurfaceMesh &sliced_mesh);
 	std::vector<OpenMesh::VertexHandle> SplitTo(OpenMesh::VertexHandle v);
 	std::vector<OpenMesh::VertexHandle> GetLongestPath();
+	
+	void FindAndMarkCutGraphSphere();
+	void FindAndMarkCutGraphNonSphere();
+	void ConstructWedge();
+	void SliceAccordingToWedge(SurfaceMesh &sliced_mesh);
 
 protected:
 	std::function<void(OpenMesh::VertexHandle, OpenMesh::VertexHandle)> TransferVertexData;
@@ -30,10 +35,7 @@ protected:
 	OpenMesh::VPropHandleT<std::vector<OpenMesh::VertexHandle>> split_to_;
 	std::vector<OpenMesh::VertexHandle> longest_path_;
 
-	void FindAndMarkCutGraphSphere();
-	void FindAndMarkCutGraphNonSphere();
-	void ConstructWedge();
-	SurfaceMesh SliceAccordingToWedge();
+	
 };
 
 

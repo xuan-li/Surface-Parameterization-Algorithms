@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Viewer", "Viewer\Viewer.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OrbifoldEmbedding", "OrbifoldEmbedding\OrbifoldEmbedding.vcxproj", "{005E2092-3019-435A-8F6E-CAE20A3AB43B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BoundaryFirstFlattening", "BoundaryFirstFlattening\BoundaryFirstFlattening.vcxproj", "{14812B6E-F77B-4236-97CF-A54BA5BEF95B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{005E2092-3019-435A-8F6E-CAE20A3AB43B}.Release|x64.Build.0 = Release|x64
 		{005E2092-3019-435A-8F6E-CAE20A3AB43B}.Release|x86.ActiveCfg = Release|Win32
 		{005E2092-3019-435A-8F6E-CAE20A3AB43B}.Release|x86.Build.0 = Release|Win32
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Debug|x64.ActiveCfg = Debug|x64
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Debug|x64.Build.0 = Debug|x64
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Debug|x86.ActiveCfg = Debug|Win32
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Debug|x86.Build.0 = Debug|Win32
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Release|x64.ActiveCfg = Release|x64
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Release|x64.Build.0 = Release|x64
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Release|x86.ActiveCfg = Release|Win32
+		{14812B6E-F77B-4236-97CF-A54BA5BEF95B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

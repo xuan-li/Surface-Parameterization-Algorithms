@@ -49,7 +49,7 @@ void HyperbolicOrbifoldSolver::CutToDist(int n_cones)
 {
 	n_cones_ = n_cones;
 	OrbifoldMeshSlicer slicer(mesh_);
-	sliced_mesh_ = slicer.CutAndSelectSingularities(n_cones);
+	slicer.CutAndSelectSingularities(sliced_mesh_, n_cones);
 	cone_vts_ = slicer.GetConeVertices();
 	segments_vts_ = slicer.GetSegments();
 }

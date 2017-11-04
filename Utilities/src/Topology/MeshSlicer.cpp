@@ -24,7 +24,7 @@ MeshSlicer::MeshSlicer(
 
 }
 
-SurfaceMesh MeshSlicer::SliceMeshToDisk()
+void MeshSlicer::SliceMeshToDisk(SurfaceMesh &slice_mesh)
 {
 	int euler = mesh_.n_vertices() - mesh_.n_edges() + mesh_.n_faces();
 	if (euler == 2)
@@ -32,7 +32,7 @@ SurfaceMesh MeshSlicer::SliceMeshToDisk()
 	else
 		FindAndMarkCutGraphNonSphere();
 	ConstructWedge();
-	return SliceAccordingToWedge();
+	SliceAccordingToWedge(slice_mesh);
 }
 
 std::vector<OpenMesh::VertexHandle> MeshSlicer::SplitTo(OpenMesh::VertexHandle v)
@@ -140,14 +140,12 @@ void MeshSlicer::ConstructWedge()
 	}
 }
 
-SurfaceMesh MeshSlicer::SliceAccordingToWedge()
+void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 {
 	using namespace OpenMesh;
 
 	HPropHandleT<VertexHandle> new_end; // store the new end of an halfedge after being cutted.
 	mesh_.add_property(new_end);
-
-	SurfaceMesh new_mesh;
 
 	int max_vid = mesh_.n_vertices() - 1;
 
@@ -155,7 +153,7 @@ SurfaceMesh MeshSlicer::SliceAccordingToWedge()
 		VertexHandle v = *viter;
 		// triverse around in-halfedges, add new vertices if needed and bind halfedges to their new ends.
 		std::map<int, VertexHandle> whether_new_vert_exists;
-		for (SurfaceMesh::VertexIHalfedgeIter vihiter = mesh_.vih_iter(v); vihiter.is_valid(); ++vihiter ) {
+		for (SurfaceMesh::VertexIHalfedgeIter vihiter = mesh_.vih_iter(v); vihiter.is_valid(); ++vihiter) {
 			HalfedgeHandle h = *vihiter;
 			int wedge = mesh_.property(wedge_, h);
 			if (whether_new_vert_exists[wedge].is_valid())
@@ -194,5 +192,4 @@ SurfaceMesh MeshSlicer::SliceAccordingToWedge()
 		}
 	}
 	new_mesh.RequestBoundary();
-	return new_mesh;
 }

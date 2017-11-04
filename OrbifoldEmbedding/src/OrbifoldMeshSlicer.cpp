@@ -6,10 +6,11 @@ OrbifoldMeshSlicer::OrbifoldMeshSlicer(SurfaceMesh & mesh):mesh_(mesh)
 
 }
 
-SurfaceMesh OrbifoldMeshSlicer::CutAndSelectSingularities(int n_cones)
+void OrbifoldMeshSlicer::CutAndSelectSingularities(SurfaceMesh &sliced_mesh, int n_cones)
 {
+
 	MeshSlicer slicer(mesh_);
-	SurfaceMesh sliced_mesh = slicer.SliceMeshToDisk();
+	slicer.SliceMeshToDisk(sliced_mesh);
 	for (auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
 		OpenMesh::VertexHandle v = *viter;
 		sliced_mesh.data(v).set_singularity(false);
@@ -43,17 +44,13 @@ SurfaceMesh OrbifoldMeshSlicer::CutAndSelectSingularities(int n_cones)
 		sliced_mesh.data(v).set_singularity(true);
 	}
 
-	sliced_mesh_ = sliced_mesh;
-
-	CutBoundaryToSegments();
-
-	return sliced_mesh;
+	CutBoundaryToSegments(sliced_mesh);
 }
 
-void OrbifoldMeshSlicer::CutBoundaryToSegments()
+void OrbifoldMeshSlicer::CutBoundaryToSegments(SurfaceMesh &sliced_mesh)
 {
 	using namespace OpenMesh;
-	SurfaceMesh &mesh = sliced_mesh_;
+	SurfaceMesh &mesh = sliced_mesh;
 
 	slice_root_vtx_ = cone_vertices_.front();
 	cone_vertices_.erase(++cone_vertices_.begin(), cone_vertices_.end());

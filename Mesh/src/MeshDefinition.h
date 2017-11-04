@@ -20,17 +20,34 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 	VertexTraits
 	{
 	public:
-		VertexT() :is_singularity_(false) {}
+		VertexT() :is_singularity_(false),order_(1) {}
 		typename Refs::VertexHandle equivalent_vertex() { return equivalent_vertex_; }
 		void set_equivalent_vertex(typename Refs::VertexHandle v) { equivalent_vertex_ = v; }
 		bool is_singularity() { return is_singularity_; }
+		int order() { return order_; }
+		void set_order(int order) { order_ = order; }
 		void set_singularity(bool s) { is_singularity_ = s; }
 		OpenMesh::Vec2d gradient() { return gradient_; }
 		void set_gradient(OpenMesh::Vec2d t) { gradient_ = t; }
+		double curvature() { return curvature_; }
+		double target_curvature() { return target_curvature_; }
+		void set_curvature(double k) { curvature_ = k; }
+		void set_target_curvature(double target_k) { target_curvature_ = target_k; }
+		int reindex() { return reindex_; }
+		void set_reindex(int i) { reindex_ = i; }
+		double u() { return u_; }
+		void set_u(double u_value) {u_ = u_value; }
+
 	private:
 		typename Refs::VertexHandle equivalent_vertex_;
 		bool is_singularity_;
+		int order_;
 		OpenMesh::Vec2d gradient_;
+		double curvature_;
+		double target_curvature_;
+		double u_;
+		int reindex_;
+
 	};
 
 	HalfedgeTraits

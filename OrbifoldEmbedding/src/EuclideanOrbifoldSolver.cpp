@@ -21,7 +21,7 @@ SurfaceMesh EuclideanOrbifoldSolver::Compute()
 void EuclideanOrbifoldSolver::CutToDist()
 {
 	OrbifoldMeshSlicer slicer(mesh_);
-	sliced_mesh_ = slicer.CutAndSelectSingularities();
+	slicer.CutAndSelectSingularities(sliced_mesh_);
 	cone_vts_ = slicer.GetConeVertices();
 	segments_vts_ = slicer.GetSegments();
 
@@ -242,7 +242,8 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 	}
 
 	A_.setFromTriplets(A_coefficients.begin(), A_coefficients.end());
-
+	double test = A_.toDense().determinant();
+	double a = 1;
 }
 
 void EuclideanOrbifoldSolver::SolveLinearSystem()

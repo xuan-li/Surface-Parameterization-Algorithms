@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BoundaryFirstFlattening\BoundaryFirstFlattening.vcxproj">
+      <Project>{14812b6e-f77b-4236-97cf-a54ba5bef95b}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">
       <Project>{bcbac1b6-dc8f-44d6-85b4-fe3cefd4fcf8}</Project>
     </ProjectReference>
@@ -93,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\LBFGS\include;$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src;$(SolutionDir)OrbifoldEmbedding\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\LBFGS\include;$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src;$(SolutionDir)OrbifoldEmbedding\src;$(SolutionDir)BoundaryFirstFlattening\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -128,7 +131,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\LBFGS\include;$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src;$(SolutionDir)OrbifoldEmbedding\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\LBFGS\include;$(SolutionDir)external\libigl\include;$(SolutionDir)external\eigen\include;$(SolutionDir)external\nanogui\include;$(SolutionDir)external\glew\include;$(SolutionDir)external\glfw\include;$(SolutionDir)external\nanovg\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Mesh\src;$(SolutionDir)Utilities\src;$(SolutionDir)OrbifoldEmbedding\src;$(SolutionDir)BoundaryFirstFlattening\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_MATH_DEFINES;NOMINMAX;INCLUDE_TEMPLATES;_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;IGL_VIEWER_WITH_NANOGUI</PreprocessorDefinitions>
     </ClCompile>
     <Link>
