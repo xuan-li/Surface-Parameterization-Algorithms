@@ -39,10 +39,10 @@ protected:
 	void Slice();
 
 	double CosineLaw(double a, double b, double c);
-	void ComputeCornerAngles(SurfaceMesh &mesh);
-	void ComputeVertexCurvatures(SurfaceMesh &mesh);
+	void ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
+	void ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
 	
-	void ComputeLaplacian(SurfaceMesh &mesh, bool mode = 0);
+	void ComputeLaplacian(SurfaceMesh &mesh, bool mode = false);
 	void ComputeConformalFactors();
 
 
@@ -52,9 +52,15 @@ protected:
 
 	void BoundaryUToTargetK();
 
+	Eigen::VectorXd BoundaryUToTargetK(Eigen::VectorXd &u);
+
+	Eigen::VectorXd BoundaryTargetKToU(Eigen::VectorXd &k);
+
 	void IntegrateBoundaryCurve();
 	
-	void ExtendToInterior();
+	void ExtendToInteriorHilbert();
+
+	void ExtendToInteriorHarmonic();
 
 	void ComputeHarmonicMatrix();
 
