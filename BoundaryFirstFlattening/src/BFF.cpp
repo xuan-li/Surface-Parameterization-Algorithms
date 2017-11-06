@@ -20,8 +20,8 @@ SurfaceMesh BFFSolver::Compute()
 
 	IntegrateBoundaryCurve();
 
-	//ExtendToInteriorHarmonic();
-	ExtendToInteriorHilbert();
+	ExtendToInteriorHarmonic();
+	//ExtendToInteriorHilbert();
 
 	NormalizeUV();
 
@@ -170,7 +170,7 @@ void BFFSolver::ComputeLaplacian(SurfaceMesh & mesh, bool mode)
 	std::vector<Eigen::Triplet<double>> A_coefficients;
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
-		if (mode && v.idx() == 0){
+		if (mode && (viter == mesh.vertices_begin())){
 			for (auto viter1 = mesh.vertices_begin(); viter1 != mesh.vertices_end(); ++viter1) {
 				VertexHandle v1 = *viter1;
 				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v1).reindex(), 1.));
@@ -289,52 +289,26 @@ void BFFSolver::BoundaryUToTargetK()
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
 	
-	ComputeLaplacian(mesh);
-	
 	VectorXd u(mesh.n_vertices());
-
+	ReindexVertices(mesh);
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
-			u(mesh.data(v).reindex()) = mesh.data(v).u();
+		u(mesh.data(v).reindex()) = mesh.data(v).u();
 	}
 	
-	/*
-
-	Eigen::VectorXd L(mesh.n_edges());
-	for (auto eiter = mesh.edges_begin(); eiter != mesh.edges_end(); ++eiter) {
-		EdgeHandle e = *eiter;
-		HalfedgeHandle h = mesh.halfedge_handle(e, 0);
-		double l = mesh.calc_edge_length(e);
-		VertexHandle v0 = mesh.from_vertex_handle(h);
-		VertexHandle v1 = mesh.to_vertex_handle(h);
-		double u0 = mesh.data(v0).u();
-		double u1 = mesh.data(v1).u();
-		L(e.idx()) = l * exp(0.5 * (u0 + u1));
-	}
-	std::cout << L << std::endl;
-	ComputeVertexCurvatures(mesh, L);
-	
-	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
-		VertexHandle v = *viter;
-		mesh.data(v).set_target_curvature(mesh.data(v).curvature());
-	}*/
-
-
-
 	Eigen::VectorXd u_B = u.segment(n_interior_, n_boundary_);
 
 	Eigen::VectorXd target_k = BoundaryUToTargetK(u_B);
 
 	auto boundary = sliced_mesh_.GetBoundaries().front();
-	//std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
 	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
 		VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
-		//if (!mesh.data(v).is_singularity())
+		if (!mesh.data(v).is_singularity())
 			mesh.data(v).set_target_curvature(target_k(mesh.data(v).reindex() - n_interior_));
-		//else {
-		//	mesh.data(v).set_target_curvature(PI / 2);
-		//	target_k(mesh.data(v).reindex() - n_interior_) = PI / 2;
-		//}
+		else {
+			mesh.data(v).set_target_curvature(PI / 2);
+			target_k(mesh.data(v).reindex() - n_interior_) = PI / 2;
+		}
 	}
 
 	std::cout << "Singularities' curvature:" << std::endl;
@@ -343,19 +317,15 @@ void BFFSolver::BoundaryUToTargetK()
 		std::cout << mesh.data(v).target_curvature() / PI << "pi" << std::endl;
 	}
 
-	//std::cout << "Sum of target total curvature:" << target_k.sum() / PI << " pi" << std::endl;
 
-	//std::cout << u_B << std::endl << std::endl;
+	Eigen::VectorXd new_u = BoundaryTargetKToU(target_k);
+	std::cout << new_u << std::endl << std::endl << u_B << std::endl;
 
-	//u = BoundaryTargetKToU(target_k);
+	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
+		VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
+			mesh.data(v).set_u(new_u(mesh.data(v).reindex() - n_interior_));
+	}
 
-	//std::cout << u << std::endl;
-
-	//for (auto it = boundary.begin(); it != boundary.end(); ++it) {
-	//	VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
-	//	if(mesh.is_boundary(v))
-	//		mesh.data(v).set_u(u(mesh.data(v).reindex() - n_interior_));
-	//}
 
 }
 
@@ -367,6 +337,7 @@ Eigen::VectorXd BFFSolver::BoundaryUToTargetK(Eigen::VectorXd & u)
 	
 	SurfaceMesh &mesh = sliced_mesh_;
 
+	ComputeLaplacian(mesh);
 	VectorXd omega(mesh.n_vertices());
 	VectorXd k(n_boundary_);
 
@@ -426,8 +397,6 @@ Eigen::VectorXd BFFSolver::BoundaryTargetKToU(Eigen::VectorXd & target_k)
 
 	omega(mesh.data(*mesh.vertices_begin()).reindex()) = 0;
 
-	std::cout << omega << std::endl << std::endl;
-	std::cout << h << std::endl << std::endl;
 
 	SparseLU<SparseMatrix<double>> solver;
 	solver.compute(Delta_);
@@ -436,7 +405,7 @@ Eigen::VectorXd BFFSolver::BoundaryTargetKToU(Eigen::VectorXd & target_k)
 		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
 	} 
 
-	Eigen::VectorXd u = solver.solve(omega  - h);
+	Eigen::VectorXd u = solver.solve(omega  + h);
 
 	return u.segment(n_interior_, n_boundary_);
 
