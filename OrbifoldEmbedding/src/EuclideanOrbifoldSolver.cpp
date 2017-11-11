@@ -242,8 +242,6 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 	}
 
 	A_.setFromTriplets(A_coefficients.begin(), A_coefficients.end());
-	double test = A_.toDense().determinant();
-	double a = 1;
 }
 
 void EuclideanOrbifoldSolver::SolveLinearSystem()

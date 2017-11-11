@@ -143,9 +143,11 @@ void MeshSlicer::ConstructWedge()
 void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 {
 	using namespace OpenMesh;
-
 	HPropHandleT<VertexHandle> new_end; // store the new end of an halfedge after being cutted.
 	mesh_.add_property(new_end);
+
+	HPropHandleT<HalfedgeHandle> halfedge_split_to;
+	mesh_.add_property(halfedge_split_to);
 
 	int max_vid = mesh_.n_vertices() - 1;
 
@@ -185,6 +187,7 @@ void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 		for (int i = 0; i < 3; ++i) {
 			HalfedgeHandle he = new_mesh.find_halfedge(verts[i], verts[(i + 1) % 3]);
 			HalfedgeHandle ohe = mesh_.find_halfedge(old_verts[i], old_verts[(i + 1) % 3]);
+			mesh_.property(halfedge_split_to, ohe) = he;
 			TransferHalfedgeData(ohe, he);
 			EdgeHandle e = new_mesh.edge_handle(he);
 			EdgeHandle oe = mesh_.edge_handle(ohe);
@@ -192,4 +195,17 @@ void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 		}
 	}
 	new_mesh.RequestBoundary();
+	for (auto eiter = mesh_.edges_begin(); eiter != mesh_.edges_end(); ++eiter) {
+		EdgeHandle e = *eiter;
+		HalfedgeHandle h0 = mesh_.halfedge_handle(e, 0);
+		HalfedgeHandle h1 = mesh_.halfedge_handle(e, 1);
+		HalfedgeHandle new_h0 = mesh_.property(halfedge_split_to, h0);
+		HalfedgeHandle new_h1 = mesh_.property(halfedge_split_to, h1);
+		if (mesh_.is_boundary(e)) {
+			assert(new_h0.is_valid());
+			assert(new_h1.is_valid());
+		}
+		new_mesh.data(new_h0).set_original_opposition(new_h1);
+		new_mesh.data(new_h1).set_original_opposition(new_h0);
+	}
 }

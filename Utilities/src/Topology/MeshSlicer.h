@@ -21,7 +21,7 @@ public:
 	void FindAndMarkCutGraphNonSphere();
 	void ConstructWedge();
 	void SliceAccordingToWedge(SurfaceMesh &sliced_mesh);
-
+	void AddOnCutEdge(OpenMesh::EdgeHandle e) { mesh_.property(on_cut_, e) = true; }
 protected:
 	std::function<void(OpenMesh::VertexHandle, OpenMesh::VertexHandle)> TransferVertexData;
 	std::function<void(OpenMesh::FaceHandle, OpenMesh::FaceHandle)> TransferFaceData;
@@ -34,7 +34,7 @@ protected:
 	OpenMesh::EPropHandleT<bool> on_cut_;
 	OpenMesh::VPropHandleT<std::vector<OpenMesh::VertexHandle>> split_to_;
 	std::vector<OpenMesh::VertexHandle> longest_path_;
-
+	OpenMesh::HPropHandleT<OpenMesh::HalfedgeHandle> original_reflection_;
 	
 };
 

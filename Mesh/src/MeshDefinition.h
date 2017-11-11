@@ -53,6 +53,7 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 	HalfedgeTraits
 	{
 	private:
+		typename Refs::HalfedgeHandle original_opposition_;
 		double weight_;
 		double angle_;
 	public:
@@ -61,6 +62,8 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 		void set_angle(double a) { angle_ = a; }
 		double weight() { return weight_; }
 		void set_weight(double w) { weight_ = w; }
+		void set_original_opposition(typename Refs::HalfedgeHandle h) { original_opposition_ = h; }
+		typename Refs::HalfedgeHandle original_opposition() { return original_opposition_; }
 	};
 
 	EdgeTraits

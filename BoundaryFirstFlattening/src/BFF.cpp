@@ -16,12 +16,14 @@ SurfaceMesh BFFSolver::Compute()
 
 	ComputeVertexCurvatures(sliced_mesh_);
 
+	//ComputeOrbifoldBoundaryData();
+	
 	BoundaryUToTargetK();
 
 	IntegrateBoundaryCurve();
 
-	ExtendToInteriorHarmonic();
-	//ExtendToInteriorHilbert();
+	//ExtendToInteriorHarmonic();
+	ExtendToInteriorHilbert();
 
 	NormalizeUV();
 
@@ -54,15 +56,43 @@ void BFFSolver::InitType1()
 		mesh.data(v).set_target_curvature(0);
 		mesh.data(v).set_singularity(false);
 	}
-	mesh.data(slice_path_[0]).set_target_curvature(3 * PI / 2);
+	mesh.data(slice_path_[0]).set_target_curvature(PI);
 	mesh.data(slice_path_[0]).set_singularity(true);
 	mesh.data(slice_path_[0]).set_order(4);
-	mesh.data(slice_path_[slice_path_.size() / 2]).set_target_curvature(PI);
+	/*mesh.data(slice_path_[slice_path_.size() / 2]).set_target_curvature(PI);
 	mesh.data(slice_path_[slice_path_.size() / 2]).set_singularity(true);
-	mesh.data(slice_path_[slice_path_.size() / 2]).set_order(2);
-	mesh.data(slice_path_.back()).set_target_curvature(3 * PI / 2);
+	mesh.data(slice_path_[slice_path_.size() / 2]).set_order(2);*/
+	for (auto vviter = mesh.vv_iter(slice_path_[slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
+		VertexHandle neighbor = *vviter;
+		int center_index = slice_path_.size() / 3;
+		if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
+			HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
+			EdgeHandle e = mesh.edge_handle(h);
+			slicer_.AddOnCutEdge(e);
+			mesh.data(neighbor).set_singularity(true);
+			mesh.data(neighbor).set_target_curvature(PI);
+			mesh.data(neighbor).set_order(2);
+			break;
+		}
+	}
+	for (auto vviter = mesh.vv_iter(slice_path_[2 * slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
+		VertexHandle neighbor = *vviter;
+		int center_index = 2 * slice_path_.size() / 3;
+		if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
+			HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
+			EdgeHandle e = mesh.edge_handle(h);
+			slicer_.AddOnCutEdge(e);
+			mesh.data(neighbor).set_singularity(true);
+			mesh.data(neighbor).set_target_curvature(PI);
+			mesh.data(neighbor).set_order(2);
+			break;
+		}
+	}
+	mesh.data(slice_path_.back()).set_target_curvature(PI);
 	mesh.data(slice_path_.back()).set_singularity(true);
 	mesh.data(slice_path_.back()).set_order(4);
+
+	
 	
 }
 
@@ -74,6 +104,10 @@ void BFFSolver::Slice()
 	for (auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		auto equiv_vts = slicer_.SplitTo(v);
+		if (equiv_vts.size() == 2) {
+			sliced_mesh_.data(equiv_vts[0]).set_equivalent_vertex(equiv_vts[1]);
+			sliced_mesh_.data(equiv_vts[1]).set_equivalent_vertex(equiv_vts[0]);
+		}
 		for (auto it = equiv_vts.begin(); it != equiv_vts.end(); ++it) {
 			VertexHandle nv = *it;
 			double u = mesh_.data(v).u();
@@ -218,6 +252,7 @@ void BFFSolver::ComputeConformalFactors()
 		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
 	}
 	Eigen::VectorXd u = solver.solve(b);
+	u.setZero();
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		mesh.data(v).set_u(u(mesh.data(v).reindex()));
@@ -269,13 +304,24 @@ void BFFSolver::ReindexVertices(SurfaceMesh & mesh)
 		}
 	}
 
-	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
-		VertexHandle v = *viter;
-		if (mesh.is_boundary(v)) {
-			mesh.data(v).set_reindex(n_interior + n_boundary);
-			++n_boundary;
+	
+	if (mesh.GetBoundaries().size() == 0) return;
+	auto boundary = mesh.GetBoundaries().front();
+	std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
+	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
+		if (!mesh.data(mesh.from_vertex_handle(*it)).equivalent_vertex().is_valid()) {
+			boundary_list.insert(boundary_list.end(), boundary_list.begin(), it);
+			boundary_list.erase(boundary_list.begin(), it);
+			break;
 		}
 	}
+	
+	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
+		mesh.data(mesh.from_vertex_handle(*it)).set_reindex(n_interior+n_boundary);
+		++n_boundary;
+	}
+
+
 
 	n_boundary_ = n_boundary;
 	n_interior_ = n_interior;
@@ -291,6 +337,7 @@ void BFFSolver::BoundaryUToTargetK()
 	
 	VectorXd u(mesh.n_vertices());
 	ReindexVertices(mesh);
+
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		u(mesh.data(v).reindex()) = mesh.data(v).u();
@@ -303,12 +350,12 @@ void BFFSolver::BoundaryUToTargetK()
 	auto boundary = sliced_mesh_.GetBoundaries().front();
 	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
 		VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
-		if (!mesh.data(v).is_singularity())
+		//if (!mesh.data(v).is_singularity())
 			mesh.data(v).set_target_curvature(target_k(mesh.data(v).reindex() - n_interior_));
-		else {
-			mesh.data(v).set_target_curvature(PI / 2);
-			target_k(mesh.data(v).reindex() - n_interior_) = PI / 2;
-		}
+		//else {
+		//	mesh.data(v).set_target_curvature(PI / 2);
+		//	target_k(mesh.data(v).reindex() - n_interior_) = PI / 2;
+		//}
 	}
 
 	std::cout << "Singularities' curvature:" << std::endl;
@@ -317,14 +364,20 @@ void BFFSolver::BoundaryUToTargetK()
 		std::cout << mesh.data(v).target_curvature() / PI << "pi" << std::endl;
 	}
 
+	Eigen::VectorXd b(mesh.n_vertices());
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		b(mesh.data(v).reindex()) = mesh.is_boundary(v) ? mesh.data(v).curvature() - mesh.data(v).target_curvature() : mesh.data(v).curvature();
+	}
 
-	Eigen::VectorXd new_u = BoundaryTargetKToU(target_k);
+
+	/*Eigen::VectorXd new_u = BoundaryTargetKToU(target_k);
 	std::cout << new_u << std::endl << std::endl << u_B << std::endl;
 
 	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
 		VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
 			mesh.data(v).set_u(new_u(mesh.data(v).reindex() - n_interior_));
-	}
+	}*/
 
 
 }
@@ -418,14 +471,39 @@ void BFFSolver::IntegrateBoundaryCurve()
 	using namespace Eigen;
 	SurfaceMesh &mesh = sliced_mesh_;
 
+	HPropHandleT<int> reindex;
+	mesh.add_property(reindex);
+
 	VPropHandleT<double> cumulative_angle;
 	VPropHandleT<Vec2d> tangent;
 	mesh.add_property(cumulative_angle);
 	mesh.add_property(tangent);
 
 	auto boundary = mesh.GetBoundaries().front();
-
+	std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
+	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
+		if (mesh.data(mesh.from_vertex_handle(*it)).is_singularity()) {
+			boundary_list.insert(boundary_list.end(), boundary_list.begin(), it);
+			boundary_list.erase(boundary_list.begin(), it);
+			break;
+		}
+	}
+	boundary = std::vector<HalfedgeHandle>(boundary_list.begin(), boundary_list.end());
 	// Set edge length and Construct tanget matrix and normalization matrix;
+	int index = 0;
+	for (auto it = boundary.begin(); it != boundary.end(); ++it, ++index) {
+		HalfedgeHandle h = *it;
+		mesh.property(reindex, h) = index;
+	}
+
+	std::vector<int> oppo_relation(boundary.size());
+
+	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
+		HalfedgeHandle h = *it;
+		HalfedgeHandle oppo = mesh.opposite_halfedge_handle(mesh.data(mesh.opposite_halfedge_handle(h)).original_opposition());
+		oppo_relation[mesh.property(reindex, h)] = mesh.property(reindex, oppo);
+		oppo_relation[mesh.property(reindex, oppo)] = mesh.property(reindex, h);
+	}
 
 	Eigen::MatrixXd T(2, n_boundary_);
 	Eigen::MatrixXd N_inverse(n_boundary_, n_boundary_);
@@ -433,6 +511,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 	N_inverse.setZero();
 
 	Eigen::VectorXd L_star(n_boundary_);
+
 
 	mesh.property(cumulative_angle, mesh.from_vertex_handle(boundary.front())) = 0;
 	int i = 0;
@@ -459,9 +538,32 @@ void BFFSolver::IntegrateBoundaryCurve()
 		N_inverse(i, i) = 0.5 *(L_star(i - 1) + L_star(i));
 	}
 
-
-	Eigen::VectorXd L_normalized = L_star - N_inverse * T.transpose() * (T * N_inverse* T.transpose()).inverse() * T * L_star;
+	Eigen::MatrixXd newT(T.rows(), T.cols()/2);
+	Eigen::VectorXd L_star_half(L_star.size() / 2);
+	Eigen::MatrixXd N_inverse_half(N_inverse.rows() / 2, N_inverse.cols() / 2);
 	
+	index = 0;
+	for (int i = 0; i < boundary.size(); ++i) {
+		if (i > oppo_relation[i]) continue;
+		newT.col(index) = T.col(i) + T.col(oppo_relation[i]);
+		L_star_half(index) = L_star(i);
+		N_inverse_half(index, index) = N_inverse(i, i);
+		++index;
+	}
+
+	Eigen::VectorXd L_normalized_half = L_star_half - N_inverse_half * newT.transpose() * (newT * N_inverse_half* newT.transpose()).inverse() * newT * L_star_half;
+	Eigen::VectorXd L_normalized(L_star.size());
+	
+	index = 0;
+	for (int i = 0; i < boundary.size(); ++i) {
+		if (i > oppo_relation[i]) continue;
+		L_normalized(i) = L_normalized_half(index);
+		L_normalized(oppo_relation[i]) = L_normalized_half(index);
+		++index;
+	}
+
+	L_normalized = L_star - N_inverse * T.transpose() * (T * N_inverse* T.transpose()).inverse() * T * L_star;
+
 	i = 0;
 	mesh.set_texcoord2D(mesh.from_vertex_handle(boundary.front()), Vec2d(0, 0));
 	for (auto it = boundary.begin(); it != boundary.end(); ++it, ++i) {
@@ -605,5 +707,139 @@ void BFFSolver::NormalizeUV()
 		VertexHandle v = *viter;
 		mesh.set_texcoord2D(v, mesh.texcoord2D(v) / scale);
 	}
+}
+
+void BFFSolver::ComputeOrbifoldBoundaryData()
+{
+	using namespace OpenMesh;
+	using namespace Eigen;
+	SurfaceMesh &mesh = sliced_mesh_;
+	ReindexVertices(mesh);
+	
+	Eigen::SparseMatrix<double> A(mesh.n_vertices() + 2 + (n_boundary_-2)/2 + 2, mesh.n_vertices() + n_boundary_);
+	A.setZero();
+	std::vector<Eigen::Triplet<double>> A_coefficients;
+	Eigen::VectorXd b(mesh.n_vertices() + 2 + (n_boundary_ - 2) / 2 + 2);
+	b.setZero();
+
+	ComputeHalfedgeWeights(mesh);
+		
+
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+
+		if (mesh.is_boundary(v)) {
+			VertexHandle equiv = mesh.data(v).equivalent_vertex();
+			if (equiv.is_valid() && mesh.data(v).reindex() > mesh.data(equiv).reindex()) continue;
+			
+			if (equiv.is_valid()) {
+				double s_w = 0;
+				for (SurfaceMesh::VertexVertexIter vviter = mesh.vv_iter(v); vviter.is_valid(); ++vviter) {
+					VertexHandle neighbor = *vviter;
+					HalfedgeHandle h = mesh.find_halfedge(v, neighbor);
+					double n_w = mesh.data(h).weight();
+					s_w += n_w;
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(neighbor).reindex(), -n_w));
+				}
+				for (SurfaceMesh::VertexVertexIter vviter = mesh.vv_iter(equiv); vviter.is_valid(); ++vviter) {
+					VertexHandle neighbor = *vviter;
+					HalfedgeHandle h = mesh.find_halfedge(equiv, neighbor);
+					double n_w = mesh.data(h).weight();
+					s_w += n_w;
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(neighbor).reindex(), -n_w));
+				}
+
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex(), s_w));
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex() + n_boundary_, 1));
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(equiv).reindex() + n_boundary_, 1));
+				b(mesh.data(v).reindex()) = mesh.data(v).curvature() + mesh.data(equiv).curvature();
+
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(equiv).reindex(), mesh.data(v).reindex(), 1));
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(equiv).reindex(), mesh.data(equiv).reindex(), -1));
+
+				if (mesh.data(v).is_singularity()) {
+					assert(mesh.data(v).reindex() + n_boundary_ < A.rows());
+					//assert(mesh.data(equiv).reindex() + n_boundary_ < A.rows());
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex() + n_boundary_, mesh.data(v).reindex() + n_boundary_, 1));
+					b(mesh.data(v).reindex() + n_boundary_) = PI / 2;
+					A_coefficients.push_back(Eigen::Triplet<double>(A.rows() - 2, mesh.data(equiv).reindex() + n_boundary_, 1));
+					b(A.rows() - 2) = PI / 2;
+					
+				}
+				else {
+					int index = mesh.data(v).reindex() + n_boundary_;
+					int equiv_index = mesh.data(equiv).reindex();
+					assert(mesh.data(v).reindex() + n_boundary_ < A.rows());
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex() + n_boundary_, mesh.data(v).reindex() + n_boundary_, 1));
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex() + n_boundary_, mesh.data(equiv).reindex() + n_boundary_, 1));
+				}
+			}
+			else{
+				double s_w = 0;
+				for (SurfaceMesh::VertexVertexIter vviter = mesh.vv_iter(v); vviter.is_valid(); ++vviter) {
+					VertexHandle neighbor = *vviter;
+					HalfedgeHandle h = mesh.find_halfedge(v, neighbor);
+					double n_w = mesh.data(h).weight();
+					s_w += n_w;
+					A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(neighbor).reindex(), -n_w));
+				}
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex(), s_w));
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex() + n_boundary_, 1));
+				b(mesh.data(v).reindex()) = mesh.data(v).curvature();
+				assert(mesh.data(v).reindex() + n_boundary_ < A.rows());
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex() + n_boundary_, mesh.data(v).reindex() + n_boundary_, 1));
+				b(mesh.data(v).reindex() + n_boundary_) = PI / 2;
+			}
+		}
+		else // inner vertices
+		{
+			double s_w = 0;
+			for (SurfaceMesh::VertexVertexIter vviter = mesh.vv_iter(v); vviter.is_valid(); ++vviter) {
+				VertexHandle neighbor = *vviter;
+				HalfedgeHandle h = mesh.find_halfedge(v, neighbor);
+				double n_w = mesh.data(h).weight();
+				s_w += n_w;
+				A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(neighbor).reindex(), -n_w));
+			}
+			A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex(), s_w));
+			A_coefficients.push_back(Eigen::Triplet<double>(mesh.data(v).reindex(), mesh.data(v).reindex() + n_boundary_, 1));
+			b(mesh.data(v).reindex()) = mesh.data(v).curvature();
+		}
+	}
+
+	for (int i = 0; i < mesh.n_vertices(); ++i) {
+		A_coefficients.push_back(Triplet<double>(A.rows() - 1, i, 1));
+	}
+
+	A.setFromTriplets(A_coefficients.begin(), A_coefficients.end());
+
+	SparseQR<SparseMatrix<double>, COLAMDOrdering<int>> solver;
+	solver.compute(A);
+	if (solver.info() != Eigen::Success)
+	{
+		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
+	}
+	Eigen::VectorXd uk = solver.solve(b);
+	VectorXd u_B = uk.segment(n_interior_, n_boundary_);
+	//VectorXd target_k = BoundaryUToTargetK(u_B);
+	VectorXd target_k = uk.segment(mesh.n_vertices(), n_boundary_);
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		if (mesh.is_boundary(v)) {
+			mesh.data(v).set_u(u_B(mesh.data(v).reindex() - n_interior_));
+			mesh.data(v).set_target_curvature(target_k(mesh.data(v).reindex() - n_interior_));
+		}
+	}
+
+	
+
+	std::cout << "Singularities' curvature:" << std::endl;
+	for (auto it = cone_vts_.begin(); it != cone_vts_.end(); ++it) {
+		VertexHandle v = *it;
+		std::cout << mesh.data(v).target_curvature() / PI << "pi" << std::endl;
+	}
+
+	
+	
 }
 

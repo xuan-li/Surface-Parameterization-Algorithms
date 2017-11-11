@@ -5,6 +5,7 @@
 #include <Topology\MeshSlicer.h>
 #include <Eigen\Sparse>
 #include <Eigen\Dense>
+#include <Eigen\IterativeLinearSolvers>
 
 #ifndef PI
 #define PI 3.141592653
@@ -30,6 +31,7 @@ protected:
 
 	int n_boundary_;
 	int n_interior_;
+	int n_cones_;
 
 	Eigen::VectorXd target_k_;
 	
@@ -65,6 +67,8 @@ protected:
 	void ComputeHarmonicMatrix();
 
 	void NormalizeUV();
+
+	void ComputeOrbifoldBoundaryData();
 	
 };
 

@@ -91,6 +91,9 @@ c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\spars
           ]
 c:\code\graphics\graphicsproject\external\eigen\include\eigen\src\sparselu\sparselu_supernodalmatrix.h(237): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
   Generating Code...
+  Compiling...
+  OrbifoldMeshSlicer.cpp
+  Generating Code...
   Skipping... (no relevant changes detected)
   HyperbolicOrbifoldSolver.cpp
   OrbifoldEmbedding.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\OrbifoldEmbedding.lib
