@@ -22,6 +22,15 @@ void OTEViewer::InitMenu()
 		viewer.ngui->addButton("Load Texture", [this]() {this->LoadTexture(); });
 		viewer.ngui->addButton("Save Mesh", [this]() {this->SaveMesh(); });
 
+		viewer.ngui->addGroup("Cutting System");
+		viewer.ngui->addVariable("Cone Index", vertex_index_);
+		viewer.ngui->addButton("Add Cone", [this]() {this->SetSingularity(vertex_index_); });
+		viewer.ngui->addVariable("Slice Start", slice_start_);
+		viewer.ngui->addVariable("Slice End", slice_end_);
+		viewer.ngui->addButton("Add Slice", [this]() {this->SetSlice(slice_start_, slice_end_); });
+		viewer.ngui->addButton("Reset Marker", [this]() {this->marker_.ResetMarker(); });
+
+
 		viewer.ngui->addGroup("Core Functions");
 		viewer.ngui->addButton("Euclidean Orbifold", [this]() {
 			EuclideanOrbifoldSolver solver(this->mesh_);
@@ -60,6 +69,12 @@ void OTEViewer::InitMenu()
 			[this]() -> bool {return this->show_boundaries_; }
 		);
 
+		viewer.ngui->addVariable<bool>(
+			"Show Slices and Cones",
+			[this](const bool &v) {this->show_slice_ = v; this->UpdateMeshViewer(); },
+			[this]() -> bool {return this->show_slice_; }
+		);
+
 
 		viewer.screen->performLayout();
 		return false; 
@@ -87,7 +102,8 @@ void OTEViewer::LoadMesh()
 	NormalizeMesh(mesh_);
 	UpdateMeshData(mesh_);
 	UpdateTextureCoordData(mesh_);
-
+	marker_.SetObject(mesh_);
+	marker_.ResetMarker();
 }
 
 void OTEViewer::LoadTexture()
@@ -237,11 +253,78 @@ void OTEViewer::ShowBoundaries(SurfaceMesh &mesh)
 	
 }
 
+void OTEViewer::ShowSliceAndCones()
+{
+
+	// For edges;
+	Eigen::MatrixXd lineV, lineTC, bigV, bigTC;
+	Eigen::MatrixXi lineT, bigT;
+	Eigen::MatrixXd P1, P2;
+	Eigen::MatrixXd lineColors;
+
+	// For vertices;
+	Eigen::MatrixXd P;
+	Eigen::MatrixXi T;
+	Eigen::MatrixXd V, TC;
+	Eigen::MatrixXd vertexColors;
+
+
+	marker_.GenerateMatrix(P, P1, P2);
+	bigV = V_;
+	bigT = F_;
+	bigTC = TC_;
+
+	if (P1.rows() > 0) {
+
+		lineColors.resize(P1.rows(), 3);
+		lineColors.setZero();
+		lineColors.col(0) = Eigen::VectorXd::Constant(P1.rows(), 1);
+
+
+		LineCylinders(
+			P1,
+			P2,
+			0.005, lineColors,
+			10,
+			false,
+			lineV,
+			lineT,
+			lineTC);
+		MergeMeshMatrix(bigV, bigT, bigTC, lineV, lineT, lineTC, bigV, bigT, bigTC);
+	}
+
+	if (P.rows() > 0) {
+
+		vertexColors.resize(P.rows(), 3);
+		vertexColors.setZero();
+		vertexColors.col(1) = Eigen::VectorXd::Constant(P.rows(), 1);
+
+
+		PointSpheres(P,
+			0.03,
+			vertexColors,
+			10,
+			false,
+			V,
+			T,
+			TC);
+		MergeMeshMatrix(bigV, bigT, bigTC, V, T, TC, bigV, bigT, bigTC);
+	}
+	//show
+	data.clear();
+	data.set_mesh(bigV, bigT);
+	data.set_colors(bigTC);
+}
+
+
+
 void OTEViewer::UpdateMeshViewer()
 {
 	if (show_option_ == ORIGINAL) {
 		UpdateMeshData(mesh_);
 		UpdateTextureCoordData(mesh_);
+		if(show_slice_)
+			ShowSliceAndCones();
 	}
 	else if (show_option_ == SLICED) {
 		UpdateMeshData(sliced_mesh_);
@@ -260,4 +343,21 @@ void OTEViewer::UpdateMeshViewer()
 		ShowCoveringSpace();
 	}
 
+}
+
+void OTEViewer::SetSlice(int i, int j)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = mesh_;
+	VertexHandle v1 = mesh.vertex_handle(i);
+	VertexHandle v2 = mesh.vertex_handle(j);
+	marker_.ComputeAndSetSlice(v1, v2);
+}
+
+void OTEViewer::SetSingularity(int i)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = mesh_;
+	VertexHandle v = mesh.vertex_handle(i);
+	marker_.SetSingularity(v);
 }

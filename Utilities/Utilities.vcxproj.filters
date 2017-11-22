@@ -51,6 +51,12 @@
     <ClCompile Include="src\Topology\HyperbolicCoveringSpace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MeshMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PointSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MeshFormConverter.h">
@@ -82,6 +88,12 @@
     </ClInclude>
     <ClInclude Include="src\Topology\HyperbolicCoveringSpace.h">
       <Filter>Header Files\Topology</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MeshMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PointSphere.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

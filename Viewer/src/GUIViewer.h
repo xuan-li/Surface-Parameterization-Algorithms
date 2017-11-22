@@ -16,6 +16,7 @@
 #include <MeshFormConverter.h>
 #include <LineCylinder.h>
 #include <MeshMerger.h>
+#include <PointSphere.h>
 
 #include <EuclideanOrbifoldSolver.h>
 #include <HyperbolicOrbifoldSolver.h>
@@ -24,6 +25,7 @@
 #include <Topology\EuclideanCoveringSpace.h>
 #include <Topology\HyperbolicCoveringSpace.h>
 
+#include <MeshMarker.h>
 
 
 enum ShowOption { ORIGINAL, SLICED, EMBEDDING, COVERING_SPACE };
@@ -36,6 +38,8 @@ public:
 private:
 	SurfaceMesh mesh_;
 	SurfaceMesh sliced_mesh_;
+	MeshMarker marker_;
+
 	std::vector<OpenMesh::VertexHandle> cone_vts_;
 
 	Eigen::MatrixXd V_;
@@ -54,6 +58,20 @@ private:
 	Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic> B_;
 	Eigen::Matrix<unsigned char, Eigen::Dynamic, Eigen::Dynamic> A_;
 	
+	// Flags
+	ShowOption show_option_ = ORIGINAL;
+	bool show_boundaries_ = false;
+	bool show_slice_ = false;
+	bool euclidean_ = false;
+	bool hyperbolic_ = false;
+
+	int vertex_index_= 0;
+	int slice_start_ = 0;
+	int slice_end_ = 0;
+
+
+protected:
+
 	// Init functions
 	void InitMenu();
 	void InitKeyboard();
@@ -70,15 +88,16 @@ private:
 
 	void ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector);
 	void ShowBoundaries(SurfaceMesh &mesh);
-
+	void ShowSliceAndCones();
 	void UpdateMeshViewer();
 
-protected: // Flags
-	ShowOption show_option_ = ORIGINAL;
-	bool show_boundaries_ = false;
 
-	bool euclidean_ = false;
-	bool hyperbolic_ = false;
+	// Setting slices and singularities
+	void SetSlice(int i, int j);
+	void SetSingularity(int i);
+	
+
+
 };
 
 #endif

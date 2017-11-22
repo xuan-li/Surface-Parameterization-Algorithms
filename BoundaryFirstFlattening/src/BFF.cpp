@@ -22,8 +22,8 @@ SurfaceMesh BFFSolver::Compute()
 
 	IntegrateBoundaryCurve();
 
-	//ExtendToInteriorHarmonic();
-	ExtendToInteriorHilbert();
+	ExtendToInteriorHarmonic();
+	//ExtendToInteriorHilbert();
 
 	NormalizeUV();
 
@@ -58,39 +58,44 @@ void BFFSolver::InitType1()
 	}
 	mesh.data(slice_path_[0]).set_target_curvature(PI);
 	mesh.data(slice_path_[0]).set_singularity(true);
-	mesh.data(slice_path_[0]).set_order(4);
-	/*mesh.data(slice_path_[slice_path_.size() / 2]).set_target_curvature(PI);
-	mesh.data(slice_path_[slice_path_.size() / 2]).set_singularity(true);
-	mesh.data(slice_path_[slice_path_.size() / 2]).set_order(2);*/
-	for (auto vviter = mesh.vv_iter(slice_path_[slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
-		VertexHandle neighbor = *vviter;
-		int center_index = slice_path_.size() / 3;
-		if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
-			HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
-			EdgeHandle e = mesh.edge_handle(h);
-			slicer_.AddOnCutEdge(e);
-			mesh.data(neighbor).set_singularity(true);
-			mesh.data(neighbor).set_target_curvature(PI);
-			mesh.data(neighbor).set_order(2);
-			break;
-		}
-	}
-	for (auto vviter = mesh.vv_iter(slice_path_[2 * slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
-		VertexHandle neighbor = *vviter;
-		int center_index = 2 * slice_path_.size() / 3;
-		if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
-			HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
-			EdgeHandle e = mesh.edge_handle(h);
-			slicer_.AddOnCutEdge(e);
-			mesh.data(neighbor).set_singularity(true);
-			mesh.data(neighbor).set_target_curvature(PI);
-			mesh.data(neighbor).set_order(2);
-			break;
-		}
-	}
+	mesh.data(slice_path_[0]).set_order(2);
+
+	mesh.data(slice_path_[slice_path_.size() / 3]).set_target_curvature(PI);
+	mesh.data(slice_path_[slice_path_.size() / 3]).set_singularity(true);
+	mesh.data(slice_path_[slice_path_.size() / 3]).set_order(2);
+
+	mesh.data(slice_path_[2 * slice_path_.size() / 3]).set_target_curvature(PI);
+	mesh.data(slice_path_[2 * slice_path_.size() / 3]).set_singularity(true);
+	mesh.data(slice_path_[2 * slice_path_.size() / 3]).set_order(2);
+	//for (auto vviter = mesh.vv_iter(slice_path_[slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
+	//	VertexHandle neighbor = *vviter;
+	//	int center_index = slice_path_.size() / 3;
+	//	if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
+	//		HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
+	//		EdgeHandle e = mesh.edge_handle(h);
+	//		slicer_.AddOnCutEdge(e);
+	//		mesh.data(neighbor).set_singularity(true);
+	//		mesh.data(neighbor).set_target_curvature(PI);
+	//		mesh.data(neighbor).set_order(2);
+	//		break;
+	//	}
+	//}
+	//for (auto vviter = mesh.vv_iter(slice_path_[2 * slice_path_.size() / 3]); vviter.is_valid(); ++vviter) {
+	//	VertexHandle neighbor = *vviter;
+	//	int center_index = 2 * slice_path_.size() / 3;
+	//	if (neighbor != slice_path_[center_index + 1] && neighbor != slice_path_[center_index - 1]) {
+	//		HalfedgeHandle h = mesh.find_halfedge(slice_path_[center_index], neighbor);
+	//		EdgeHandle e = mesh.edge_handle(h);
+	//		slicer_.AddOnCutEdge(e);
+	//		mesh.data(neighbor).set_singularity(true);
+	//		mesh.data(neighbor).set_target_curvature(PI);
+	//		mesh.data(neighbor).set_order(2);
+	//		break;
+	//	}
+	//}
 	mesh.data(slice_path_.back()).set_target_curvature(PI);
 	mesh.data(slice_path_.back()).set_singularity(true);
-	mesh.data(slice_path_.back()).set_order(4);
+	mesh.data(slice_path_.back()).set_order(2);
 
 	
 	
@@ -252,7 +257,7 @@ void BFFSolver::ComputeConformalFactors()
 		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
 	}
 	Eigen::VectorXd u = solver.solve(b);
-	u.setZero();
+	//u.setZero();
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		mesh.data(v).set_u(u(mesh.data(v).reindex()));
@@ -482,7 +487,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 	auto boundary = mesh.GetBoundaries().front();
 	std::list<HalfedgeHandle> boundary_list(boundary.begin(), boundary.end());
 	for (auto it = boundary_list.begin(); it != boundary_list.end(); ++it) {
-		if (mesh.data(mesh.from_vertex_handle(*it)).is_singularity()) {
+		if (mesh.data(mesh.from_vertex_handle(*it)).is_singularity() && !mesh.data(mesh.from_vertex_handle(*it)).equivalent_vertex().is_valid()) {
 			boundary_list.insert(boundary_list.end(), boundary_list.begin(), it);
 			boundary_list.erase(boundary_list.begin(), it);
 			break;
@@ -511,7 +516,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 	N_inverse.setZero();
 
 	Eigen::VectorXd L_star(n_boundary_);
-
+	Eigen::VectorXd L(n_boundary_);
 
 	mesh.property(cumulative_angle, mesh.from_vertex_handle(boundary.front())) = 0;
 	int i = 0;
@@ -530,12 +535,12 @@ void BFFSolver::IntegrateBoundaryCurve()
 		T(0,i) = cos(angle);
 		T(1, i) = sin(angle);
 		L_star(i) = l_star;
-
+		L(i) = l;
 	}
 	
 	N_inverse(0, 0) = 0.5 * (L_star(L_star.size() - 1) + L_star[0]);
 	for (int i = 1; i < boundary.size(); ++i) {
-		N_inverse(i, i) = 0.5 *(L_star(i - 1) + L_star(i));
+		N_inverse(i, i) = 0.5 *(L(i - 1) + L(i));
 	}
 
 	Eigen::MatrixXd newT(T.rows(), T.cols()/2);
@@ -561,8 +566,10 @@ void BFFSolver::IntegrateBoundaryCurve()
 		L_normalized(oppo_relation[i]) = L_normalized_half(index);
 		++index;
 	}
+	//std::cout << L_normalized << std::endl;
+	//L_normalized = L_star - N_inverse * T.transpose() * (T * N_inverse* T.transpose()).inverse() * T * L_star;
 
-	L_normalized = L_star - N_inverse * T.transpose() * (T * N_inverse* T.transpose()).inverse() * T * L_star;
+
 
 	i = 0;
 	mesh.set_texcoord2D(mesh.from_vertex_handle(boundary.front()), Vec2d(0, 0));
