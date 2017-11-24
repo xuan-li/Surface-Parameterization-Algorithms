@@ -8,6 +8,7 @@ void OTEViewer::Init()
 {
 	InitMenu();
 	InitKeyboard();
+	InitMouse();
 }
 
 
@@ -23,24 +24,24 @@ void OTEViewer::InitMenu()
 		viewer.ngui->addButton("Save Mesh", [this]() {this->SaveMesh(); });
 
 		viewer.ngui->addGroup("Cutting System");
-		viewer.ngui->addVariable("Cone Index", vertex_index_);
-		viewer.ngui->addButton("Add Cone", [this]() {this->SetSingularity(vertex_index_); });
-		viewer.ngui->addVariable("Slice Start", slice_start_);
-		viewer.ngui->addVariable("Slice End", slice_end_);
-		viewer.ngui->addButton("Add Slice", [this]() {this->SetSlice(slice_start_, slice_end_); });
-		viewer.ngui->addButton("Reset Marker", [this]() {this->marker_.ResetMarker(); });
+		viewer.ngui->addButton("Load Marker", [this] { this->LoadMarker(); });
+		viewer.ngui->addButton("Save Marker", [this] {this->SaveMarker(); });
+		viewer.ngui->addVariable("Cone Angle", cone_angle_);
+		viewer.ngui->addButton("Add Cone", [this]() {this->SetSingularity(cone_angle_); UpdateMeshViewer(); });
+		viewer.ngui->addButton("Add Slice", [this]() {this->SetSlice(); UpdateMeshViewer(); });
+		viewer.ngui->addButton("Reset Marker", [this]() {this->marker_.ResetMarker(); selected_verts_.clear(); UpdateMeshViewer();  });
 
 
 		viewer.ngui->addGroup("Core Functions");
 		viewer.ngui->addButton("Euclidean Orbifold", [this]() {
-			EuclideanOrbifoldSolver solver(this->mesh_);
+			EuclideanOrbifoldSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute();
 			this->cone_vts_ = solver.ConeVertices();
 			hyperbolic_ = false;
 			euclidean_ = true;
 		});
 		viewer.ngui->addButton("Hyperbolic Orbifold", [this]() {
-			HyperbolicOrbifoldSolver solver(this->mesh_);
+			HyperbolicOrbifoldSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute();
 			this->cone_vts_ = solver.ConeVertices();
 			euclidean_ = false;
@@ -75,6 +76,12 @@ void OTEViewer::InitMenu()
 			[this]() -> bool {return this->show_slice_; }
 		);
 
+		viewer.ngui->addVariable<bool>(
+			"Show Vertex Labels",
+			[this](const bool &v) {this->show_vertex_labels_ = v; this->UpdateMeshViewer(); },
+			[this]() -> bool {return this->show_vertex_labels_; }
+		);
+
 
 		viewer.screen->performLayout();
 		return false; 
@@ -85,8 +92,36 @@ void OTEViewer::InitMenu()
 
 void OTEViewer::InitKeyboard()
 {
-	callback_key_down = [](igl::viewer::Viewer& viewer, unsigned char key, int modifier) 
+	callback_key_down = [this](igl::viewer::Viewer& viewer, unsigned char key, int modifier) 
 	{
+		if (key == 'V') {
+			selection_mode_ = true;
+		}
+		return false;
+	};
+	callback_key_up = [this](igl::viewer::Viewer& viewer, unsigned char key, int modifier)
+	{
+		if (key == 'V') {
+			selection_mode_ = false;
+		}
+		return false;
+	};
+}
+
+void OTEViewer::InitMouse()
+{
+	callback_mouse_down = [this](igl::viewer::Viewer& viewer, int button, int modifier)->bool
+	{
+		if ( selection_mode_ && show_option_ == ORIGINAL && button == GLFW_MOUSE_BUTTON_1) {
+			Eigen::Vector4f viewport = viewer.core.viewport;
+			Eigen::Vector2f center(viewport(2) / 2., viewport(3)/2.);
+			double x = viewer.down_mouse_x;
+			double y = viewer.down_mouse_y;
+			x = (viewer.down_mouse_x - center(0)) / (viewport(2) / 2.);
+			y = -(viewer.down_mouse_y - center(1)) / (viewport(3) / 2.);
+			this->FindIntersection(x, y);
+		} 
+
 		return false;
 	};
 }
@@ -217,8 +252,8 @@ void OTEViewer::ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeH
 
 	if (h_vector.size() == 0) return;
 
-	Eigen::MatrixXd lineV, lineTC, bigV, bigTC;
-	Eigen::MatrixXi lineT, bigT;
+	Eigen::MatrixXd lineV, lineTC;
+	Eigen::MatrixXi lineT;
 	Eigen::MatrixXd P1, P2;
 	Eigen::MatrixXd lineColors;
 	double radius = 0.005;
@@ -237,12 +272,12 @@ void OTEViewer::ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeH
 		lineT,
 		lineTC);
 
-	MergeMeshMatrix(V_, F_, TC_, lineV, lineT, lineTC, bigV, bigT, bigTC);
+	MergeMeshMatrix(V_, F_, TC_, lineV, lineT, lineTC, V_, F_, TC_);
 
 	
 	data.clear();
-	data.set_mesh(bigV, bigT);
-	data.set_colors(bigTC);
+	data.set_mesh(V_, F_);
+	data.set_colors(TC_);
 }
 
 void OTEViewer::ShowBoundaries(SurfaceMesh &mesh)
@@ -257,8 +292,8 @@ void OTEViewer::ShowSliceAndCones()
 {
 
 	// For edges;
-	Eigen::MatrixXd lineV, lineTC, bigV, bigTC;
-	Eigen::MatrixXi lineT, bigT;
+	Eigen::MatrixXd lineV, lineTC;
+	Eigen::MatrixXi lineT;
 	Eigen::MatrixXd P1, P2;
 	Eigen::MatrixXd lineColors;
 
@@ -270,10 +305,7 @@ void OTEViewer::ShowSliceAndCones()
 
 
 	marker_.GenerateMatrix(P, P1, P2);
-	bigV = V_;
-	bigT = F_;
-	bigTC = TC_;
-
+	
 	if (P1.rows() > 0) {
 
 		lineColors.resize(P1.rows(), 3);
@@ -290,7 +322,7 @@ void OTEViewer::ShowSliceAndCones()
 			lineV,
 			lineT,
 			lineTC);
-		MergeMeshMatrix(bigV, bigT, bigTC, lineV, lineT, lineTC, bigV, bigT, bigTC);
+		MergeMeshMatrix(V_, F_, TC_, lineV, lineT, lineTC, V_, F_, TC_);
 	}
 
 	if (P.rows() > 0) {
@@ -308,12 +340,25 @@ void OTEViewer::ShowSliceAndCones()
 			V,
 			T,
 			TC);
-		MergeMeshMatrix(bigV, bigT, bigTC, V, T, TC, bigV, bigT, bigTC);
+		MergeMeshMatrix(V_, F_, TC_, V, T, TC, V_, F_, TC_);
 	}
 	//show
 	data.clear();
-	data.set_mesh(bigV, bigT);
-	data.set_colors(bigTC);
+	data.set_mesh(V_, F_);
+	data.set_colors(TC_);
+}
+
+void OTEViewer::ShowVertexLabels()
+{
+	
+	using namespace OpenMesh;
+	if (mesh_.n_edges() == 0) return;
+	for (SurfaceMesh::VertexIter viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		Vec3d p = mesh_.point(v);
+		data.add_label(Eigen::Vector3d(p[0], p[1], p[2]), std::to_string(v.idx()));
+	}
+	
 }
 
 
@@ -325,6 +370,9 @@ void OTEViewer::UpdateMeshViewer()
 		UpdateTextureCoordData(mesh_);
 		if(show_slice_)
 			ShowSliceAndCones();
+		if (show_vertex_labels_)
+			ShowVertexLabels();
+		ShowSelction();
 	}
 	else if (show_option_ == SLICED) {
 		UpdateMeshData(sliced_mesh_);
@@ -345,19 +393,126 @@ void OTEViewer::UpdateMeshViewer()
 
 }
 
-void OTEViewer::SetSlice(int i, int j)
+void OTEViewer::SetSlice()
 {
 	using namespace OpenMesh;
-	SurfaceMesh &mesh = mesh_;
-	VertexHandle v1 = mesh.vertex_handle(i);
-	VertexHandle v2 = mesh.vertex_handle(j);
+	VertexHandle v1 = selected_verts_.front();
+	VertexHandle v2 = selected_verts_.back();
 	marker_.ComputeAndSetSlice(v1, v2);
+	selected_verts_.clear();
 }
 
-void OTEViewer::SetSingularity(int i)
+void OTEViewer::SetSingularity(double cone_angle)
 {
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = mesh_;
-	VertexHandle v = mesh.vertex_handle(i);
-	marker_.SetSingularity(v);
+	VertexHandle v = selected_verts_.front();
+	marker_.SetSingularity(v, cone_angle);
+	selected_verts_.clear();
+}
+
+void OTEViewer::LoadMarker()
+{
+	std::string fname = igl::file_dialog_open();
+	marker_.LoadFromFile(fname);
+}
+
+void OTEViewer::SaveMarker()
+{
+	std::string fname = igl::file_dialog_save();
+	marker_.SaveToFile(fname);
+}
+
+void OTEViewer::FindIntersection(double x, double y)
+{
+	using namespace OpenMesh;
+	using namespace Eigen;
+	SurfaceMesh &mesh = mesh_;
+
+	Eigen::Matrix4f model = core.model;
+	Eigen::Matrix4f view = core.view;
+	Eigen::Matrix4f proj = core.proj;
+
+	Eigen::Matrix4f world = view * model;
+	
+	double min_dist = 10000;
+	VertexHandle nearest_vertex;
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		Vec3d p = mesh.point(v);
+		Vec3d n = mesh.normal(v);
+		Eigen::Vector4f p_h(p[0], p[1], p[2], 1.);
+		Eigen::Vector4f n_h(n[0], n[1], n[2], 0.);
+		
+		Eigen::Vector4f current_n = world * n_h;
+		Eigen::Vector4f current_p = world * p_h;
+		Eigen::Vector4f eye_direction(-current_p(0), -current_p(1), 5 - current_p(2), 0);
+		
+		if ((current_n.transpose() * eye_direction)(0) < 0) continue;
+
+		Eigen::Vector4f p_proj = proj * current_p;
+		p_proj /= p_proj(3);
+		
+		Vec2f mouse(x, y);
+		Vec2f pp(p_proj(0), p_proj(1));
+
+		double dist = (mouse - pp).norm();
+		
+		if (dist < min_dist) {
+			min_dist = dist;
+			nearest_vertex = v;
+		}
+		
+	}
+	selected_verts_.push_back(nearest_vertex);
+	ShowSelction();
+}
+
+void OTEViewer::ShowSelction()
+{
+	using namespace OpenMesh;
+	// For edges;
+	Eigen::MatrixXd bigV, bigTC;
+	Eigen::MatrixXi bigT;
+
+	// For vertices;
+	Eigen::MatrixXd P;
+	Eigen::MatrixXi T;
+	Eigen::MatrixXd V, TC;
+	Eigen::MatrixXd vertexColors;
+
+
+	bigV = V_;
+	bigT = F_;
+	bigTC = TC_;
+
+	P.resize(selected_verts_.size(), 3);
+	
+	if (P.rows() > 0) {
+		for (int i = 0; i < selected_verts_.size(); ++i) {
+			VertexHandle v = selected_verts_[i];
+			Vec3d p = mesh_.point(v);
+			P.row(i) = Eigen::Vector3d(p[0], p[1], p[2]);
+		}
+
+		vertexColors.resize(P.rows(), 3);
+		vertexColors.setZero();
+		vertexColors.col(1) = Eigen::VectorXd::Constant(P.rows(), 1);
+
+
+		PointSpheres(P,
+			0.03,
+			vertexColors,
+			10,
+			false,
+			V,
+			T,
+			TC);
+		MergeMeshMatrix(bigV, bigT, bigTC, V, T, TC, bigV, bigT, bigTC);
+		data.clear();
+		data.set_mesh(bigV, bigT);
+		data.set_colors(bigTC);
+	}
+	
+
 }

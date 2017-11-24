@@ -128,6 +128,7 @@
     <ClInclude Include="src\MeshFormConverter.h" />
     <ClInclude Include="src\MeshMarker.h" />
     <ClInclude Include="src\MeshMerger.h" />
+    <ClInclude Include="src\StringParser.h" />
     <ClInclude Include="src\PointSphere.h" />
     <ClInclude Include="src\Topology\EuclideanCoveringSpace.h" />
     <ClInclude Include="src\Topology\HyperbolicCoveringSpace.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="src\MeshFormConverter.cpp" />
     <ClCompile Include="src\MeshMarker.cpp" />
     <ClCompile Include="src\MeshMerger.cpp" />
+    <ClCompile Include="src\StringParser.cpp" />
     <ClCompile Include="src\PointSphere.cpp" />
     <ClCompile Include="src\Topology\EuclideanCoveringSpace.cpp" />
     <ClCompile Include="src\Topology\HyperbolicCoveringSpace.cpp" />

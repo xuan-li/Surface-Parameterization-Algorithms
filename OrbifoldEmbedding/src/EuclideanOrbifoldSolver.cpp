@@ -1,10 +1,10 @@
 #include "EuclideanOrbifoldSolver.h"
 #include <list>
 
-EuclideanOrbifoldSolver::EuclideanOrbifoldSolver(SurfaceMesh & mesh)
-	:mesh_(mesh)
+EuclideanOrbifoldSolver::EuclideanOrbifoldSolver(SurfaceMesh & mesh, OpenMesh::VPropHandleT<bool> cone_flag, OpenMesh::VPropHandleT<double> cone_angle, OpenMesh::EPropHandleT<bool> slice_flag)
+	:mesh_(mesh), cone_flag_(cone_flag), cone_angle_(cone_angle), slice_flag_(slice_flag)
 {
-
+	
 }
 
 SurfaceMesh EuclideanOrbifoldSolver::Compute()
@@ -18,68 +18,25 @@ SurfaceMesh EuclideanOrbifoldSolver::Compute()
 	return sliced_mesh_;
 }
 
-void EuclideanOrbifoldSolver::CutToDist()
-{
-	OrbifoldMeshSlicer slicer(mesh_);
-	slicer.CutAndSelectSingularities(sliced_mesh_);
-	cone_vts_ = slicer.GetConeVertices();
-	segments_vts_ = slicer.GetSegments();
-
-}
-
 
 void EuclideanOrbifoldSolver::InitOrbifold()
 {
-	
-	InitType1();
-
-}
-
-void EuclideanOrbifoldSolver::InitType1()
-{
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
+	OrbifoldInitializer initializer(mesh_);
+	initializer.Initiate(mesh,cone_flag_, cone_angle_, slice_flag_);
+	initializer.ComputeEuclideanTransformations(sliced_mesh_, vtx_transit_);
+	cone_vts_ = initializer.GetConeVertices();
+	segments_vts_ = initializer.GetSegments();
 
-	CutToDist();
-
-	OpenMesh::Vec2d v0(0, 0);
-	OpenMesh::Vec2d v1(0, 1);
-	OpenMesh::Vec2d v2(1, 1);
-	OpenMesh::Vec2d v3(1, 0);
-	sliced_mesh_.set_texcoord2D(cone_vts_[0], v0);
-	sliced_mesh_.set_texcoord2D(cone_vts_[1], v1);
-	sliced_mesh_.set_texcoord2D(cone_vts_[2], v2);
-	sliced_mesh_.set_texcoord2D(cone_vts_[3], v3);
-	double thetas[4] = {-PI /2, PI/2 , -PI/2, PI/2};
-	Eigen::Matrix2d transforms[4];
-	VertexHandle rotate_center[4] = { cone_vts_[0], cone_vts_[2] , cone_vts_[2] , cone_vts_[0] };
-	if (!vtx_transit_.is_valid()) {
-		mesh.add_property(vtx_transit_);
-	}
-
-	if (!vtx_rotation_center_.is_valid()) {
-		mesh.add_property(vtx_rotation_center_);
-	}
-
-	for (int i = 0; i < 4; ++i) {
-		transforms[i] << cos(thetas[i]), -sin(thetas[i]),
-						 sin(thetas[i]), cos(thetas[i]);
-	}
-	
-	for (int i = 0; i < segments_vts_.size(); ++i) {
-		for (auto it = segments_vts_[i].begin(); it != segments_vts_[i].end(); ++it) {
-			VertexHandle v = *it;
-			mesh.property(vtx_rotation_center_, v) = rotate_center[i];
-			mesh.property(vtx_transit_, v) = transforms[i];
-		}
-	}
-	
 	std::cout << "Cone coordinates:\n";
 	for (int i = 0; i < cone_vts_.size(); ++i) {
 		Vec2d uv = mesh.texcoord2D(cone_vts_[i]);
 		std::cout << uv[0] << "\t" << uv[1] << std::endl;
 	}
+	
 }
+
 
 double EuclideanOrbifoldSolver::CosineLaw(double a, double b, double c)
 {
@@ -153,6 +110,7 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 	b_.resize(2 * mesh.n_vertices());
 	std::vector<Eigen::Triplet<double> > A_coefficients;
 
+	// interior vertex satisfies normal harmonic condition
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
 		if (mesh.data(v).is_singularity()) {
@@ -181,9 +139,10 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 
 
 	// handle boundary vts;
-	for (int i = 0; i < 2; ++i) {
+	for (int i = 0; i < segments_vts_.size() / 2; ++i) {
 		for (auto it = segments_vts_[i].begin(); it != segments_vts_[i].end(); ++it) {
 			VertexHandle v = *it;
+			if (mesh.data(v).is_singularity()) continue;
 			b_(2 * v.idx()) = 0;
 			b_(2 * v.idx() + 1) = 0;
 			double s_w = 0.;
@@ -202,7 +161,8 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 			auto equiv = mesh.data(v).equivalent_vertex();
 			Matrix2d coeff_equiv;
 			coeff_equiv.setZero();
-			Matrix2d rotation_matrix = mesh.property(vtx_transit_, equiv);
+			Matrix3d T = mesh.property(vtx_transit_, equiv); // from equiv to v
+			Matrix2d rotation_matrix = T.block(0,0,2,2);
 			//std::cout << rotation_matrix << std::endl;
 			for (auto vviter = mesh.vv_iter(equiv); vviter.is_valid(); ++vviter) {
 				VertexHandle neighbor = *vviter;
@@ -221,19 +181,12 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * v.idx() + 1, 2 * equiv.idx() + 1, coeff_equiv(1, 1)));
 
 			
-			b_(2 * equiv.idx()) = 0;
-			b_(2 * equiv.idx() + 1) = 0;
-			int rotate_center_idx = mesh.property(vtx_rotation_center_, equiv).idx();
-			
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * rotate_center_idx, 1. - rotation_matrix(0, 0)));
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * rotate_center_idx + 1, -rotation_matrix(0, 1)));
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * rotate_center_idx, -rotation_matrix(1, 0)));
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * rotate_center_idx + 1, 1. - rotation_matrix(1, 1)));
-
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * equiv.idx(),  rotation_matrix(0, 0)));
+			b_.segment(2 * equiv.idx(), 2) = - T.block(0,2, 2, 1);
+					
+			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * equiv.idx(), rotation_matrix(0,0)));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * equiv.idx() + 1, rotation_matrix(0, 1)));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx(), rotation_matrix(1, 0)));
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx() + 1, rotation_matrix(1, 1)));
+			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx(), rotation_matrix(1, 1)));
 
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * v.idx(), -1.));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * v.idx() + 1, - 1.));

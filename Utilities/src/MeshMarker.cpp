@@ -8,9 +8,13 @@ void MeshMarker::ResetMarker()
 		mesh.add_property(singularity_);
 	if (!slice_.is_valid())
 		mesh.add_property(slice_);
+	if (!cone_angle_.is_valid())
+		mesh.add_property(cone_angle_);
+
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		OpenMesh::VertexHandle v = *viter;
 		mesh.property(singularity_, v) = false;
+		mesh.property(cone_angle_, v) = 2 *PI;
 	}
 	for (auto eiter = mesh.edges_begin(); eiter != mesh.edges_end(); ++eiter) {
 		OpenMesh::EdgeHandle e = *eiter;
@@ -50,12 +54,14 @@ void MeshMarker::ComputeAndSetSlice(OpenMesh::VertexHandle v0, OpenMesh::VertexH
 
 }
 
-void MeshMarker::SetSingularity(OpenMesh::VertexHandle v)
+// The cone angle is  cone_angle * PI;
+void MeshMarker::SetSingularity(OpenMesh::VertexHandle v, double cone_angle)
 {
 	SurfaceMesh &mesh = *p_mesh_;
 	using namespace OpenMesh;
 	if (!mesh.property(singularity_, v)) {
 		mesh.property(singularity_, v) = true;
+		mesh.property(cone_angle_, v) = cone_angle * PI;
 		++n_vertices_;
 	}
 }
@@ -92,4 +98,59 @@ void MeshMarker::GenerateMatrix(Eigen::MatrixXd & P, Eigen::MatrixXd & EP1, Eige
 			++index;
 		}
 	}
+}
+
+void MeshMarker::LoadFromFile(std::string filename)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = *p_mesh_;
+	ResetMarker();
+	std::ifstream f(filename);
+	std::string line;
+	if (f.is_open())
+	{
+		while (!f.eof())
+		{
+			std::getline(f, line);
+			std::vector<std::string> parser;
+			Split(" ", line, parser);
+			if (parser.size() == 0) continue;
+			if (parser[0] == "v") {
+				VertexHandle v = mesh.vertex_handle(stoi(parser[1]));
+				mesh.property(singularity_, v) = true;
+				mesh.property(cone_angle_, v) = atof(parser[2].c_str());
+				++n_vertices_;
+			}
+			else if (parser[0] == "e") {
+				EdgeHandle e = mesh.edge_handle(stoi(parser[1]));
+				mesh.property(slice_, e) = true;
+				++n_edges_;
+			}
+		}
+		f.close();
+	}
+}
+
+void MeshMarker::SaveToFile(std::string filename)
+{
+	using namespace OpenMesh;
+	SurfaceMesh &mesh = *p_mesh_;
+
+	std::ofstream f(filename);
+
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		if (mesh.property(singularity_, v)) {
+			f << "v " << v.idx() << " " << std::setprecision(9) << mesh.property(cone_angle_, v) << "\n";
+		}
+	}
+	for (auto eiter = mesh.edges_begin(); eiter != mesh.edges_end(); ++eiter) {
+		EdgeHandle e = *eiter;
+		if (mesh.property(slice_, e)) {
+			f << "e " << e.idx() << "\n";
+		}
+	}
+
+	f.close();
+	
 }

@@ -3,25 +3,22 @@
 #include <map>
 
 MeshSlicer::MeshSlicer(
-	SurfaceMesh &mesh, 
-	std::function<void(OpenMesh::VertexHandle, OpenMesh::VertexHandle)> f1,
-	std::function<void(OpenMesh::FaceHandle, OpenMesh::FaceHandle)> f2,
-	std::function<void(OpenMesh::EdgeHandle, OpenMesh::EdgeHandle)> f3,
-	std::function<void(OpenMesh::HalfedgeHandle, OpenMesh::HalfedgeHandle)> f4
+	SurfaceMesh &mesh
 ): mesh_(mesh)
 {
-	TransferVertexData = f1;
-	TransferFaceData = f2;
-	TransferEdgeData = f3;
-	TransferHalfedgeData = f4;
 
 	mesh_.add_property(wedge_);
 	mesh_.add_property(on_cut_);
 	mesh_.add_property(split_to_);
+	mesh_.add_property(convert_to_);
 
+}
 
-
-
+void MeshSlicer::ResetFlags()
+{
+	for (auto eiter = mesh_.edges_begin(); eiter != mesh_.edges_end(); ++eiter) {
+		mesh_.property(on_cut_, *eiter) = false;
+	}
 }
 
 void MeshSlicer::SliceMeshToDisk(SurfaceMesh &slice_mesh)
@@ -38,6 +35,11 @@ void MeshSlicer::SliceMeshToDisk(SurfaceMesh &slice_mesh)
 std::vector<OpenMesh::VertexHandle> MeshSlicer::SplitTo(OpenMesh::VertexHandle v)
 {
 	return mesh_.property(split_to_,v);
+}
+
+OpenMesh::HalfedgeHandle MeshSlicer::ConvertTo(OpenMesh::HalfedgeHandle h)
+{
+	return mesh_.property(convert_to_, h);
 }
 
 std::vector<OpenMesh::VertexHandle> MeshSlicer::GetLongestPath()
@@ -165,7 +167,6 @@ void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 				mesh_.property(split_to_, v).push_back(new_vertex);
 				mesh_.property(new_end, h) = new_vertex;
 				whether_new_vert_exists[wedge] = new_vertex;
-				TransferVertexData(v, new_vertex);
 			}
 		}
 	}
@@ -183,29 +184,29 @@ void MeshSlicer::SliceAccordingToWedge(SurfaceMesh &new_mesh)
 			verts.push_back(nv);
 		}
 		FaceHandle new_f = new_mesh.add_face(verts);
-		TransferFaceData(f, new_f);
 		for (int i = 0; i < 3; ++i) {
 			HalfedgeHandle he = new_mesh.find_halfedge(verts[i], verts[(i + 1) % 3]);
 			HalfedgeHandle ohe = mesh_.find_halfedge(old_verts[i], old_verts[(i + 1) % 3]);
-			mesh_.property(halfedge_split_to, ohe) = he;
-			TransferHalfedgeData(ohe, he);
+			mesh_.property(convert_to_, ohe) = he;
 			EdgeHandle e = new_mesh.edge_handle(he);
 			EdgeHandle oe = mesh_.edge_handle(ohe);
-			TransferEdgeData(oe, e);
 		}
 	}
+	
 	new_mesh.RequestBoundary();
-	for (auto eiter = mesh_.edges_begin(); eiter != mesh_.edges_end(); ++eiter) {
-		EdgeHandle e = *eiter;
-		HalfedgeHandle h0 = mesh_.halfedge_handle(e, 0);
-		HalfedgeHandle h1 = mesh_.halfedge_handle(e, 1);
-		HalfedgeHandle new_h0 = mesh_.property(halfedge_split_to, h0);
-		HalfedgeHandle new_h1 = mesh_.property(halfedge_split_to, h1);
-		if (mesh_.is_boundary(e)) {
-			assert(new_h0.is_valid());
-			assert(new_h1.is_valid());
-		}
-		new_mesh.data(new_h0).set_original_opposition(new_h1);
-		new_mesh.data(new_h1).set_original_opposition(new_h0);
-	}
+
+
+	//for (auto eiter = mesh_.edges_begin(); eiter != mesh_.edges_end(); ++eiter) {
+	//	EdgeHandle e = *eiter;
+	//	HalfedgeHandle h0 = mesh_.halfedge_handle(e, 0);
+	//	HalfedgeHandle h1 = mesh_.halfedge_handle(e, 1);
+	//	HalfedgeHandle new_h0 = mesh_.property(halfedge_split_to, h0);
+	//	HalfedgeHandle new_h1 = mesh_.property(halfedge_split_to, h1);
+	//	if (mesh_.is_boundary(e)) {
+	//		assert(new_h0.is_valid());
+	//		assert(new_h1.is_valid());
+	//	}
+	//	//new_mesh.data(new_h0).set_original_opposition(new_h1);
+	//	//new_mesh.data(new_h1).set_original_opposition(new_h0);
+	//}
 }

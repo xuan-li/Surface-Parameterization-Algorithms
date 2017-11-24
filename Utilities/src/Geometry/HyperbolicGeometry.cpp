@@ -3,15 +3,15 @@
 
 std::function<Complex(Complex const)> ComputeMobiusTransformation(Complex const s0, Complex const s1, Complex const t0, Complex const t1)
 {
-	std::function<Complex(Complex const)> s0_to_zero = [=](Complex const c)->Complex {
+	auto s0_to_zero = [=](Complex const c)->Complex {
 		return (c - s0) / (Complex(1,0) - std::conj(s0)*c);
 	};
 
-	std::function<Complex(Complex const)> t0_to_zero = [=](Complex const c)->Complex {
+	auto t0_to_zero = [=](Complex const c)->Complex {
 		return (c - t0) / (Complex(1, 0) - std::conj(t0)*c);
 	};
 
-	std::function<Complex(Complex const)> zero_to_t0 = [=](Complex const c)->Complex {
+	auto zero_to_t0 = [=](Complex const c)->Complex {
 		return (c + t0) / (Complex(1, 0) + std::conj(t0)*c);
 	};
 
@@ -20,7 +20,7 @@ std::function<Complex(Complex const)> ComputeMobiusTransformation(Complex const 
 	
 	Complex rotation_coeff = new_t1 / new_s1;
 
-	std::function<Complex(Complex const)> result = [=](Complex const c)->Complex {
+	auto result = [=](Complex const c)->Complex {
 		Complex resualt = (c - s0) / (Complex(1, 0) - std::conj(s0)*c);
 		resualt *= rotation_coeff;
 		resualt = (resualt + t0) / (Complex(1, 0) + std::conj(t0)*resualt);

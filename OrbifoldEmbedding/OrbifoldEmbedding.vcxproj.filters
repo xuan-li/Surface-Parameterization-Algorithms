@@ -21,7 +21,7 @@
     <ClInclude Include="src\EuclideanOrbifoldSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\OrbifoldMeshSlicer.h">
+    <ClInclude Include="src\OrbifoldInitializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -29,10 +29,10 @@
     <ClCompile Include="src\EuclideanOrbifoldSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\OrbifoldMeshSlicer.cpp">
+    <ClCompile Include="src\HyperbolicOrbifoldSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\HyperbolicOrbifoldSolver.cpp">
+    <ClCompile Include="src\OrbifoldInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

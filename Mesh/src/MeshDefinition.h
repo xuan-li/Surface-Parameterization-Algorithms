@@ -37,6 +37,8 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 		void set_reindex(int i) { reindex_ = i; }
 		double u() { return u_; }
 		void set_u(double u_value) {u_ = u_value; }
+		void set_angle_sum(double angle_sum) { angle_sum_ = angle_sum; }
+		double angle_sum() { return angle_sum_; }
 
 	private:
 		typename Refs::VertexHandle equivalent_vertex_;
@@ -46,6 +48,7 @@ struct SurfaceMeshTraits : public OpenMesh::DefaultTraits
 		double curvature_;
 		double target_curvature_;
 		double u_;
+		double angle_sum_;
 		int reindex_;
 
 	};

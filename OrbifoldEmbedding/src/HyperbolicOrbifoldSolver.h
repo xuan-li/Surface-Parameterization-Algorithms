@@ -2,7 +2,7 @@
 #define HYPERBOLIC_ORBIFOLD_SOLVER_H_
 
 #include <MeshDefinition.h>
-#include "OrbifoldMeshSlicer.h"
+#include "OrbifoldInitializer.h"
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 
@@ -17,13 +17,16 @@
 class HyperbolicOrbifoldSolver
 {
 public:
-	HyperbolicOrbifoldSolver(SurfaceMesh &mesh);
+	HyperbolicOrbifoldSolver(SurfaceMesh &mesh, OpenMesh::VPropHandleT<bool> cone_flag, OpenMesh::EPropHandleT<bool> slice_flag);
 	SurfaceMesh Compute();
 	std::vector<OpenMesh::VertexHandle> ConeVertices() { return cone_vts_; }
 
 protected:
 	SurfaceMesh &mesh_;
 	SurfaceMesh sliced_mesh_;
+	OpenMesh::VPropHandleT<bool> cone_flag_;
+	OpenMesh::VPropHandleT<double> cone_angle_;
+	OpenMesh::EPropHandleT<bool> slice_flag_;
 	std::vector<OpenMesh::VertexHandle> cone_vts_;
 	std::vector<std::vector<OpenMesh::VertexHandle>> segments_vts_;
 	OpenMesh::VPropHandleT<std::function<Complex(Complex const)>> vtx_transit_;
@@ -33,22 +36,21 @@ protected:
 	double max_error = 1e-4;
 
 protected:
-	void CutToDist(int n_cones);
 
 	void InitOrbifold();
-	void InitType1();
-
+	
 	double CosineLaw(double a, double b, double c);
 	double AngleCosineLaw(double a, double b, double c);
 	void ComputeCornerAngles();
 	void ComputeHalfedgeWeights();
+	
+	void InitiateBoundaryData();
 	void InitMap();
 
 	void ComputeEdgeLength();
 	double ComputeGradient();
 	OpenMesh::Vec2d ComputeGradientOfDistance2(Complex src, Complex dst);
 	OpenMesh::Vec2d ComputeGradient(OpenMesh::VertexHandle v);
-	OpenMesh::Vec2d ComputeIntrinsicGradient(OpenMesh::VertexHandle v);
 	
 	double ComputeEnergy();
 	Eigen::VectorXd GetCoordsVector();

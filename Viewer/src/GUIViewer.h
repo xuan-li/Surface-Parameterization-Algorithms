@@ -62,12 +62,16 @@ private:
 	ShowOption show_option_ = ORIGINAL;
 	bool show_boundaries_ = false;
 	bool show_slice_ = false;
+	bool show_vertex_labels_ = false;
 	bool euclidean_ = false;
 	bool hyperbolic_ = false;
 
-	int vertex_index_= 0;
-	int slice_start_ = 0;
-	int slice_end_ = 0;
+	double cone_angle_ = 0.;
+
+	bool selection_mode_ = false;
+
+
+	std::vector<OpenMesh::VertexHandle> selected_verts_;
 
 
 protected:
@@ -75,6 +79,7 @@ protected:
 	// Init functions
 	void InitMenu();
 	void InitKeyboard();
+	void InitMouse();
 
 	// IO functions
 	void LoadMesh();
@@ -89,14 +94,19 @@ protected:
 	void ShowHalfedges(SurfaceMesh &mesh, std::vector<OpenMesh::HalfedgeHandle> h_vector);
 	void ShowBoundaries(SurfaceMesh &mesh);
 	void ShowSliceAndCones();
+	void ShowVertexLabels();
 	void UpdateMeshViewer();
 
 
 	// Setting slices and singularities
-	void SetSlice(int i, int j);
-	void SetSingularity(int i);
+	void SetSlice();
+	void SetSingularity(double cone_angle);
 	
+	void LoadMarker();
+	void SaveMarker();
 
+	void FindIntersection(double x, double y);
+	void ShowSelction();
 
 };
 

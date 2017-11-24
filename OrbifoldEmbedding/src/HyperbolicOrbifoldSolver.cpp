@@ -2,7 +2,8 @@
 
 
 
-HyperbolicOrbifoldSolver::HyperbolicOrbifoldSolver(SurfaceMesh & mesh): mesh_(mesh)
+HyperbolicOrbifoldSolver::HyperbolicOrbifoldSolver(SurfaceMesh &mesh, OpenMesh::VPropHandleT<bool> cone_flag, OpenMesh::EPropHandleT<bool> slice_flag)
+	: mesh_(mesh), cone_flag_(cone_flag), slice_flag_(slice_flag)
 {
 
 }
@@ -45,86 +46,46 @@ SurfaceMesh HyperbolicOrbifoldSolver::Compute()
 	return sliced_mesh_;
 }
 
-void HyperbolicOrbifoldSolver::CutToDist(int n_cones)
-{
-	n_cones_ = n_cones;
-	OrbifoldMeshSlicer slicer(mesh_);
-	slicer.CutAndSelectSingularities(sliced_mesh_, n_cones);
-	cone_vts_ = slicer.GetConeVertices();
-	segments_vts_ = slicer.GetSegments();
-}
-
 void HyperbolicOrbifoldSolver::InitOrbifold()
 {
-	InitType1();
+	using namespace OpenMesh;
+	if (!cone_angle_.is_valid()) mesh_.add_property(cone_angle_);
+	for (auto viter = mesh_.vertices_begin(); viter != mesh_.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		if (mesh_.property(cone_flag_, v)) {
+			mesh_.property(cone_angle_, v) = PI;
+		}
+	}
+	OrbifoldInitializer initializer(mesh_);
+	initializer.Initiate(sliced_mesh_, cone_flag_, cone_angle_, slice_flag_);
+	initializer.ComputeHyperbolicTransformations(sliced_mesh_, vtx_transit_);
+	cone_vts_ = initializer.GetConeVertices();
+	segments_vts_ = initializer.GetSegments();
+
+	std::cout << "Cone coordinates:\n";
+	for (int i = 0; i < cone_vts_.size(); ++i) {
+		Vec2d uv = sliced_mesh_.texcoord2D(cone_vts_[i]);
+		std::cout << uv[0] << "\t" << uv[1] << std::endl;
+	}
 }
 
-void HyperbolicOrbifoldSolver::InitType1()
+void HyperbolicOrbifoldSolver::InitiateBoundaryData()
 {
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
-
-	CutToDist(7);
-
-	double radius = AngleCosineLaw(2 * PI / n_cones_, PI / 4., PI / 4.);
-	double ratio = (exp(radius) - 1) / (exp(radius) + 1);
-
-	Vec2d p1(cos(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
-	Vec2d pk(cos(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (1 + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
-	double edge_length = AngleCosineLaw(PI / 4, PI / 4, 2 * PI / n_cones_);
-	double target_radis = (exp(edge_length/2) - 1) / (exp(edge_length/2) + 1);
-	Complex p1_source(p1[0], p1[1]);
-	Complex pk_source(pk[0], pk[1]);
-	Complex p1_target(-target_radis, 0);
-	Complex pk_target(target_radis, 0);
-
-	if (!vtx_transit_.is_valid()) {
-		mesh.add_property(vtx_transit_);
-	}
-	auto transformation = ComputeMobiusTransformation(p1_source, pk_source, p1_target, pk_target);
-
-	for (int i = 0; i < n_cones_; ++i) {
-		Vec2d uv = Vec2d(cos(PI / 2 + (-i + n_cones_ / 2) * 2 * PI / n_cones_)*ratio, sin(PI / 2 + (-i + n_cones_ / 2) * 2 * PI / n_cones_)*ratio);
-		Complex uv_complex = transformation(Complex(uv[0], uv[1]));
-		uv = Vec2d(uv_complex.real(), uv_complex.imag());
-		mesh.set_texcoord2D(cone_vts_[i], uv);
-		uv_complex = std::conj(uv_complex);
-		uv = Vec2d(uv_complex.real(), uv_complex.imag());
-		if(i != 0 && i != n_cones_ - 1)
-			mesh.set_texcoord2D(cone_vts_[2 * n_cones_ - 2 - i], uv);
-	}
-	
-	std::cout << "Cone coordinates:\n";
-	for (int i = 0; i < cone_vts_.size(); ++i) {
-		Vec2d uv = mesh.texcoord2D(cone_vts_[i]);
-		std::cout << uv[0] << "\t" << uv[1] << std::endl;
-	}
-
-	for (int i = 0; i < segments_vts_.size(); ++i) {
-		Vec2d s0_uv = mesh.texcoord2D(cone_vts_[i]);
-		Vec2d s1_uv = mesh.texcoord2D(cone_vts_[(i + 1) % cone_vts_.size()]);
-		Vec2d t0_uv = mesh.texcoord2D(cone_vts_[(2 * n_cones_ - 2 - i) % cone_vts_.size()]);
-		Vec2d t1_uv = mesh.texcoord2D(cone_vts_[(2 * n_cones_ - 2 - i - 1) % cone_vts_.size()]);
-
-		Complex s0(s0_uv[0], s0_uv[1]);
-		Complex s1(s1_uv[0], s1_uv[1]);
-		Complex t0(t0_uv[0], t0_uv[1]);
-		Complex t1(t1_uv[0], t1_uv[1]);
-		/*std::cout << s0 << "\t" << s1 << std::endl;
-		std::cout << t0 << "\t" << t1 << std::endl << std::endl;*/
-
-		auto transformation = ComputeMobiusTransformation(s0, s1, t0, t1);
-		assert(abs(transformation(s1) - t1) < 1e-6);
-		// initiate the boundary's coordinates along the way.
-		Vec2d segment_start = mesh.texcoord2D(cone_vts_[i]);
-		Vec2d segment_end = mesh.texcoord2D(cone_vts_[(i + 1) % cone_vts_.size()]);
+	for (int i = 0; i < segments_vts_.size(); ++i) {	
+		auto seg = segments_vts_[i];
+		Vec2d segment_start = mesh.texcoord2D(seg.front());
+		Vec2d segment_end = mesh.texcoord2D(seg.back());
 		Vec2d segment_vector = segment_end - segment_start;
 		double segment_length = (segment_vector).norm();
 		double interval_length = segment_length / (segments_vts_[i].size() + 1);
 		int j = 1;
-		for (auto it = segments_vts_[i].begin(); it != segments_vts_[i].end(); ++it, ++j) {
-			mesh.property(vtx_transit_, *it) = transformation;
+		for (auto it = seg.begin(); it != seg.end(); ++it) {
+			VertexHandle v = *it;
+			if (mesh.data(v).is_singularity()) continue;
 			mesh.set_texcoord2D(*it, segment_start + segment_vector * j * interval_length / segment_length);
+			++j;
 		}
 	}
 
@@ -291,47 +252,6 @@ OpenMesh::Vec2d HyperbolicOrbifoldSolver::ComputeGradient(OpenMesh::VertexHandle
 	return gradient * metric_factor;
 }
 
-OpenMesh::Vec2d HyperbolicOrbifoldSolver::ComputeIntrinsicGradient(OpenMesh::VertexHandle v)
-{
-	using namespace OpenMesh;
-	SurfaceMesh &mesh = sliced_mesh_;
-
-	if (mesh.data(v).is_singularity()) {
-		return Vec2d(0, 0);
-	}
-	Vec2d v_uv = mesh.texcoord2D(v);
-	Complex v_complex(v_uv[0], v_uv[1]);
-
-	Complex gradient(0, 0);
-	
-	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(v); vohiter.is_valid(); ++vohiter) {
-		HalfedgeHandle h = *vohiter;
-		VertexHandle neighbor = mesh.to_vertex_handle(h);
-		auto neighbor_uv = mesh.texcoord2D(neighbor);
-		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
-		double n_w = mesh.data(h).weight();
-		assert(n_w > 0);
-		gradient -= n_w * InverseExponentialMap(v_complex, neighbor_complex);
-	}
-
-	if (!mesh.is_boundary(v)) return Vec2d(gradient.real(), gradient.imag());
-
-	VertexHandle equiv = mesh.data(v).equivalent_vertex();
-	
-	for (SurfaceMesh::VertexOHalfedgeIter vohiter = mesh.voh_iter(equiv); vohiter.is_valid(); ++vohiter) {
-		HalfedgeHandle h = *vohiter;
-		VertexHandle neighbor = mesh.to_vertex_handle(h);
-		auto neighbor_uv = mesh.texcoord2D(neighbor);
-		Complex neighbor_complex(neighbor_uv[0], neighbor_uv[1]);
-		std::function<Complex(Complex const)> transformation = mesh.property(vtx_transit_, equiv);
-		neighbor_complex = transformation(neighbor_complex);
-		double n_w = mesh.data(h).weight();
-		gradient -= n_w * InverseExponentialMap(v_complex, neighbor_complex);
-	}
-
-	return Vec2d(gradient.real(), gradient.imag());
-}
-
 double HyperbolicOrbifoldSolver::ComputeEnergy()
 {
 	using namespace OpenMesh;
@@ -430,6 +350,7 @@ void HyperbolicOrbifoldSolver::Normalize()
 	for (auto it = segments_vts_.begin(); it != segments_vts_.end(); ++it) {
 		for (auto viter = (*it).begin(); viter != (*it).end(); ++viter) {
 			VertexHandle v = *viter;
+			if (mesh.data(v).is_singularity()) continue;
 			VertexHandle equiv = mesh.data(v).equivalent_vertex();
 			Vec2d equiv_uv = mesh.texcoord2D(equiv);
 			Complex equiv_complex(equiv_uv[0], equiv_uv[1]);
@@ -440,11 +361,14 @@ void HyperbolicOrbifoldSolver::Normalize()
 	}
 }
 
+// Compute a harmonic map as a initial map
 void HyperbolicOrbifoldSolver::InitMap()
 {
 	using namespace OpenMesh;
 	SurfaceMesh &mesh = sliced_mesh_;
 	using namespace Eigen;
+
+	InitiateBoundaryData();
 	
 	SparseMatrix<double> A(mesh.n_vertices() * 2, mesh.n_vertices() * 2);
 	A.setZero();

@@ -132,12 +132,12 @@
   <ItemGroup>
     <ClInclude Include="src\EuclideanOrbifoldSolver.h" />
     <ClInclude Include="src\HyperbolicOrbifoldSolver.h" />
-    <ClInclude Include="src\OrbifoldMeshSlicer.h" />
+    <ClInclude Include="src\OrbifoldInitializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EuclideanOrbifoldSolver.cpp" />
     <ClCompile Include="src\HyperbolicOrbifoldSolver.cpp" />
-    <ClCompile Include="src\OrbifoldMeshSlicer.cpp" />
+    <ClCompile Include="src\OrbifoldInitializer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
