@@ -71,7 +71,7 @@ private:
 	bool selection_mode_ = false;
 
 
-	std::vector<OpenMesh::VertexHandle> selected_verts_;
+	std::list<OpenMesh::VertexHandle> selected_verts_;
 
 
 protected:

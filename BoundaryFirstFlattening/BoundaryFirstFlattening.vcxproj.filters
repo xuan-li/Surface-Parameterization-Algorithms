@@ -18,9 +18,15 @@
     <ClInclude Include="src\BFF.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\BFFInitializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BFF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BFFInitializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

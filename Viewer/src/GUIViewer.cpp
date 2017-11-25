@@ -47,9 +47,26 @@ void OTEViewer::InitMenu()
 			euclidean_ = false;
 			hyperbolic_ = true;
 		});
-		viewer.ngui->addButton("BFF", [this]() {
-			BFFSolver solver(this->mesh_);
-			this->sliced_mesh_ = solver.Compute();
+		
+		viewer.ngui->addButton("Hilbert BFF", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(0);
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = false;
+			hyperbolic_ = false;
+		});
+
+		viewer.ngui->addButton("Harmonic BFF", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(1);
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = false;
+			hyperbolic_ = false;
+		});
+
+		viewer.ngui->addButton("Free Boundary BFF", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(2);
 			this->cone_vts_ = solver.ConeVertices();
 			euclidean_ = true;
 			hyperbolic_ = false;
@@ -94,14 +111,14 @@ void OTEViewer::InitKeyboard()
 {
 	callback_key_down = [this](igl::viewer::Viewer& viewer, unsigned char key, int modifier) 
 	{
-		if (key == 'V') {
+		if (key == 'S') {
 			selection_mode_ = true;
 		}
 		return false;
 	};
 	callback_key_up = [this](igl::viewer::Viewer& viewer, unsigned char key, int modifier)
 	{
-		if (key == 'V') {
+		if (key == 'S') {
 			selection_mode_ = false;
 		}
 		return false;
@@ -120,6 +137,7 @@ void OTEViewer::InitMouse()
 			x = (viewer.down_mouse_x - center(0)) / (viewport(2) / 2.);
 			y = -(viewer.down_mouse_y - center(1)) / (viewport(3) / 2.);
 			this->FindIntersection(x, y);
+			this->UpdateMeshViewer();
 		} 
 
 		return false;
@@ -464,8 +482,16 @@ void OTEViewer::FindIntersection(double x, double y)
 		}
 		
 	}
-	selected_verts_.push_back(nearest_vertex);
-	ShowSelction();
+	bool exist = false;
+	for (auto it = selected_verts_.begin(); it != selected_verts_.end(); ++it) {
+		if (nearest_vertex == *it) {
+			selected_verts_.erase(it);
+			exist = true;
+			break;
+		}
+	}
+	if(!exist)
+		selected_verts_.push_back(nearest_vertex);
 }
 
 void OTEViewer::ShowSelction()
@@ -489,8 +515,9 @@ void OTEViewer::ShowSelction()
 	P.resize(selected_verts_.size(), 3);
 	
 	if (P.rows() > 0) {
-		for (int i = 0; i < selected_verts_.size(); ++i) {
-			VertexHandle v = selected_verts_[i];
+		int i = 0;
+		for (auto it = selected_verts_.begin(); it != selected_verts_.end(); ++it, ++i) {
+			VertexHandle v = *it;
 			Vec3d p = mesh_.point(v);
 			P.row(i) = Eigen::Vector3d(p[0], p[1], p[2]);
 		}

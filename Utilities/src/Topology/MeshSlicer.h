@@ -17,6 +17,8 @@ public:
 	void ConstructWedge();
 	void SliceAccordingToWedge(SurfaceMesh &sliced_mesh);
 	void AddOnCutEdge(OpenMesh::EdgeHandle e) { mesh_.property(on_cut_, e) = true; }
+
+	OpenMesh::VPropHandleT<std::vector<OpenMesh::VertexHandle>> split_to() { return split_to_; }
 protected:
 
 	SurfaceMesh &mesh_;

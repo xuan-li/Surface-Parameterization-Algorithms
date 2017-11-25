@@ -40,6 +40,7 @@ void OrbifoldInitializer::ComputeEuclideanTransformations(SurfaceMesh & sliced_m
 		Complex t0(sliced_mesh.texcoord2D(vt0)[0], sliced_mesh.texcoord2D(vt0)[1]);
 		Complex t1(sliced_mesh.texcoord2D(vt1)[0], sliced_mesh.texcoord2D(vt1)[1]);
 		Eigen::MatrixXd T = ComputeHomogeousRigidTransformation(s0, s1, t0, t1);
+		std::cout << T << std::endl << std::endl;
 		for (auto viter = seg.begin(); viter != seg.end(); ++viter) {
 			VertexHandle v = *viter;
 			if (sliced_mesh.data(v).is_singularity()) continue;
@@ -90,6 +91,22 @@ void OrbifoldInitializer::InitiateEConeCoords(SurfaceMesh & sliced_mesh)
 		cone_vertices_.size() == 4) {
 		InitiateEConeCoordsType1(sliced_mesh);
 	}
+
+	if (abs(sliced_mesh.data(cone_vertices_.front()).angle_sum() - 2 * PI / 3.) < 1e-5 &&
+		cone_vertices_.size() == 4) {
+		InitiateEConeCoordsType2(sliced_mesh);
+	}
+
+	if (abs(sliced_mesh.data(cone_vertices_.front()).angle_sum() - PI) < 1e-5 &&
+		cone_vertices_.size() == 4) {
+		InitiateEConeCoordsType3(sliced_mesh, true);
+	}
+
+	if (abs(sliced_mesh.data(cone_vertices_.front()).angle_sum() - PI/3.) < 1e-5 &&
+		cone_vertices_.size() == 4) {
+		InitiateEConeCoordsType3(sliced_mesh, false);
+	}
+
 }
 
 void OrbifoldInitializer::InitiateHConeCoords(SurfaceMesh & sliced_mesh)
@@ -151,6 +168,7 @@ void OrbifoldInitializer::CutMesh(SurfaceMesh & sliced_mesh)
 
 	slicer.ConstructWedge();
 	slicer.SliceAccordingToWedge(sliced_mesh);
+
 
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
@@ -218,12 +236,34 @@ void OrbifoldInitializer::InitiateEConeCoordsType1(SurfaceMesh & sliced_mesh)
 
 void OrbifoldInitializer::InitiateEConeCoordsType2(SurfaceMesh & sliced_mesh)
 {
+	using namespace OpenMesh;
+	OpenMesh::Vec2d v0(0, 0);
+	OpenMesh::Vec2d v1(-sqrt(3)/2., 0.5);
+	OpenMesh::Vec2d v2(0, 1);
+	OpenMesh::Vec2d v3(sqrt(3)/2., 0.5);
+	sliced_mesh.set_texcoord2D(cone_vertices_[0], v0);
+	sliced_mesh.set_texcoord2D(cone_vertices_[1], v1);
+	sliced_mesh.set_texcoord2D(cone_vertices_[2], v2);
+	sliced_mesh.set_texcoord2D(cone_vertices_[3], v3);
 }
 
-void OrbifoldInitializer::InitiateEConeCoordsType3(SurfaceMesh & sliced_mesh)
+void OrbifoldInitializer::InitiateEConeCoordsType3(SurfaceMesh & sliced_mesh, bool up)
 {
+	using namespace OpenMesh;
+	OpenMesh::Vec2d v0(0, 0);
+	OpenMesh::Vec2d v1(-0.5, 0);
+	OpenMesh::Vec2d v2(0, sqrt(3)/2.);
+	OpenMesh::Vec2d v3(0.5, 0);
+	if (!up) {
+		OpenMesh::Vec2d v0(0, sqrt(3) / 2.);
+		OpenMesh::Vec2d v1(0.5, 0);
+		OpenMesh::Vec2d v2(0, 0);
+		OpenMesh::Vec2d v3(-0.5, 0);
+	}
+	sliced_mesh.set_texcoord2D(cone_vertices_[0], v0);
+	sliced_mesh.set_texcoord2D(cone_vertices_[1], v1);
+	sliced_mesh.set_texcoord2D(cone_vertices_[2], v2);
+	sliced_mesh.set_texcoord2D(cone_vertices_[3], v3);
 }
 
-void OrbifoldInitializer::InitiateEConeCoordsType4(SurfaceMesh & sliced_mesh)
-{
-}
+

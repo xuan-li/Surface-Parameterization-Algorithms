@@ -121,9 +121,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\BFF.h" />
+    <ClInclude Include="src\BFFInitializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BFF.cpp" />
+    <ClCompile Include="src\BFFInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">

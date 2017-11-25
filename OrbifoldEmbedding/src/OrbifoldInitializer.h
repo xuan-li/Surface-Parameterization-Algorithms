@@ -43,8 +43,7 @@ protected:
 	void InitiateEConeCoords(SurfaceMesh &sliced_mesh);
 	void InitiateEConeCoordsType1(SurfaceMesh &sliced_mesh);
 	void InitiateEConeCoordsType2(SurfaceMesh &sliced_mesh);
-	void InitiateEConeCoordsType3(SurfaceMesh &sliced_mesh);
-	void InitiateEConeCoordsType4(SurfaceMesh &sliced_mesh);
+	void InitiateEConeCoordsType3(SurfaceMesh &sliced_mesh, bool up );
 
 	void InitiateHConeCoords(SurfaceMesh &sliced_mesh);
 	double HyperbolicCosineLaw(double a, double b, double c);

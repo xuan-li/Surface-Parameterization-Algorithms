@@ -186,7 +186,7 @@ void EuclideanOrbifoldSolver::ConstructSparseSystem()
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * equiv.idx(), rotation_matrix(0,0)));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * equiv.idx() + 1, rotation_matrix(0, 1)));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx(), rotation_matrix(1, 0)));
-			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx(), rotation_matrix(1, 1)));
+			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * equiv.idx()+1, rotation_matrix(1, 1)));
 
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx(), 2 * v.idx(), -1.));
 			A_coefficients.push_back(Eigen::Triplet<double>(2 * equiv.idx() + 1, 2 * v.idx() + 1, - 1.));
@@ -217,4 +217,16 @@ void EuclideanOrbifoldSolver::SolveLinearSystem()
 		Vec2d uv(x(2 * v.idx()), x(2 * v.idx() + 1));
 		mesh.set_texcoord2D(v, uv);
 	}
+	/*Eigen::MatrixXd B = A_.toDense();
+	int n_boundary = mesh.GetBoundaries().front().size();
+	Eigen::MatrixXd C(n_boundary * 2, mesh.n_vertices() * 2);
+	int i = 0;
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		if (mesh.is_boundary(v)) {
+			C.block(2 * i, 0, 2, mesh.n_vertices() * 2) = B.block(2 * v.idx(), 0, 2, mesh.n_vertices() * 2);
+			++i;
+		}
+	}
+	std::cout << C.transpose() << std::endl;*/
 }
