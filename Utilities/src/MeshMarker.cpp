@@ -64,6 +64,9 @@ void MeshMarker::SetSingularity(OpenMesh::VertexHandle v, double cone_angle)
 		mesh.property(cone_angle_, v) = cone_angle * PI;
 		++n_vertices_;
 	}
+	else {
+		mesh.property(cone_angle_, v) = cone_angle * PI;
+	}
 }
 
 void MeshMarker::GenerateMatrix(Eigen::MatrixXd & P, Eigen::MatrixXd & EP1, Eigen::MatrixXd & EP2)

@@ -405,7 +405,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 	Eigen::VectorXd L(n_boundary_); // mesh euclidean length.
 	Eigen::VectorXd L_dual(n_boundary_);
 	auto boundary = mesh.GetBoundaries().front();
-	mesh.property(cumulative_angle, mesh.from_vertex_handle(boundary.front())) = 0;
+	mesh.property(cumulative_angle, mesh.from_vertex_handle(boundary.front())) = mesh.data(mesh.from_vertex_handle(boundary.front())).target_curvature();
 	int i = 0;
 	for (auto it = boundary.begin(); it != boundary.end(); ++it, ++i) {
 		VertexHandle v0 = mesh.from_vertex_handle(*it);
@@ -416,7 +416,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 		double l = mesh.calc_edge_length(e);
 		double l_star = exp(0.5 * (u0 + u1)) * l;
 		double angle = mesh.property(cumulative_angle, v0);
-		mesh.property(cumulative_angle, v1) = angle + mesh.data(v0).target_curvature();
+		mesh.property(cumulative_angle, v1) = angle + mesh.data(v1).target_curvature();
 		mesh.property(tangent, v0) = Vec2d(cos(angle), sin(angle));
 
 		T(0, i) = cos(angle);
@@ -447,14 +447,14 @@ void BFFSolver::IntegrateBoundaryCurve()
 	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
 		HalfedgeHandle h = *it;
 		HalfedgeHandle oppo_inner = mesh.data(mesh.opposite_halfedge_handle(h)).original_opposition();
-		/*if (oppo_inner.is_valid()) {
+		if (oppo_inner.is_valid()) {
 			HalfedgeHandle oppo = mesh.opposite_halfedge_handle(oppo_inner);
 			oppo_relation[mesh.property(reindex, h)] = mesh.property(reindex, oppo);
 			oppo_relation[mesh.property(reindex, oppo)] = mesh.property(reindex, h);
 		}
-		else {*/
+		else {
 			oppo_relation[mesh.property(reindex, h)] = -1;
-		/*}*/
+		}
 	}
 
 	std::vector<HalfedgeHandle> valid_halfedges;
@@ -503,7 +503,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 			L_normalized(oppo_index) = L_normalized_valid(i);
 	}
 	
-	std::cout << L_normalized << std::endl;
+	//std::cout << L_normalized << std::endl;
 	//L_normalized = L_star - N_inverse * T.transpose() * (T * N_inverse* T.transpose()).inverse() * T * L_star;
 	double test = (T * L_normalized).norm();
 	i = 0;
@@ -549,7 +549,7 @@ void BFFSolver::ExtendToInteriorHilbert()
 		VertexHandle v = mesh.to_vertex_handle(boundary[i]);
 		VertexHandle v_prev = mesh.from_vertex_handle(boundary[i]);
 		VertexHandle v_next = mesh.to_vertex_handle(boundary[(i + 1) % boundary.size()]);
-		h(mesh.data(v).reindex()) = 0.5 * (a(v_prev.idx()) - a(v_next.idx()));
+		h(mesh.data(v).reindex()) = -0.5 * (a(v_next.idx()) - a(v_prev.idx()));
 	}
 
 	solver.compute(Delta_);
