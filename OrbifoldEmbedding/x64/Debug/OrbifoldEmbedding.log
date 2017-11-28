@@ -1,7 +1,0 @@
-﻿  OrbifoldInitializer.cpp
-c:\code\graphics\graphicsproject\orbifoldembedding\src\orbifoldinitializer.cpp(116): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  HyperbolicOrbifoldSolver.cpp
-  EuclideanOrbifoldSolver.cpp
-  OrbifoldEmbedding.vcxproj -> C:\Code\Graphics\GraphicsProject\x64\Debug\OrbifoldEmbedding.lib
