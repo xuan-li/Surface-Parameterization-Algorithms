@@ -1,0 +1,48 @@
+\begin{thebibliography}{}
+
+\bibitem[Aigerman et~al., 2017]{Aigerman:2017:SOT:3072959.3073615}
+Aigerman, N., Kovalsky, S.~Z., and Lipman, Y. (2017).
+\newblock Spherical orbifold tutte embeddings.
+\newblock {\em ACM Trans. Graph.}, 36(4):90:1--90:13.
+
+\bibitem[Aigerman and Lipman, 2015]{Aigerman:2015:OTE:2816795.2818099}
+Aigerman, N. and Lipman, Y. (2015).
+\newblock Orbifold tutte embeddings.
+\newblock {\em ACM Trans. Graph.}, 34(6):190:1--190:12.
+
+\bibitem[Aigerman and Lipman, 2016]{Aigerman:2016:HOT:2980179.2982412}
+Aigerman, N. and Lipman, Y. (2016).
+\newblock Hyperbolic orbifold tutte embeddings.
+\newblock {\em ACM Trans. Graph.}, 35(6):217:1--217:14.
+
+\bibitem[Bright et~al., 2017]{Bright:2017:HGP:3072959.3073646}
+Bright, A., Chien, E., and Weber, O. (2017).
+\newblock Harmonic global parametrization with rational holonomy.
+\newblock {\em ACM Trans. Graph.}, 36(4):89:1--89:15.
+
+\bibitem[Chen and Weber, 2015]{Chen:2015:BDH:2809654.2766989}
+Chen, R. and Weber, O. (2015).
+\newblock Bounded distortion harmonic mappings in the plane.
+\newblock {\em ACM Trans. Graph.}, 34(4):73:1--73:12.
+
+\bibitem[Gortler et~al., 2006]{Gortler:2006:DOM:1133946.1648437}
+Gortler, S.~J., Gotsman, C., and Thurston, D. (2006).
+\newblock Discrete one-forms on meshes and applications to 3d mesh
+  parameterization.
+\newblock {\em Comput. Aided Geom. Des.}, 23(2):83--112.
+
+\bibitem[Lipman, 2012]{Lipman:2012:BDM:2185520.2185604}
+Lipman, Y. (2012).
+\newblock Bounded distortion mapping spaces for triangular meshes.
+\newblock {\em ACM Trans. Graph.}, 31(4):108:1--108:13.
+
+\bibitem[Sawhney and Crane, 2017]{1704.06873}
+Sawhney, R. and Crane, K. (2017).
+\newblock Boundary first flattening.
+
+\bibitem[Springborn et~al., 2008]{Springborn:2008:CET:1360612.1360676}
+Springborn, B., Schr\"{o}der, P., and Pinkall, U. (2008).
+\newblock Conformal equivalence of triangle meshes.
+\newblock {\em ACM Trans. Graph.}, 27(3):77:1--77:11.
+
+\end{thebibliography}
