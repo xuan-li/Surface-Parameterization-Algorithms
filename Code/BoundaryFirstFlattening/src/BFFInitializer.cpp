@@ -44,12 +44,22 @@ void BFFInitializer::CutMesh(SurfaceMesh & sliced_mesh)
 
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle  v = *viter;
-		if (mesh.property(cone_flag_, v)) {
-			auto verts = slicer.SplitTo(v);
-			for (auto it = verts.begin(); it != verts.end(); ++it) {
-				sliced_mesh.data(*it).set_singularity(true);
+
+		auto verts = slicer.SplitTo(v);
+		
+		for (auto it = verts.begin(); it != verts.end(); ++it) {
+			VertexHandle sv = *it;
+			sliced_mesh.data(sv).set_target_curvature(0);
+			if (mesh.property(cone_flag_, v)) {
+				double angle = mesh_.property(cone_angle_, v) / verts.size();
+				sliced_mesh.data(sv).set_singularity(true);
+				if (sliced_mesh.is_boundary(sv))
+					sliced_mesh.data(sv).set_target_curvature(PI - angle);
+				else
+					sliced_mesh.data(sv).set_target_curvature(2 * PI - angle);
 			}
 		}
+
 	}
 
 

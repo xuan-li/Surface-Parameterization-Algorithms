@@ -48,15 +48,16 @@ void OTEViewer::InitMenu()
 			hyperbolic_ = true;
 		});
 		
-		viewer.ngui->addButton("Hilbert BFF", [this]() {
+		viewer.ngui->addButton("Hilbert BFF With K", [this]() {
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(0);
 			this->cone_vts_ = solver.ConeVertices();
 			euclidean_ = false;
 			hyperbolic_ = false;
+			
 		});
 
-		viewer.ngui->addButton("Harmonic BFF", [this]() {
+		viewer.ngui->addButton("Harmonic BFF With K", [this]() {
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(1);
 			this->cone_vts_ = solver.ConeVertices();
@@ -64,9 +65,17 @@ void OTEViewer::InitMenu()
 			hyperbolic_ = false;
 		});
 
-		viewer.ngui->addButton("Free Boundary BFF", [this]() {
+		viewer.ngui->addButton("Hilbert BFF With Free B", [this]() {
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(2);
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = true;
+			hyperbolic_ = false;
+		});
+
+		viewer.ngui->addButton("Harmonic BFF With Free B", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(3);
 			this->cone_vts_ = solver.ConeVertices();
 			euclidean_ = true;
 			hyperbolic_ = false;

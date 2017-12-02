@@ -8,6 +8,8 @@
 #include <Eigen\IterativeLinearSolvers>
 #include "BFFInitializer.h"
 
+#include <igl\active_set.h>
+
 #ifndef PI
 #define PI 3.141592653
 #endif
@@ -45,14 +47,14 @@ protected:
 	void ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
 	void ComputeHalfedgeWeights(SurfaceMesh &mesh);
 	void ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
-	
-	void ComputeConformalFactors();
 
 	void ComputeLaplacian(SurfaceMesh &mesh, bool mode = false);
 	
 	void ReindexVertices(SurfaceMesh &mesh);
 
-	void BoundaryUToTargetK(bool free_boundary = false);
+	void BoundaryTargetKKnown();
+
+	void FreeBoundary();
 
 	Eigen::VectorXd BoundaryUToTargetK(Eigen::VectorXd &u);
 

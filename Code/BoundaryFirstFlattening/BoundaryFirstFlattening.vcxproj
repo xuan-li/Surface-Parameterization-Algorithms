@@ -71,11 +71,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(SolutionDir)external\Eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src;$(SolutionDir)Mesh\src;$(SolutionDir)Topology\src;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\Eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src;$(SolutionDir)Mesh\src;$(SolutionDir)Topology\src;$(SolutionDir)external\libigl\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>$(SolutionDir)external\Eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src;$(SolutionDir)Mesh\src;$(SolutionDir)Topology\src;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)external\Eigen\include;$(SolutionDir)external\OpenMesh\include;$(SolutionDir)Utilities\src;$(SolutionDir)Mesh\src;$(SolutionDir)Topology\src;$(SolutionDir)external\libigl\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

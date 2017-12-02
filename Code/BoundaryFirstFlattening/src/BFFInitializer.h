@@ -7,6 +7,11 @@
 #include <map>
 #include <Eigen\Core>
 
+#ifndef PI
+#define PI 3.141592653
+#endif
+
+
 class BFFInitializer {
 public:
 	BFFInitializer(SurfaceMesh &mesh);
