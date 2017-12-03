@@ -11,7 +11,13 @@
 #define PI 3.141592653
 #endif
 
-
+// This class is a warper of class MeshSlicer to serve for BFF algorithm.
+// The first step is to cut the mesh to disk.
+// And then it will set singularity flags and target curvatures according to user's input.
+// The constructor receive three properties: 
+//		cone_flag: whether a vertex is a cone point ,
+//		cone_angle: the target sum angles around cones,
+//		slice_flag: whether a edge is on slice.
 class BFFInitializer {
 public:
 	BFFInitializer(SurfaceMesh &mesh);
@@ -25,9 +31,11 @@ protected:
 	OpenMesh::VPropHandleT<double> cone_angle_;
 	OpenMesh::EPropHandleT<bool> slice_flag_;
 
+	//this property stores the each vertex is splitted to what vertices.
 	OpenMesh::VPropHandleT<std::vector<OpenMesh::VertexHandle>> split_to_;
 
 protected:
+	// Cut the mesh into a disk.
 	void CutMesh(SurfaceMesh &sliced_mesh);
 
 };

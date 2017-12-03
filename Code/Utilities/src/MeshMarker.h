@@ -10,7 +10,7 @@
 #define PI 3.14159254
 #endif // !PI
 
-
+// This class is to store user-defined cones, cone angles and slices.
 class MeshMarker {
 public:
 	void SetObject(SurfaceMesh &mesh) { p_mesh_ = &mesh; };

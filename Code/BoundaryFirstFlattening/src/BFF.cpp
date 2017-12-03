@@ -217,7 +217,9 @@ void BFFSolver::BoundaryTargetKKnown()
 	SurfaceMesh &mesh = sliced_mesh_;
 	VectorXd target_k(mesh.n_vertices());
 	target_k.setZero();
+
 	ReindexVertices(mesh);
+
 	std::cout << "Singularities' curvature:" << std::endl;
 	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
 		VertexHandle v = *viter;
@@ -407,14 +409,13 @@ void BFFSolver::IntegrateBoundaryCurve()
 	HPropHandleT<int> reindex;
 	mesh.add_property(reindex);
 
-	// Set edge length and Construct tanget matrix and normalization matrix;
 	int index = 0;
 	for (auto it = boundary.begin(); it != boundary.end(); ++it, ++index) {
 		HalfedgeHandle h = *it;
 		mesh.property(reindex, h) = index;
 	}
 
-
+	// Equivalent edges produced by cut should be of the same length.
 	std::vector<int> oppo_relation(boundary.size());
 	
 	for (auto it = boundary.begin(); it != boundary.end(); ++it) {

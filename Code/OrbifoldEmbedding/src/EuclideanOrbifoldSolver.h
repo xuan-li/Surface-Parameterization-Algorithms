@@ -12,7 +12,9 @@
 #endif
 
 
-
+// This class is the implementation of paper: Orbifold Tutte Embeddings.
+// The system is harmonic system plus rotation constraints.
+// So the problem is linear.
 class EuclideanOrbifoldSolver
 {
 public:

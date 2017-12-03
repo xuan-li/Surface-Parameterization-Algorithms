@@ -4,6 +4,8 @@
 #include "MeshDefinition.h"
 #include "..\Dijkstra.h"
 
+// This class is modified from my previous research codes.
+// The algorithm is in Gu's book Computational Conformal Geometry.
 class MeshSlicer {
 public:
 	MeshSlicer(SurfaceMesh &mesh);

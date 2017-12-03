@@ -8,6 +8,7 @@
 #define INF 0x3f3f3f3f
 #endif
 
+// This function is modified from my previous research codes.
 void DijkstraShortestDist(
 	SurfaceMesh &mesh, 
 	OpenMesh::VertexHandle src, // root node

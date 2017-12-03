@@ -14,6 +14,12 @@
 #define PI 3.141592653
 #endif
 
+// This class is the implementation of paper Boundary First Flattening.
+// 
+// BFF algorithm parameterize the surface according to boundary data.
+// We need one of two kinds of boundary as input: conformal factors or target geodesic curvature.
+// These two kinds of data can be converted to each other.
+// Known boundary data is determined by user and processed in the initializer for BFF.
 class BFFSolver {
 public:
 	BFFSolver(SurfaceMesh &mesh, OpenMesh::VPropHandleT<bool> cone_flag, OpenMesh::VPropHandleT<double> cone_angle, OpenMesh::EPropHandleT<bool> slice_flag);
@@ -39,6 +45,8 @@ protected:
 	int n_cones_;
 
 protected:
+
+	// Cut the mesh into disk, and set all kinds of data and flags.
 	void Init();
 
 	double CosineLaw(double a, double b, double c);
@@ -48,26 +56,38 @@ protected:
 	void ComputeHalfedgeWeights(SurfaceMesh &mesh);
 	void ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
 
+	// Compute cotangent Laplacian operator.
 	void ComputeLaplacian(SurfaceMesh &mesh, bool mode = false);
 	
+	// Seperate inner vertices and boundary vertices.
 	void ReindexVertices(SurfaceMesh &mesh);
 
+	// Convert boundary target geodesic curvature into conformal factors.
 	void BoundaryTargetKKnown();
 
+	// To minimize area distorsion, we preserve the length of boundary, i.e. u_B = 0.
+	// And then we convert conformal factors u_B to target curvature.
 	void FreeBoundary();
 
+	// The operator that convert boundary conformal factors to target curvatures.
 	Eigen::VectorXd BoundaryUToTargetK(Eigen::VectorXd &u);
 
+	// The operator that convert boundary target curvatures to conformal factors.
 	Eigen::VectorXd BoundaryTargetKToU(Eigen::VectorXd &k);
 
+	// Integrate boundary data into a closed loop.
 	void IntegrateBoundaryCurve();
 	
+	// Given boundary's embedding, we use harmonic map to get one component.
+	// And minimize conformal energy use hilbert transform over the other component.
 	void ExtendToInteriorHilbert();
 
+	// Use harmonic map on both components.
 	void ExtendToInteriorHarmonic();
 
 	void ComputeHarmonicMatrix();
 
+	// Normalize uvs s.t. they all fall in unit circle.
 	void NormalizeUV();
 };
 

@@ -105,6 +105,7 @@ protected:
 	void LoadMarker();
 	void SaveMarker();
 
+	// These two functions are used to achieve vertex selection.
 	void FindIntersection(double x, double y);
 	void ShowSelction();
 

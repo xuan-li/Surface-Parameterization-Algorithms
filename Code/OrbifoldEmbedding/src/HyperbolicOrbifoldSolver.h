@@ -14,6 +14,9 @@
 #define PI 3.141592653
 #endif
 
+
+// This is the implementation of paper Hyperbolic Orbifold Embeddings.
+// The problem is non linear.
 class HyperbolicOrbifoldSolver
 {
 public:
@@ -58,6 +61,7 @@ protected:
 	void SetCoords(const Eigen::VectorXd &uv_vector);
 	double OptimizationLoop(double step_length, double error);
 	
+	// Normalize boundary such that it satisfies orbifold requirement.
 	void Normalize();
 };
 
