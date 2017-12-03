@@ -1,0 +1,9 @@
+\BOOKMARK [1][-]{section.1}{Theoretical Backgroud}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Euclidean Orbifold Tutte Embedding}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Hyperbolic Orbifold Tutte Embedding}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Boundary First Flattening}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{Implementation Details}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Overview}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Dependencies}{section.2}% 7
+\BOOKMARK [1][-]{section.3}{Experiments}{}% 8
+\BOOKMARK [1][-]{section.3}{References}{}% 9

@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: main.aux
+The style file: apalike.bst
+Illegal, another \bibstyle command---line 50 of file main.aux
+ : \bibstyle
+ :          {apalike}
+I'm skipping whatever remains of this command
+Database file #1: ../sample.bib
+I was expecting a `,' or a `}'---line 2 of file ../sample.bib
+ : title = Discrete 
+ :                  one-forms on meshes and applications to 3D mesh parameterization,
+I'm skipping whatever remains of this entry
+You've used 8 entries,
+            1935 wiz_defined-function locations,
+            522 strings with 4819 characters,
+and the built_in function-call counts, 2815 in all, are:
+= -- 285
+> -- 123
+< -- 4
++ -- 40
+- -- 40
+* -- 237
+:= -- 517
+add.period$ -- 23
+call.type$ -- 8
+change.case$ -- 58
+chr.to.int$ -- 8
+cite$ -- 8
+duplicate$ -- 92
+empty$ -- 175
+format.name$ -- 54
+if$ -- 528
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 3
+newline$ -- 42
+num.names$ -- 24
+pop$ -- 39
+preamble$ -- 1
+purify$ -- 58
+quote$ -- 0
+skip$ -- 77
+stack$ -- 0
+substring$ -- 198
+swap$ -- 3
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 48
+warning$ -- 0
+while$ -- 22
+width$ -- 0
+write$ -- 99
+(There were 2 error messages)

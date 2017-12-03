@@ -1,0 +1,7 @@
+\beamer@sectionintoc {1}{Introduction}{4}{0}{1}
+\beamer@sectionintoc {2}{Preliminaries}{5}{0}{2}
+\beamer@subsectionintoc {2}{1}{Orbifold}{5}{0}{2}
+\beamer@subsectionintoc {2}{2}{Tutte Embedding}{8}{0}{2}
+\beamer@sectionintoc {3}{Approach}{9}{0}{3}
+\beamer@subsectionintoc {3}{1}{Euclidean Orbifold Tutte Embedding}{9}{0}{3}
+\beamer@subsectionintoc {3}{2}{Hyperbolic Orbifold Tutte Embedding}{15}{0}{3}
