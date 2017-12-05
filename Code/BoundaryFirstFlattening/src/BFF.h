@@ -69,6 +69,10 @@ protected:
 	// And then we convert conformal factors u_B to target curvature.
 	void FreeBoundary();
 
+	// To compute a global parameterization with fixed cone angles.
+	void GlobalParameterization();
+
+
 	// The operator that convert boundary conformal factors to target curvatures.
 	Eigen::VectorXd BoundaryUToTargetK(Eigen::VectorXd &u);
 

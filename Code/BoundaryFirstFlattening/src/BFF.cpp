@@ -14,6 +14,8 @@ SurfaceMesh BFFSolver::Compute(int mode)
 	mode 1: BFF known k with harmonic extension
 	mode 2: BFF free boundary with hilbert extension
 	mode 3: BFF free boundary with harmonic extension
+	mode 4: BFF cone parameterization with hilbert extension
+	mode 5: BFF cone parameterization with harmonic extension
 	*/
 
 	Init();
@@ -22,12 +24,14 @@ SurfaceMesh BFFSolver::Compute(int mode)
 	
 	if (mode == 2 || mode == 3)
 		FreeBoundary();
-	else
+	else if (mode == 0 || mode == 1)
 		BoundaryTargetKKnown();
+	else if (mode == 4 || mode == 5)
+		GlobalParameterization();
 
 	IntegrateBoundaryCurve();
 
-	if(mode == 0 || mode == 2)
+	if(mode == 0 || mode == 2 || mode == 4)
 		ExtendToInteriorHilbert();
 	else
 		ExtendToInteriorHarmonic();
@@ -275,6 +279,73 @@ void BFFSolver::FreeBoundary()
 		mesh.data(v).reindex();
 	}
 
+
+}
+
+void BFFSolver::GlobalParameterization()
+{
+	using namespace Eigen;
+	SurfaceMesh &mesh = mesh_;
+	using namespace OpenMesh;
+	// Using Cherrier Formula
+	// Construct Sparse system;
+	ComputeLaplacian(mesh, true);
+	ComputeVertexCurvatures(mesh);
+	Eigen::VectorXd b(mesh.n_vertices());
+	
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		if (!mesh.property(cone_flag_, v)) {
+			b(mesh.data(v).reindex()) = mesh.data(v).curvature();
+		}
+		else {
+			if (mesh.is_boundary(v))
+				b(mesh.data(v).reindex()) = mesh.data(v).curvature() - (PI - mesh.property(cone_angle_, v));
+			else
+				b(mesh.data(v).reindex()) = mesh.data(v).curvature() - (2 * PI - mesh.property(cone_angle_, v));
+		}
+	}
+	
+	b(mesh.data(*mesh.vertices_begin()).reindex()) = 0;
+	
+	SparseLU<SparseMatrix<double>, COLAMDOrdering<int>> solver;
+	solver.compute(Delta_);
+	if (solver.info() != Eigen::Success){
+		std::cerr << "Waring: Eigen decomposition failed" << std::endl;
+	}
+	Eigen::VectorXd u = solver.solve(b);
+
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		mesh.data(v).set_u(u(mesh.data(v).reindex()));
+	}
+
+	ReindexVertices(sliced_mesh_);
+	u.resize(sliced_mesh_.n_vertices());
+	for (auto viter = mesh.vertices_begin(); viter != mesh.vertices_end(); ++viter) {
+		VertexHandle v = *viter;
+		auto verts = mesh.property(split_to_, v);
+		for (auto it = verts.begin(); it != verts.end(); ++it) {
+			sliced_mesh_.data(*it).set_u(mesh.data(v).u());
+			u(sliced_mesh_.data(*it).reindex()) = mesh.data(v).u();
+		}
+	}
+
+	
+	// Convert u to k
+	VectorXd uB = u.segment(n_interior_, n_boundary_);
+	Eigen::VectorXd target_k = BoundaryUToTargetK(uB);
+	auto boundary = sliced_mesh_.GetBoundaries().front();
+	for (auto it = boundary.begin(); it != boundary.end(); ++it) {
+		VertexHandle v = sliced_mesh_.to_vertex_handle(*it);
+		sliced_mesh_.data(v).set_target_curvature(target_k(sliced_mesh_.data(v).reindex() - n_interior_));
+	}
+
+	std::cout << "Singularities' curvature:" << std::endl;
+	for (auto it = cone_vts_.begin(); it != cone_vts_.end(); ++it) {
+		VertexHandle v = *it;
+		std::cout << sliced_mesh_.data(v).target_curvature() / PI << "pi" << std::endl;
+	}
 
 }
 

@@ -80,6 +80,20 @@ void OTEViewer::InitMenu()
 			euclidean_ = true;
 			hyperbolic_ = false;
 		});
+		viewer.ngui->addButton("Harmonic BFF With Cones", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(5);
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = true;
+			hyperbolic_ = false;
+		});
+		viewer.ngui->addButton("Hilbert BFF With Cones", [this]() {
+			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
+			this->sliced_mesh_ = solver.Compute(4);
+			this->cone_vts_ = solver.ConeVertices();
+			euclidean_ = true;
+			hyperbolic_ = false;
+		});
 
 		viewer.ngui->addGroup("Viewer Options");
 
