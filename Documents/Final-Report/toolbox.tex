@@ -1,0 +1,34 @@
+\section{Project Overview}
+\subsection{Toolbox}
+I implemented my whole project on Windows, using Visual Studio Community 2017. And I used some open-source libraries: Eigen \cite{eigenweb}, Libigl \cite{libigl}, LBFGS++\cite{LBFGSpp}, and OpenMesh \cite{Botsch02openmesh}. The needed libraries are compiled into static libraries file (*.lib), and included in the projects.
+
+\subsubsection{OpenMesh}
+OpenMesh \cite{Botsch02openmesh} is the core data sturcture of my project. This library implements so-called halfedge data structure for polygonal mesh.
+
+Each mesh $M = (V, E, F, H)$ can be represented by four components: $V$ stands for vertex set, $E$ stands for edge set, $H$ stands for halfedge setsand $F$ stands for face set. Each edge is corresponded with two opposite halfedges. The linking relations are shown in Fig.\ref{fig:halfedge}.
+
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{images/halfedge}
+\caption{Halfedge data structure.}
+\label{fig:halfedge}
+\end{figure}
+
+\subsubsection{Eigen}
+Eigen \cite{eigenweb} is a standard library to handle matrices and their operations in C++. It's a head-only library, so it's very easy to deploy.
+
+I will use this library to handle linear part in my project.
+
+\subsubsection{LBFGS++}
+LBFGS is a first-order optimization algorithm with line search. LBFGS++ \cite{LBFGSpp} is an implementation for this algorithm in C++. This is a project I found on GitHub, and it is very new. 
+
+I use this algorithm to optimize the energy for hyperbolic orbifold.
+
+\subsubsection{Libigl} 
+Libigl \cite{libigl} is a simple C++ geometry processing library. 
+
+I use this library to implement my GUI. The GUI part of this library is based on Nanogui\footnote{https://github.com/wjakob/nanogui} and OpenGL3. The GUI of my project is shown in Fig.
+
+
+
+On the other hand, this library provides lots of functions used in geomettry processing. I also use its quadratic programming algorithm. It is used in the optimization problem for closed loop in boundary first flatten algorithm.
+

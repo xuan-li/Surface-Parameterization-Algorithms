@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  3 DEC 2017 16:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  5 DEC 2017 15:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -752,7 +752,7 @@ File: microtype.cfg 2016/05/14 v2.6a microtype main configuration file (RS)
 Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
 \c@subfigure=\count136
 \c@subtable=\count137
-) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux)
+) (./abstract.tex) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
@@ -919,48 +919,81 @@ LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 31.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <9> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 31.
- <images/euc_orbifold.png, id=47, 783.92876pt x 380.42125pt>
-File: images/euc_orbifold.png Graphic file (type png)
- <use images/euc_orbifold.png>
-Package pdftex.def Info: images/euc_orbifold.png used on input line 63.
-(pdftex.def)             Requested size: 250.24199pt x 121.43542pt.
+ (./introduction.tex
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 11.
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Package microtype Info: Loading generic settings for font family
+(microtype)             `pcr' (encoding: OT1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+) (./toolbox.tex
+Overfull \hbox (5.47476pt too wide) in paragraph at lines 11--1
+[]\OT1/ptm/m/n/10 (-20) The whole project and doc-u-ments are up-loaded onto GitHub: [][]$\OT1/pcr/m/n/10 https : / / github . com / xuan-[]li / GraphicsProject$[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--1
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <9> not available
+(Font)              Font shape `OT1/phv/b/it' tried instead on input line 5.
+LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <9> not available
+(Font)              Font shape `OT1/phv/b/sl' tried instead on input line 5.
+<images/halfedge.png, id=82, 1075.01625pt x 315.1775pt>
+File: images/halfedge.png Graphic file (type png)
+ <use images/halfedge.png>
+Package pdftex.def Info: images/halfedge.png used on input line 11.
+(pdftex.def)             Requested size: 450.43253pt x 132.06104pt.
  [1
 
-{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] <images/four_euc_orbifolds.png, id=75, 778.91pt x 251.94125pt>
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
+) <images/euc_orbifold.png, id=118, 783.92876pt x 380.42125pt>
+File: images/euc_orbifold.png Graphic file (type png)
+ <use images/euc_orbifold.png>
+Package pdftex.def Info: images/euc_orbifold.png used on input line 70.
+(pdftex.def)             Requested size: 250.24199pt x 121.43542pt.
+ [2 <./images/halfedge.png>] <images/four_euc_orbifolds.png, id=134, 778.91pt x 251.94125pt>
 File: images/four_euc_orbifolds.png Graphic file (type png)
  <use images/four_euc_orbifolds.png>
-Package pdftex.def Info: images/four_euc_orbifolds.png used on input line 85.
+Package pdftex.def Info: images/four_euc_orbifolds.png used on input line 92.
 (pdftex.def)             Requested size: 250.24199pt x 80.93806pt.
- <images/hyperbolic.png, id=79, 710.655pt x 525.965pt>
+ <images/hyperbolic.png, id=138, 710.655pt x 525.965pt>
 File: images/hyperbolic.png Graphic file (type png)
  <use images/hyperbolic.png>
-Package pdftex.def Info: images/hyperbolic.png used on input line 119.
+Package pdftex.def Info: images/hyperbolic.png used on input line 126.
 (pdftex.def)             Requested size: 250.24199pt x 185.20605pt.
- [2 <./images/euc_orbifold.png> <./images/four_euc_orbifolds.png>] (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.bbl) 
+ [3 <./images/euc_orbifold.png> <./images/four_euc_orbifolds.png>] (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.bbl) 
 AED: lastpage setting LastPage
-[3 <./images/hyperbolic.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 143.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 143.
+[4 <./images/hyperbolic.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 154.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 154.
  (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 143.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 143.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 154.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 154.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 143.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 154.
  ) 
 Here is how much of TeX's memory you used:
- 18336 strings out of 492995
- 350651 string characters out of 6132704
- 507136 words of memory out of 5000000
- 21530 multiletter control sequences out of 15000+600000
- 53135 words of font info for 163 fonts, out of 8000000 for 9000
+ 18487 strings out of 492995
+ 352937 string characters out of 6132704
+ 507275 words of memory out of 5000000
+ 21625 multiletter control sequences out of 15000+600000
+ 64740 words of font info for 202 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,12n,49p,847b,448s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.pdf (3 pages, 3586320 bytes).
+ 43i,12n,45p,864b,377s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.pdf (4 pages, 3773689 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 125 compressed objects within 2 object streams
- 28 named destinations out of 1000 (max. 500000)
- 39512 words of extra memory for PDF output out of 42996 (max. 10000000)
+ 209 PDF objects out of 1000 (max. 8388607)
+ 181 compressed objects within 2 object streams
+ 39 named destinations out of 1000 (max. 500000)
+ 49813 words of extra memory for PDF output out of 51595 (max. 10000000)
 

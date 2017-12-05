@@ -1,5 +1,10 @@
 \begin{thebibliography}{}
 
+\bibitem[Aigerman et~al., 2017]{Aigerman:2017:SOT:3072959.3073615}
+Aigerman, N., Kovalsky, S.~Z., and Lipman, Y. (2017).
+\newblock Spherical orbifold tutte embeddings.
+\newblock {\em ACM Trans. Graph.}, 36(4):90:1--90:13.
+
 \bibitem[Aigerman and Lipman, 2015]{Aigerman:2015:OTE:2816795.2818099}
 Aigerman, N. and Lipman, Y. (2015).
 \newblock Orbifold tutte embeddings.
