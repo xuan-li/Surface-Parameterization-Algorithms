@@ -449,7 +449,6 @@ void BFFSolver::IntegrateBoundaryCurve()
 
 	Eigen::VectorXd L_star(n_boundary_); // edge length after conformal map
 	Eigen::VectorXd L(n_boundary_); // mesh euclidean length.
-	Eigen::VectorXd L_dual(n_boundary_);
 	auto boundary = mesh.GetBoundaries().front();
 	mesh.property(cumulative_angle, mesh.from_vertex_handle(boundary.front())) = mesh.data(mesh.from_vertex_handle(boundary.front())).target_curvature();
 	int i = 0;
@@ -470,11 +469,6 @@ void BFFSolver::IntegrateBoundaryCurve()
 		L_star(i) = l_star;
 		L(i) = l;
 	}
-
-	for (int i = 0; i < n_boundary_; ++i) {
-		L_dual((i + 1) % n_boundary_) = 1 / L_star(i);
-	}
-
 
 	// Reindex boundary halfedges
 	HPropHandleT<int> reindex;
@@ -511,15 +505,16 @@ void BFFSolver::IntegrateBoundaryCurve()
 
 	int n_valid_h = valid_halfedges.size();
 	
-	Eigen::MatrixXd N_inverse(n_valid_h, n_valid_h);
-	N_inverse.setZero();
+	Eigen::MatrixXd N(n_valid_h, n_valid_h);
+	N.setZero();
 	for (int i = 1; i < n_valid_h; ++i) {
 		HalfedgeHandle h = valid_halfedges[i];
 		int index = mesh.property(reindex, h);
 		int oppo_index = oppo_relation[index];
-		N_inverse(i, i) = 1. / L_dual(index);
-		if(oppo_index >= 0)
-			N_inverse(i, i) += 1. / L_dual(oppo_index);
+		N(i, i) = L_star(index);
+		if (oppo_index >= 0) {
+			N(i, i) *= 2;
+		}
 	}
 
 	Eigen::MatrixXd newT(T.rows(), n_valid_h);
@@ -536,15 +531,15 @@ void BFFSolver::IntegrateBoundaryCurve()
 	}
 
 	// Use quadratic programming to get optimal solutions.
-	Eigen::SparseMatrix<double> Q = (N_inverse * N_inverse).sparseView();
-	Eigen::VectorXd B = - 2 * N_inverse.diagonal();
+	Eigen::SparseMatrix<double> Q =  (0.5 * N * N).sparseView();
+	Eigen::VectorXd B = - N.diagonal();
 	
 	Eigen::SparseMatrix<double> A_eq(2, Q.rows());
 	A_eq = newT.sparseView();
 	Eigen::VectorXd B_eq(2); B_eq.setZero();
 
 	Eigen::SparseMatrix<double> A_ieq = (-Eigen::MatrixXd::Identity(Q.rows(), Q.cols())).sparseView();
-	Eigen::VectorXd B_ieq = -Eigen::VectorXd::Constant(A_ieq.rows(), -1e-7);
+	Eigen::VectorXd B_ieq = -Eigen::VectorXd::Constant(A_ieq.rows(), -1e-3);
 
 	Eigen::VectorXd lx = Eigen::VectorXd::Constant(Q.cols(), -1000);
 	Eigen::VectorXd ux = Eigen::VectorXd::Constant(Q.cols(), 1000);
@@ -553,6 +548,7 @@ void BFFSolver::IntegrateBoundaryCurve()
 	L_normalized_valid = L_star_valid;
 	igl::active_set_params as;
 	igl::active_set(Q, B, Eigen::VectorXi(), Eigen::VectorXd(), A_eq, B_eq, A_ieq, B_ieq, lx, ux, as, L_normalized_valid);
+	std::cout << L_normalized_valid << std::endl;
 	Eigen::VectorXd L_normalized(L_star.size());
 	
 
