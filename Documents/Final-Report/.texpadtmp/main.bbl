@@ -44,5 +44,12 @@ Qiu, Y. (2016).
 \bibitem[Sawhney and Crane, 2017]{1704.06873}
 Sawhney, R. and Crane, K. (2017).
 \newblock Boundary first flattening.
+\newblock https://arxiv.org/abs/1704.06873.
+
+\bibitem[Tutte, 1963]{Tutte1963graph}
+Tutte, W.~T. (1963).
+\newblock How to draw a graph.
+\newblock {\em Proceedings of the London Mathematical Society},
+  s3-13(1):743–--767.
 
 \end{thebibliography}

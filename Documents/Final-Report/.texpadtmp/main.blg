@@ -2,7 +2,7 @@ This is BibTeX, Version 0.99d (TeX Live 2017)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: main.aux
 The style file: apalike.bst
-Illegal, another \bibstyle command---line 63 of file main.aux
+Illegal, another \bibstyle command---line 69 of file main.aux
  : \bibstyle
  :          {apalike}
 I'm skipping whatever remains of this command
@@ -11,45 +11,45 @@ I was expecting a `,' or a `}'---line 2 of file ../sample.bib
  : title = Discrete 
  :                  one-forms on meshes and applications to 3D mesh parameterization,
 I'm skipping whatever remains of this entry
-You've used 9 entries,
+You've used 10 entries,
             1935 wiz_defined-function locations,
-            528 strings with 4989 characters,
-and the built_in function-call counts, 3271 in all, are:
-= -- 331
-> -- 141
-< -- 4
-+ -- 46
-- -- 46
-* -- 281
-:= -- 594
-add.period$ -- 26
-call.type$ -- 9
-change.case$ -- 66
-chr.to.int$ -- 9
-cite$ -- 9
-duplicate$ -- 106
-empty$ -- 208
-format.name$ -- 61
-if$ -- 616
+            537 strings with 5145 characters,
+and the built_in function-call counts, 3660 in all, are:
+= -- 371
+> -- 148
+< -- 5
++ -- 48
+- -- 48
+* -- 314
+:= -- 660
+add.period$ -- 30
+call.type$ -- 10
+change.case$ -- 72
+chr.to.int$ -- 10
+cite$ -- 10
+duplicate$ -- 120
+empty$ -- 241
+format.name$ -- 64
+if$ -- 695
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 4
-newline$ -- 47
-num.names$ -- 27
-pop$ -- 45
+missing$ -- 5
+newline$ -- 53
+num.names$ -- 30
+pop$ -- 47
 preamble$ -- 1
-purify$ -- 66
+purify$ -- 72
 quote$ -- 0
-skip$ -- 87
+skip$ -- 98
 stack$ -- 0
-substring$ -- 244
-swap$ -- 4
+substring$ -- 286
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 54
+type$ -- 60
 warning$ -- 0
-while$ -- 26
+while$ -- 29
 width$ -- 0
-write$ -- 112
+write$ -- 127
 (There were 2 error messages)
