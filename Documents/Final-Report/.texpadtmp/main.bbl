@@ -20,6 +20,12 @@ Botsch, M., Steinberg, S., Bischoff, S., and Kobbelt, L. (2002).
 \newblock Openmesh - a generic and efficient polygon mesh data structure.
 \newblock https://www.openmesh.org.
 
+\bibitem[Cherrier, 1984]{CHERRIER1984154}
+Cherrier, P. (1984).
+\newblock Problèmes de neumann non linéaires sur les variétés
+  riemanniennes.
+\newblock {\em Journal of Functional Analysis}, 57(2):154 -- 206.
+
 \bibitem[Gortler et~al., 2006]{Gortler:2006:DOM:1133946.1648437}
 Gortler, S.~J., Gotsman, C., and Thurston, D. (2006).
 \newblock Discrete one-forms on meshes and applications to 3d mesh

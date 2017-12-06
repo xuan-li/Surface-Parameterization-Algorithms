@@ -11,6 +11,14 @@
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Tutte Embedding}{subsection.3.1}% 11
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Orbifolds}{subsection.3.1}% 12
 \BOOKMARK [2][-]{subsection.3.2}{Algorithm}{section.3}% 13
-\BOOKMARK [2][-]{subsection.3.3}{Implementation Details and Experiment Results}{section.3}% 14
-\BOOKMARK [1][-]{section.4}{Boundary First Flattening}{}% 15
-\BOOKMARK [1][-]{section.4}{References}{}% 16
+\BOOKMARK [2][-]{subsection.3.3}{Implementation Details and Experiments}{section.3}% 14
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Vertex Selecting System.}{subsection.3.3}% 15
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Covering Space.}{subsection.3.3}% 16
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Results.}{subsection.3.3}% 17
+\BOOKMARK [1][-]{section.4}{Boundary First Flattening}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{Theoretical Background}{section.4}% 19
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Conformal Maps}{subsection.4.1}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Poisson Problems}{subsection.4.1}% 21
+\BOOKMARK [3][-]{subsubsection.4.1.3}{Cherrier Formula}{subsection.4.1}% 22
+\BOOKMARK [1][-]{section.5}{Algorithm}{}% 23
+\BOOKMARK [1][-]{section.5}{References}{}% 24

@@ -108,4 +108,61 @@ The gradient is given by:
 \nabla_{z_i} E = \sum{j\in N_i}  w_{ij}\nabla_{z_i}d^2(z_i, z_j) + \sum{j\in N_{i'}}w_{i'j}\nabla_{z_i}d^2(z_i, m_{i'i}(z_j))
 \end{equation}
 
-\subsection{Implementation Details and Experiment Results}
+\subsection{Implementation Details and Experiments}
+\subsubsection{Vertex Selecting System.} 
+I implement a vertex selecting system, so user can interactively choose cones and determine cone angles to get different orbifolds. The idea of this algorithm is as follows:
+
+1) Find all visible vertices from the camera.
+
+2) Compute all projected coordinates of all visible vertices.
+
+3) Get position of mouse, find the nearest projected coordinates and then select the corresponding vertex.
+
+\subsubsection{Covering Space.} 
+To say the structure of orbifold, I implement the tiling algorithm. This is an incremental algorithm which extends the big boundary of tiled area one copy by one copy. The pipeline is as follows:
+
+1) Given a basic tile and segments, initiate ordered segment of tiled area sequence by initial segments.
+
+2) In each iteration, find the nearest segment $s$ to the origin. Find its equivalent segment $s'$ in the basic tile. Compute the isometry between these two segments. Transform the basic tile using this isometry. Erase overlapped segments. Continue until the area is big enough.
+
+To quickly find the nearest segment, I maintain a min heap besides the segment sequence.
+
+
+\subsubsection{Results.}
+I use the first kind of orbifold to parameterize David model, and use a hyperbolic orbifold with 7 cones to parameterize Bunny model. The result are shown in Fig.\ref{fig:orbifold_results}.
+
+\begin{figure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/david_euc}
+\caption{}
+\end{subfigure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/david_euc_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ 
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/david_euc_texture}
+\caption{}
+\label{fig:orbifold_conformal}
+\end{subfigure}
+
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/bunny_hyper}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/bunny_hyper_emb}
+\caption{}
+\end{subfigure}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height=\textwidth]{images/bunny_hyper_texture}
+\caption{}
+\end{subfigure}
+\caption{(a)(d) Models and their cones and slices; (b)(e) Orbifold Tutte embeddings; (c)(f) Texture mappings.}
+\label{fig:orbifold_results}
+\end{figure}
+
+Note that Euclidean orbifold Tutte embeddings with 3 cones are actually conformal map. It can be seen in Fig.\ref{fig:orbifold_conformal} that the angle are well preserved.
+
+
+

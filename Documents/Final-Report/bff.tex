@@ -1,2 +1,109 @@
 \section{Boundary First Flattening}
-The third part of my project is boundary first flattening \cite{1704.06873}. This is a linear method to compute a 
+In this section, I will get into details of my project on boundary first flattening. The algorithm is based on differential geometry. This section is organized as follows: I will first introduce the theoretical background. Then I will give details on my implementation.
+
+\subsection{Theoretical Background}
+
+\subsubsection{Conformal Maps}
+In complex analysis,  conformal maps are equivlent to holomorphic maps, that is, the differentials of these map satisfy Cauchy-Riemann equation:
+\begin{equation}
+\frac{\partial f}{\partial \bar{z}} = 0
+\end{equation}
+
+One important property is that all comformal maps are harmonic maps, that is, 
+\begin{equation}
+\Delta f = 0
+\end{equation}
+But the reverse direction is not true.
+
+\subsubsection{Poisson Problems}
+Poisson problem is stated as follows:
+
+Dirichlet-type condition:
+\begin{equation}
+\begin{split}
+\Delta a &= \phi \ \ \ & on\  M\\
+a &= g , & on\ \partial M
+\end{split}
+\end{equation}
+Or Riemann-type condition:
+\begin{equation}
+\begin{split}
+\Delta a &= \phi \ \ \ & on\  M\\
+\frac{\partial a}{\partial n} &= h , & on\ \partial M 
+\end{split}
+\end{equation}
+
+We will use discrete Poisson equation on a mesn $M$:
+
+\begin{equation}
+\left(\begin{matrix}
+A_{II} & A_{IB}\\
+A_{BI} & A_{BB}
+\end{matrix}\right) a
+= \left(\begin{matrix}
+\phi_I\\
+\phi_B - h\end{matrix}\right)
+\label{eq:relation}
+\end{equation}
+
+where $M$ is the cotangent Laplacian matrix.
+
+Known $A$, Dirichlet-type conditions and Riemann-type conditions can be converted to each other: Given $h$, we simply solve the Poisson equation and set 
+\begin{equation}
+g = \Lambda^*_\phi h = a_B,
+\end{equation}
+Given $g$, we can convert it to $h$  by
+\begin{equation}
+h = \Lambda_\phi g = \phi_B - A_{IB}^TA_{II}^{-1}(\phi_I - A_{IB}g) - A_{BB}g
+\end{equation}
+
+
+\subsubsection{Cherrier Formula}
+Cherrier formula \cite{CHERRIER1984154} is the core fact which induces the BFF algorithm. 
+
+For a conformal map $f: M \rightarrow \tilde{M}$, we have 
+\begin{equation}
+\begin{split}
+\Delta u = K - e^{2u} \tilde{K} \ \ \ &on\ &M\,\\
+\frac{\partial u}{\partial n} = k - e^{u}\tilde{k} \ \ \ &on\     &\partial M
+\end{split}
+\end{equation}
+where $u$ is conformal factor, $K$,$\tilde{K}$ are Gauss curvature of the source surface and  the target surface, $k, \tilde{k}$ is geodesic curvature of the source surface and the target surface.
+
+
+The discrete version is the root of the algorithm:
+\begin{equation}
+\begin{split}
+Au &=   \Omega - \tilde\Omega\  &on\  Int\  M\\
+h &= k - \title{k}\ \  &on\ \partial M 
+\end{split}
+\label{eq:poisson}
+\end{equation}
+where $\Omega_i = 2\pi - \sum_{ijk \in F}\theta_i^{jk}$ defined on interior vertices, $k_i = \pi - \sum_{ijk \in F}\theta_i^{jk}$ defined on boundary vertices, which is the exterior angle at $v_i$. Note that $\Omega$ is defined to be zero at boundary vertices.
+
+
+
+\section{Algorithm}
+
+The pipeline of the BFF algorithm is as follows:
+
+1) If boundray conformal factor ${u}$ is known, we compute bounadry target $k$ by: $$ \tilde{k} = k -\Lambda_{\Omega} u.$$
+If target boundary $\tilde{k}$ is known, we compute boundary conformal factor $u$ by:: $$u = \Lambda_{\Omega}^{*}(k - \tilde{k}).$$
+
+2) Define new edge lengths as:
+$$l_{ij}^* = e^{\frac{u_i + u_j}{2}}l_{ij}.$$ With $\tilde{k}$, which is exterior angles, we can integrate these two data into a closed loop.
+
+3) Extend the loop into interior conformally.
+
+
+\subsection{Loop Integration}
+Usually, directly integrate $\tilde{k}$ over $l_{ij}^*$ won't give a closed loop, we should scale edge length
+
+
+
+
+
+
+
+
+
