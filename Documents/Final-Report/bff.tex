@@ -78,7 +78,7 @@ The discrete version is the root of the algorithm:
 \begin{equation}
 \begin{split}
 Au &=   \Omega - \tilde\Omega\  &on\  Int\  M\\
-h &= k - \title{k}\ \  &on\ \partial M 
+h &= k - \tilde{k}\ \  &on\ \partial M 
 \end{split}
 \label{eq:poisson}
 \end{equation}
@@ -149,29 +149,62 @@ Free boundary means preserving the boundary metric. We achieve this by setting c
 \end{figure}
 
 \subsubsection{Polygonal-Boundary Conformal Map}
-If we set some exterior angles be non-zero, and others be zero, the boundary will be a polygon. To precisely preseve boundary exterior angles, we should use harmonic interpolation. Some results are showned in Fig. 
+If we set some exterior angles be non-zero, and others be zero, the boundary will be a polygon. To precisely preseve boundary exterior angles, we should use harmonic interpolation. Some results are showned in Fig.\ref{fig:polygon}
 
 \begin{figure}
 \centering
-\begin{subfigure}{0.3\textwidth}
-\includegraphics[height = \textwidth]{images/bunny_polygon_emb}
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_polygon}
 \caption{}
 \end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
-\begin{subfigure}{0.3\textwidth}
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_polygon_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ 
+\begin{subfigure}{0.25\textwidth}
 \includegraphics[height = \textwidth]{images/bunny_polygon_texture}
 \caption{}
 \end{subfigure}
 
-\begin{subfigure}{0.3\textwidth}
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/halfshpere_polygon}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
+\begin{subfigure}{0.25\textwidth}
 \includegraphics[height = \textwidth]{images/halfsphere_polygon_emb}
 \caption{}
 \end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
-\begin{subfigure}{0.3\textwidth}
-\includegraphics[height = \textwidth]{images/halfsphere_polygon_texture}
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/halfshpere_polygon_texture}
 \caption{}
 \end{subfigure}
-\caption{Polygon-boundary conformal maps. (a)(c) Embedding. (b)(d) Texture mapping.}
-\label{fig:boundary-free}
+\caption{Polygon-boundary conformal maps.(a)(d) Cones. (b)(e) Embedding. (c)(f) Texture mapping.}
+\label{fig:polygon}
+\end{figure}
+Note that we achieve a harmonic map with non-convex boundary. Many algorithms will fail on non convex boundary.
+
+
+\subsubsection{Cone Parameterization}
+A powerful technique for mitigating area distortion is to first map to a cone surface, which is flat (K = 0) away from a collection of isolated cone points.
+
+Known cones and its angles, we first solve the Cherrier problem to get $u$, with source term $\Omega - \tilde{\Omega}$  and boundary data $h = \tilde{k} - k$. Then we feed the $u$ to our algorithm. The result is shown in Fig.\ref{fig:cone}.
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/max_global}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ 
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/max_global_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ 
+\begin{subfigure}{0.25\textwidth}
+\includegraphics[height = \textwidth]{images/max_global_texture}
+\caption{}
+\end{subfigure}
+\caption{Conformal maps with cones. (a) Cones. (b) Embedding. (c) Texture mapping.}
+\label{fig:cone}
 \end{figure}
 
 
