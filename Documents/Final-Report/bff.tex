@@ -36,13 +36,16 @@ Or Riemann-type condition:
 We will use discrete Poisson equation on a mesn $M$:
 
 \begin{equation}
-\left(\begin{matrix}
+\left[\begin{matrix}
 A_{II} & A_{IB}\\
 A_{BI} & A_{BB}
-\end{matrix}\right) a
-= \left(\begin{matrix}
+\end{matrix}\right] \left[\begin{matrix}
+a_I\\
+a_B
+\end{matrix}\right]
+= \left[\begin{matrix}
 \phi_I\\
-\phi_B - h\end{matrix}\right)
+\phi_B - h\end{matrix}\right]
 \label{eq:relation}
 \end{equation}
 
@@ -90,14 +93,57 @@ The pipeline of the BFF algorithm is as follows:
 1) If boundray conformal factor ${u}$ is known, we compute bounadry target $k$ by: $$ \tilde{k} = k -\Lambda_{\Omega} u.$$
 If target boundary $\tilde{k}$ is known, we compute boundary conformal factor $u$ by:: $$u = \Lambda_{\Omega}^{*}(k - \tilde{k}).$$
 
-2) Define new edge lengths as:
+2) Define new boundary edge lengths as:
 $$l_{ij}^* = e^{\frac{u_i + u_j}{2}}l_{ij}.$$ With $\tilde{k}$, which is exterior angles, we can integrate these two data into a closed loop.
 
 3) Extend the loop into interior conformally.
 
 
 \subsection{Loop Integration}
-Usually, directly integrate $\tilde{k}$ over $l_{ij}^*$ won't give a closed loop, we should scale edge length
+In step 2, usually, directly integrating $\tilde{k}$ over $l_{ij}^*$ won't give a closed loop, we should change edge length a little. So we solve the following quadratic optimization problem:
+
+\begin{equation}
+\begin{split}
+&\min_{\tilde{l}}\ \  ||\tilde{l} - l^*||^2_2\\
+s.t. & \sum_{ij\in \partial M} \tilde{l}_ij \tilde{T}_{ij}
+\end{split}
+\end{equation}
+
+Here, $\tilde{T}_{ij}$ is the tangent vector of edge $ij$. We use the following procedure to compute tangent vectors:
+
+1) Assume boundary vertex list is $\{0,1,2,3,...,|l|-1\}$. Compute cumulative angle as $$\phi_k = \sum_{i = 0}^{k-1}k_i.$$
+
+2) Define tangent vectors as $$\tilde{T}_{ij} = (\cos {\phi_i}, \sin {\phi_j}).$$
+
+\subsection{Conformal Interpolation}
+In step 3, we need to get interior coordinates from fixed boundary data.
+
+We know that all conformal maps are harmonic maps. So if the boundary data is truely from a conformal map, we can get this conformal map using the solver for harmonic maps. So the first method is using harmonic mapping directly. \textbf{Harmonic system} is Eq.\ref{eq:tutte} with cotangent weights.
+But since we've changed the boundary lengths, conformality may not well preserved. 
+
+Another method is to only use harmonic mapping on one component, and try to minimize conformal energy on the other component. This is done by Hilbert transform, which is defined by:
+\begin{equation}
+(\mathit{H}a_B)_j = \frac{1}{2}(a_k - a_i)
+\end{equation}
+where $i,j,k$ are three consecutive vertices on the boundary.
+
+Then we use $\mathit{H}a_B$ as boundary data to solve the harmonic system. The solution is the other component. 
+The shortcoming for this method is that the boundary exterior angles can not be well preserved.
+
+\subsection{Experiments}
+\subsubsection{Free Boundary Conformal Map}
+Free boundary means preserving the boundary metric. We achieve this by setting conformal factors $u = 0$ on the boundary and using Hilbert transform to achieve interpolation. 
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_}
+\end{subfigure}
+\end{figure}
+
+
+
+
 
 
 
