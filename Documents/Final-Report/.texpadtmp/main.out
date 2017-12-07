@@ -11,7 +11,7 @@
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Tutte Embedding}{subsection.3.1}% 11
 \BOOKMARK [3][-]{subsubsection.3.1.2}{Orbifolds}{subsection.3.1}% 12
 \BOOKMARK [2][-]{subsection.3.2}{Algorithm}{section.3}% 13
-\BOOKMARK [2][-]{subsection.3.3}{Implementation Details and Experiments}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.3}{Experiments}{section.3}% 14
 \BOOKMARK [3][-]{subsubsection.3.3.1}{Vertex Selecting System.}{subsection.3.3}% 15
 \BOOKMARK [3][-]{subsubsection.3.3.2}{Covering Space.}{subsection.3.3}% 16
 \BOOKMARK [3][-]{subsubsection.3.3.3}{Results.}{subsection.3.3}% 17
@@ -23,5 +23,7 @@
 \BOOKMARK [1][-]{section.5}{Algorithm}{}% 23
 \BOOKMARK [2][-]{subsection.5.1}{Loop Integration}{section.5}% 24
 \BOOKMARK [2][-]{subsection.5.2}{Conformal Interpolation}{section.5}% 25
-\BOOKMARK [2][-]{subsection.5.3}{Implementation Details and Experiments}{section.5}% 26
-\BOOKMARK [1][-]{subsection.5.3}{References}{}% 27
+\BOOKMARK [2][-]{subsection.5.3}{Experiments}{section.5}% 26
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Free Boundary Conformal Map}{subsection.5.3}% 27
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Polygonal-Boundary Conformal Map}{subsection.5.3}% 28
+\BOOKMARK [1][-]{figure.caption.7}{References}{}% 29

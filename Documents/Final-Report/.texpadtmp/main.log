@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  6 DEC 2017 23:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  7 DEC 2017 00:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -752,7 +752,11 @@ File: microtype.cfg 2016/05/14 v2.6a microtype main configuration file (RS)
 Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
 \c@subfigure=\count136
 \c@subtable=\count137
-) (./abstract.tex) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux)
+) (./abstract.tex) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux
+
+LaTeX Warning: Label `fig:boundary-free' multiply defined.
+
+)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
@@ -942,7 +946,7 @@ LaTeX Font Info:    Font shape `OT1/phv/bx/it' in size <9> not available
 (Font)              Font shape `OT1/phv/b/it' tried instead on input line 5.
 LaTeX Font Info:    Font shape `OT1/phv/b/it' in size <9> not available
 (Font)              Font shape `OT1/phv/b/sl' tried instead on input line 5.
-<images/halfedge.png, id=126, 1075.01625pt x 315.1775pt>
+<images/halfedge.png, id=135, 1075.01625pt x 315.1775pt>
 File: images/halfedge.png Graphic file (type png)
  <use images/halfedge.png>
 Package pdftex.def Info: images/halfedge.png used on input line 11.
@@ -954,32 +958,32 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 29.
- <images/gui.png, id=162, 707.64375pt x 480.5955pt>
+ <images/gui.png, id=171, 707.64375pt x 480.5955pt>
 File: images/gui.png Graphic file (type png)
  <use images/gui.png>
 Package pdftex.def Info: images/gui.png used on input line 33.
 (pdftex.def)             Requested size: 350.33727pt x 237.93584pt.
- [2 <./images/halfedge.png> <./images/gui.png>]) (./orbifold.tex <images/euc_orbifold.png, id=186, 783.92876pt x 380.42125pt>
+ [2 <./images/halfedge.png> <./images/gui.png>]) (./orbifold.tex <images/euc_orbifold.png, id=195, 783.92876pt x 380.42125pt>
 File: images/euc_orbifold.png Graphic file (type png)
  <use images/euc_orbifold.png>
 Package pdftex.def Info: images/euc_orbifold.png used on input line 45.
 (pdftex.def)             Requested size: 250.24199pt x 121.43542pt.
- <images/hyperbolic.png, id=187, 710.655pt x 525.965pt>
+ <images/hyperbolic.png, id=196, 710.655pt x 525.965pt>
 File: images/hyperbolic.png Graphic file (type png)
  <use images/hyperbolic.png>
 Package pdftex.def Info: images/hyperbolic.png used on input line 49.
 (pdftex.def)             Requested size: 200.19054pt x 148.16002pt.
- [3] <images/four_euc_orbifolds.png, id=205, 778.91pt x 251.94125pt>
+ [3] <images/four_euc_orbifolds.png, id=214, 778.91pt x 251.94125pt>
 File: images/four_euc_orbifolds.png Graphic file (type png)
  <use images/four_euc_orbifolds.png>
 Package pdftex.def Info: images/four_euc_orbifolds.png used on input line 79.
 (pdftex.def)             Requested size: 250.24199pt x 80.93806pt.
- [4 <./images/euc_orbifold.png> <./images/hyperbolic.png> <./images/four_euc_orbifolds.png>] <images/david_euc.png, id=219, 460.72125pt x 539.616pt>
+ [4 <./images/euc_orbifold.png> <./images/hyperbolic.png> <./images/four_euc_orbifolds.png>] <images/david_euc.png, id=228, 460.72125pt x 539.616pt>
 File: images/david_euc.png Graphic file (type png)
  <use images/david_euc.png>
 Package pdftex.def Info: images/david_euc.png used on input line 136.
 (pdftex.def)             Requested size: 128.19261pt x 150.14671pt.
- <images/david_euc_emb.png, id=220, 574.5465pt x 556.479pt>
+ <images/david_euc_emb.png, id=229, 574.5465pt x 556.479pt>
 File: images/david_euc_emb.png Graphic file (type png)
  <use images/david_euc_emb.png>
 Package pdftex.def Info: images/david_euc_emb.png used on input line 140.
@@ -989,12 +993,12 @@ Overfull \hbox (4.86894pt too wide) in paragraph at lines 140--141
 [][] 
  []
 
-<images/david_euc_texture.png, id=221, 464.33475pt x 567.3195pt>
+<images/david_euc_texture.png, id=230, 464.33475pt x 567.3195pt>
 File: images/david_euc_texture.png Graphic file (type png)
  <use images/david_euc_texture.png>
 Package pdftex.def Info: images/david_euc_texture.png used on input line 144.
 (pdftex.def)             Requested size: 122.88516pt x 150.14671pt.
- <images/bunny_hyper.png, id=222, 587.19376pt x 461.92575pt>
+ <images/bunny_hyper.png, id=231, 587.19376pt x 461.92575pt>
 File: images/bunny_hyper.png Graphic file (type png)
  <use images/bunny_hyper.png>
 Package pdftex.def Info: images/bunny_hyper.png used on input line 150.
@@ -1004,12 +1008,12 @@ Overfull \hbox (40.71587pt too wide) in paragraph at lines 150--151
 [][] 
  []
 
-<images/bunny_hyper_emb.png, id=223, 517.33275pt x 595.023pt>
+<images/bunny_hyper_emb.png, id=232, 517.33275pt x 595.023pt>
 File: images/bunny_hyper_emb.png Graphic file (type png)
  <use images/bunny_hyper_emb.png>
 Package pdftex.def Info: images/bunny_hyper_emb.png used on input line 154.
 (pdftex.def)             Requested size: 130.54062pt x 150.14671pt.
- <images/bunny_hyper_texture.png, id=224, 513.117pt x 504.08325pt>
+ <images/bunny_hyper_texture.png, id=233, 513.117pt x 504.08325pt>
 File: images/bunny_hyper_texture.png Graphic file (type png)
  <use images/bunny_hyper_texture.png>
 Package pdftex.def Info: images/bunny_hyper_texture.png used on input line 158.
@@ -1019,9 +1023,68 @@ Overfull \hbox (2.68561pt too wide) in paragraph at lines 158--159
 [][] 
  []
 
-) (./bff.tex [5 <./images/david_euc.png> <./images/david_euc_emb.png> <./images/david_euc_texture.png> <./images/bunny_hyper.png> <./images/bunny_hyper_emb.png> <./images/bunny_hyper_texture.png>] [6]) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.bbl [7]) 
+) (./bff.tex [5 <./images/david_euc.png> <./images/david_euc_emb.png> <./images/david_euc_texture.png> <./images/bunny_hyper.png> <./images/bunny_hyper_emb.png> <./images/bunny_hyper_texture.png>] [6] <images/bunny_free_emb.png, id=266, 639.5895pt x 547.44525pt>
+File: images/bunny_free_emb.png Graphic file (type png)
+ <use images/bunny_free_emb.png>
+Package pdftex.def Info: images/bunny_free_emb.png used on input line 140.
+(pdftex.def)             Requested size: 175.41432pt x 150.14671pt.
+
+Overfull \hbox (25.26761pt too wide) in paragraph at lines 140--141
+[][] 
+ []
+
+<images/bunny_free_texture.png, id=267, 526.3665pt x 505.89pt>
+File: images/bunny_free_texture.png Graphic file (type png)
+ <use images/bunny_free_texture.png>
+Package pdftex.def Info: images/bunny_free_texture.png used on input line 144.
+(pdftex.def)             Requested size: 156.2245pt x 150.14671pt.
+
+Overfull \hbox (6.07779pt too wide) in paragraph at lines 144--145
+[][] 
+ []
+
+<images/bunny_polygon_emb.png, id=268, 490.2315pt x 499.8675pt>
+File: images/bunny_polygon_emb.png Graphic file (type png)
+ <use images/bunny_polygon_emb.png>
+Package pdftex.def Info: images/bunny_polygon_emb.png used on input line 157.
+(pdftex.def)             Requested size: 147.2501pt x 150.14671pt.
+ <images/bunny_polygon_texture.png, id=269, 561.297pt x 552.26324pt>
+File: images/bunny_polygon_texture.png Graphic file (type png)
+ <use images/bunny_polygon_texture.png>
+Package pdftex.def Info: images/bunny_polygon_texture.png used on input line 161.
+(pdftex.def)             Requested size: 152.60567pt x 150.14671pt.
+
+Overfull \hbox (2.45895pt too wide) in paragraph at lines 161--162
+[][] 
+ []
+
+<images/halfsphere_polygon_emb.png, id=270, 707.0415pt x 558.28575pt>
+File: images/halfsphere_polygon_emb.png Graphic file (type png)
+ <use images/halfsphere_polygon_emb.png>
+Package pdftex.def Info: images/halfsphere_polygon_emb.png used on input line 166.
+(pdftex.def)             Requested size: 190.14854pt x 150.14671pt.
+
+Overfull \hbox (40.00183pt too wide) in paragraph at lines 166--167
+[][] 
+ []
+
+
+./bff.tex:170: LaTeX Error: File `images/halfsphere_polygon_texture' not found.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.170 ...width]{images/halfsphere_polygon_texture}
+                                                  
+I could not locate the file with any of these extensions:
+.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPEG,.JBIG2,.JB2,.eps
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+) (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.bbl [7] [8 <./images/bunny_free_emb.png> <./images/bunny_free_texture.png> <./images/bunny_polygon_emb.png> <./images/bunny_polygon_texture.png> <./images/halfsphere_polygon_emb.png>]) 
 AED: lastpage setting LastPage
-[8]
+[9]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 52.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 52.
  (/Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.aux)
@@ -1029,21 +1092,25 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 52.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 52.
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 52.
  ) 
 Here is how much of TeX's memory you used:
- 18623 strings out of 492995
- 355162 string characters out of 6132704
- 507703 words of memory out of 5000000
- 21683 multiletter control sequences out of 15000+600000
+ 18670 strings out of 492995
+ 356192 string characters out of 6132704
+ 508847 words of memory out of 5000000
+ 21707 multiletter control sequences out of 15000+600000
  65855 words of font info for 226 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,16n,45p,864b,489s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,16n,45p,864b,492s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.pdf (8 pages, 6799132 bytes).
+Output written on /Volumes/Transcend/Users/Atom/Documents/GitHub/GraphicsProject/Documents/Final-Report/.texpadtmp/main.pdf (9 pages, 8784154 bytes).
 PDF statistics:
- 329 PDF objects out of 1000 (max. 8388607)
- 281 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
- 48400 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 357 PDF objects out of 1000 (max. 8388607)
+ 298 compressed objects within 3 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 48441 words of extra memory for PDF output out of 51595 (max. 10000000)
 

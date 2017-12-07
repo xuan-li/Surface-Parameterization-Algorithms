@@ -132,15 +132,47 @@ The shortcoming for this method is that the boundary exterior angles can not be 
 
 \subsection{Experiments}
 \subsubsection{Free Boundary Conformal Map}
-Free boundary means preserving the boundary metric. We achieve this by setting conformal factors $u = 0$ on the boundary and using Hilbert transform to achieve interpolation. 
+Free boundary means preserving the boundary metric. We achieve this by setting conformal factors $u = 0$ on the boundary and using Hilbert transform to achieve interpolation. One example is shown in Fig. \ref{fig:boundary-free}.
 
 \begin{figure}
 \centering
-\begin{subfigure}{0.4\textwidth}
-\includegraphics[height = \textwidth]{images/bunny_}
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_free_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_free_texture}
+\caption{}
 \end{subfigure}
+\caption{Boundary free conformal map on bunny. (a) Embedding. (b) Texture mapping.}
+\label{fig:boundary-free}
 \end{figure}
 
+\subsubsection{Polygonal-Boundary Conformal Map}
+If we set some exterior angles be non-zero, and others be zero, the boundary will be a polygon. To precisely preseve boundary exterior angles, we should use harmonic interpolation. Some results are showned in Fig. 
+
+\begin{figure}
+\centering
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_polygon_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/bunny_polygon_texture}
+\caption{}
+\end{subfigure}
+
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/halfsphere_polygon_emb}
+\caption{}
+\end{subfigure}\ \ \ \ \ \ \ \ \ \ \ \ \
+\begin{subfigure}{0.3\textwidth}
+\includegraphics[height = \textwidth]{images/halfsphere_polygon_texture}
+\caption{}
+\end{subfigure}
+\caption{Polygon-boundary conformal maps. (a)(c) Embedding. (b)(d) Texture mapping.}
+\label{fig:boundary-free}
+\end{figure}
 
 
 
