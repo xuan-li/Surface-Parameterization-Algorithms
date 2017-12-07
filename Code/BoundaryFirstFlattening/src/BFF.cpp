@@ -548,7 +548,6 @@ void BFFSolver::IntegrateBoundaryCurve()
 	L_normalized_valid = L_star_valid;
 	igl::active_set_params as;
 	igl::active_set(Q, B, Eigen::VectorXi(), Eigen::VectorXd(), A_eq, B_eq, A_ieq, B_ieq, lx, ux, as, L_normalized_valid);
-	std::cout << L_normalized_valid << std::endl;
 	Eigen::VectorXd L_normalized(L_star.size());
 	
 
