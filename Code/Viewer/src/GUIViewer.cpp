@@ -69,7 +69,7 @@ void OTEViewer::InitMenu()
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(2);
 			this->cone_vts_ = solver.ConeVertices();
-			euclidean_ = true;
+			euclidean_ = false;
 			hyperbolic_ = false;
 		});
 
@@ -77,21 +77,21 @@ void OTEViewer::InitMenu()
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(3);
 			this->cone_vts_ = solver.ConeVertices();
-			euclidean_ = true;
+			euclidean_ = false;
 			hyperbolic_ = false;
 		});
 		viewer.ngui->addButton("Harmonic BFF With Cones", [this]() {
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(5);
 			this->cone_vts_ = solver.ConeVertices();
-			euclidean_ = true;
+			euclidean_ = false;
 			hyperbolic_ = false;
 		});
 		viewer.ngui->addButton("Hilbert BFF With Cones", [this]() {
 			BFFSolver solver(this->mesh_, marker_.GetSingularityFlag(), marker_.GetConeAngleFlag(), marker_.GetSliceFlag());
 			this->sliced_mesh_ = solver.Compute(4);
 			this->cone_vts_ = solver.ConeVertices();
-			euclidean_ = true;
+			euclidean_ = false;
 			hyperbolic_ = false;
 		});
 
@@ -189,6 +189,7 @@ void OTEViewer::LoadTexture()
 		return;
 	igl::png::texture_from_png(fname, R_, G_, B_, A_);
 	data.set_texture(R_, G_, B_, A_);
+	UpdateMeshViewer();
 }
 
 void OTEViewer::SaveMesh()
