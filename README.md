@@ -14,15 +14,25 @@
 * Visual Studio 2017 
 
 
-## Used Library
+## Needed Library
 
-* [OpenMesh](https://www.openmesh.org)
+* [OpenMesh](https://www.openmesh.org): Data structure used to represent polygonal meshes.
 
-* [Libigl](http://libigl.github.io/libigl/)
+* [Libigl](http://libigl.github.io/libigl/): Generate GUI and solve quadratic programming.
 
-* [Eigen](http://eigen.tuxfamily.org)
+* [Eigen](http://eigen.tuxfamily.org): Handle matrix operations.
 
-* [LBFGS++](https://github.com/yixuan/LBFGSpp)
+* [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization.
+
+Needed libraries are all included in Code/external and compiled into static libraries (*.lib).
+
+## References
+
+- Aigerman, N. and Lipman, Y. (2015). Orbifold tutte embeddings. ACM Trans. Graph., 34(6):190:1–190:12.
+
+- Aigerman, N. and Lipman, Y. (2016). Hyperbolic orbifold tutte embeddings. ACM Trans. Graph., 35(6):217:1–217:14.
+
+- Sawhney, R. and Crane, K. (2017). Boundary first flattening. https://arxiv.org/abs/1704.06873. 
 
 ## How To Use
 
