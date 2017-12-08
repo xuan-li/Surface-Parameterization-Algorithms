@@ -15,6 +15,8 @@ The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/
 
 [Full report on this project.](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Final-Report/main.pdf)
 
+[Software Demo](https://github.com/xuan-li/GraphicsProject/blob/master/SoftwareDemo.mp4)
+
 
 ## References
 
@@ -87,8 +89,9 @@ The loaded mesh is shown in "Original" mode.  In this mode, you can select verti
 Current marker can be saved and loaded. There's a .mark file associated with each model file.
 
 
+### Euclidean Orbifold Tutte Embedding
 
-### 
+Only sphere-type Euclidean orbifold with three cones supported: <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{2}, \pi, \frac{\pi}{2}), (\frac{2\pi}{3},\frac{2\pi}{3}, \frac{2\pi}{3}), (\frac{\pi}{3},\frac{2\pi}{3}, \pi)" />
 
 
 
