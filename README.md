@@ -1,5 +1,5 @@
 <h1 align="center">
-   Project for CSE528
+   [Project for CSE528](https://github.com/xuan-li/GraphicsProject)
   <br>
 </h1>
 
