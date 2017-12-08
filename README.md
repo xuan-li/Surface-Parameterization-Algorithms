@@ -1,9 +1,9 @@
 <h1 align="center">
-   [Project for CSE528](https://github.com/xuan-li/GraphicsProject)
+   Project for CSE528
   <br>
 </h1>
 
-<h2 align="center">Project On Surface Parameterization</h4>
+# [Project On Surface Parameterization](https://github.com/xuan-li/GraphicsProject)
 
 ![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
 
