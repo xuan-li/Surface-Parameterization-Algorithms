@@ -91,7 +91,7 @@ Current marker can be saved and loaded. There's a .mark file associated with eac
 
 ### Euclidean Orbifold Tutte Embedding
 
-Only sphere-type Euclidean orbifold with three cones supported: <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{2}, \pi, \frac{\pi}{2}), (\frac{2\pi}{3},\frac{2\pi}{3}, \frac{2\pi}{3}), (\frac{\pi}{3},\frac{2\pi}{3}, \pi)" />
+Only sphere-type Euclidean orbifold with three cones supported: <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{2},\pi,\frac{\pi}{2}),(\frac{2\pi}{3},\frac{2\pi}{3}, \frac{2\pi}{3}),(\frac{\pi}{3},\frac{2\pi}{3},\pi)" />
 
 
 
