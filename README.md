@@ -34,6 +34,8 @@ Needed libraries are all included in Code/external and compiled into static libr
 
 - Sawhney, R. and Crane, K. (2017). Boundary first flattening. https://arxiv.org/abs/1704.06873. 
 
+[Full report on this project](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Final-Report/main.pdf)
+
 ## How To Use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
