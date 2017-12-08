@@ -66,7 +66,12 @@ There are seven folders in experiment/:
 
 Both algorithm needs to cut mesh and set angle sum for some vertices.
 
-The loaded mesh is shown in "Original" mode.  In this mode, you can select vertices while pressing down 'S'. Input cone angle sum in the unit of <img src="https://latex.codecogs.com/gif.latex?\pi" /> 
+The loaded mesh is shown in "Original" mode.  In this mode, you can select vertices while pressing down 'S'. Input cone angle sum in the unit of <img src="https://latex.codecogs.com/gif.latex?\pi" />. Select one vertex to add a cone and select two vertices to add a slice.
+
+
+
+
+
 
 
 You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) latest installable version of Markdownify for Windows, macOS and Linux.
