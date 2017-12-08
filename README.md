@@ -115,9 +115,11 @@ Needed .mark file is included for test.
 
 After computation, load a texture. Choose "Show texture" flag.  See it in "Sliced" mode. 
 
-## Credits
+## Build From Source
 
-This software uses code from several open source packages.
+All codes are included in Code/.
+
+Open .sln file in VS2017 and build. Only x64 mode supported. Needed libraries' path are set in relative mode, you needn't modify them.
 
 #### License
 
