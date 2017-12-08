@@ -7,12 +7,28 @@
 
 ![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
 
-## Platform 
+## Project Overview
+
+In this project, I explore two kinds of parameterization algorithms. The first kind is from the view of Tutte embedding called Orbifold Tutte embedding. The other kind is from the view of differential geometry called boundary first flattening (BFF).
+
+The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Project-Proposal/Proposal.pdf). The other part is for the bonus points.
+
+[Full report on this project.](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Final-Report/main.pdf)
+
+
+## References
+
+- Aigerman, N. and Lipman, Y. (2015). Orbifold tutte embeddings. ACM Trans. Graph., 34(6):190:1–190:12.
+
+- Aigerman, N. and Lipman, Y. (2016). Hyperbolic orbifold tutte embeddings. ACM Trans. Graph., 35(6):217:1–217:14.
+
+- Sawhney, R. and Crane, K. (2017). Boundary first flattening. https://arxiv.org/abs/1704.06873. 
+
+## Building Platform 
 
 * Windows 10 x64
   
 * Visual Studio 2017 
-
 
 ## Needed Library
 
@@ -24,21 +40,12 @@
 
 * [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization.
 
-Needed libraries are all included in Code/external and compiled into static libraries (*.lib).
+Needed libraries are all included in Code/external/ and compiled into static libraries (*.lib).
 
-## References
-
-- Aigerman, N. and Lipman, Y. (2015). Orbifold tutte embeddings. ACM Trans. Graph., 34(6):190:1–190:12.
-
-- Aigerman, N. and Lipman, Y. (2016). Hyperbolic orbifold tutte embeddings. ACM Trans. Graph., 35(6):217:1–217:14.
-
-- Sawhney, R. and Crane, K. (2017). Boundary first flattening. https://arxiv.org/abs/1704.06873. 
-
-[Full report on this project](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Final-Report/main.pdf)
 
 ## How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+Released .exe file is in experiment/bin/ 
 
 ```bash
 # Clone this repository
