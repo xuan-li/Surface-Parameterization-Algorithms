@@ -5,7 +5,7 @@
 
 <h4 align="center">Project On Surface Parameterization</h4>
 
-![screenshot](GraphicsProject/images/gui.png)
+![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
 
 ## Key Features
 
