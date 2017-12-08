@@ -5,7 +5,7 @@
 
 <h4 align="center">Project On Surface Parameterization</h4>
 
-![screenshot](https://raw.githubusercontent.com/amitmerchant1990/electron-markdownify/master/img/markdownify.gif)
+![screenshot](GraphicsProject/images/gui.png)
 
 ## Key Features
 
