@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h4 align="center">Project On Surface Parameterization</h4>
+<h2 align="center">Project On Surface Parameterization</h4>
 
 ![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
 
