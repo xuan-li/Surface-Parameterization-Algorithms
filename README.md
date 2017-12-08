@@ -89,47 +89,36 @@ The loaded mesh is shown in "Original" mode.  In this mode, you can select verti
 Current marker can be saved and loaded. There's a .mark file associated with each model file.
 
 
-### Euclidean Orbifold Tutte Embedding
+### Orbifold Tutte Embedding
 
-Only sphere-type Euclidean orbifold with three cones supported: 
+Only sphere-type Euclidean orbifolds with three cones supported: 
 <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{2},\pi,\frac{\pi}{2})" />,
 <img src="https://latex.codecogs.com/gif.latex?(\frac{2\pi}{3},\frac{2\pi}{3},\frac{2\pi}{3})" />,
 <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{3},\frac{2\pi}{3},\pi)" />
 
 
+Only sphere-type hyperbolic orbifolds with cone angles all <img src="https://latex.codecogs.com/gif.latex?\pi" /> supported. The number of cones for this kind should be larger than 4.
+
+Needed .mark file is included for test.
+
+Use Covering Space flag to see tiled plane: part of Euclidean plane and part of Poincare disk.
 
 
+### Boundary First Flattening
+
+Three settings: free boundary (Harmonic/Hilbert BFF with free B), polygonal boundary (Harmonic/Hilbert BFF with K), cone parameterization (Harmonic/Hilbert BFF with Cones).
+
+Needed .mark file is included for test.
 
 
-You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) latest installable version of Markdownify for Windows, macOS and Linux.
+### Texture Mapping
+
+After computation, load a texture. Choose "Show texture" flag.  See it in "Sliced" mode. 
 
 ## Credits
 
 This software uses code from several open source packages.
 
-- [Electron](http://electron.atom.io/)
-- [Node.js](https://nodejs.org/)
-- [Marked - a markdown parser](https://github.com/chjj/marked)
-- [showdown](http://showdownjs.github.io/showdown/)
-- [CodeMirror](http://codemirror.net/)
-- Emojis are taken from [here](https://github.com/arvida/emoji-cheat-sheet.com)
-- [highlight.js](https://highlightjs.org/)
-
-## Related
-
-[markdownify-web](https://github.com/amitmerchant1990/markdownify-web) - Web version of Markdownify
-
-## You may also like...
-
-- [Pomolectron](https://github.com/amitmerchant1990/pomolectron) - A pomodoro app
-- [Correo](https://github.com/amitmerchant1990/correo) - A menubar/taskbar Gmail App for Windows and macOS
-
 #### License
 
 MIT
-
----
-
-> [amitmerchant.com](https://www.amitmerchant.com) &nbsp;&middot;&nbsp;
-> GitHub [@amitmerchant1990](https://github.com/amitmerchant1990) &nbsp;&middot;&nbsp;
-> Twitter [@amit_merchant](https://twitter.com/amit_merchant)
