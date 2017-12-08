@@ -9,7 +9,7 @@
 
 ## Project Overview
 
-In this project, I explore two kinds of parameterization algorithms. The first kind is from the view of Tutte embedding called Orbifold Tutte embedding. The other kind is from the view of differential geometry called boundary first flattening (BFF).
+In this project, I explore two kinds of parameterization algorithms. The first kind is from the view of Tutte embedding called Orbifold Tutte embedding (OTE). The other kind is from the view of differential geometry called boundary first flattening (BFF).
 
 The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Project-Proposal/Proposal.pdf). The other part is for the bonus points.
 
@@ -45,26 +45,29 @@ Needed libraries are all included in Code/external/ and compiled into static lib
 
 ## How To Use
 
+### Folder structure
+
 Released .exe file is in experiment/bin/ 
 
-```bash
-# Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
+Test data are included in experiment/. 
 
-# Go into the repository
-$ cd electron-markdownify
+There are seven folders in experiment/: 
 
-# Install dependencies
-$ npm install
+- bin: released exe file
 
-# Run the app
-$ npm start
-```
+- Texture: some textures to show texture mappings.
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+- Euclidean Orbifold / Hyperbolic Orbifold: test data for OTE
+
+- BoundaryFree / Polygon / ConeParameterization: test data for BFF
 
 
-## Download
+### Vertex Selection System
+
+Both algorithm needs to cut mesh and set angle sum for some vertices.
+
+The loaded mesh is shown in "Original" mode.  In this mode, you can select vertices while pressing down 'S'. Input cone angle sum in the unit of $\pi$  
+
 
 You can [download](https://github.com/amitmerchant1990/electron-markdownify/releases/tag/v1.2.0) latest installable version of Markdownify for Windows, macOS and Linux.
 
