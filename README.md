@@ -116,6 +116,6 @@ All codes are included in Code/.
 
 Open .sln file in VS2017 and build. Only x64 mode supported. Needed libraries' path are set in relative mode, you needn't modify them.
 
-### License
+## License
 
 MIT
