@@ -62,12 +62,33 @@ There are seven folders in experiment/:
 - BoundaryFree / Polygon / ConeParameterization: test data for BFF
 
 
-### Vertex Selection System
+### Viewer Options
+
+Show Option:
+
+- Original: show loaded model.
+
+- Sliced: show model after cut, which is a disk. 
+
+- Embedding: show results of algorithms
+
+- Covering Space: show tiled plane for orbifolds. (Only enabled in orbifold embeddings).
+
+Show Slices and Cones: whether to show added cones and slices.
+
+
+
+### Vertex Selection and Cutting System
 
 Both algorithm needs to cut mesh and set angle sum for some vertices.
 
 The loaded mesh is shown in "Original" mode.  In this mode, you can select vertices while pressing down 'S'. Input cone angle sum in the unit of <img src="https://latex.codecogs.com/gif.latex?\pi" />. Select one vertex to add a cone and select two vertices to add a slice.
 
+Current marker can be saved and loaded. There's a .mark file associated with each model file.
+
+
+
+### 
 
 
 
