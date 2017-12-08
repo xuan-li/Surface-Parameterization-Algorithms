@@ -93,7 +93,7 @@ Current marker can be saved and loaded. There's a .mark file associated with eac
 
 Only sphere-type Euclidean orbifold with three cones supported: 
 <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{2},\pi,\frac{\pi}{2})" />,
-<img src="https://latex.codecogs.com/gif.latex?(\frac{2\pi}{3}, \frac{2\pi}{3}, \frac{2\pi}{3})" />,
+<img src="https://latex.codecogs.com/gif.latex?(\frac{2\pi}{3},\frac{2\pi}{3},\frac{2\pi}{3})" />,
 <img src="https://latex.codecogs.com/gif.latex?(\frac{\pi}{3},\frac{2\pi}{3},\pi)" />
 
 
