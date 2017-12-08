@@ -7,25 +7,22 @@
 
 ![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
 
-## Key Features
+## Platform 
 
-* LivePreview - Make changes, See changes
-  - Instantly see what your Markdown documents look like in HTML as you create them.
-* Sync Scrolling
-  - While you type, LivePreview will automatically scroll to the current location you're editing.
-* GitHub Flavored Markdown  
-* Syntax highlighting
-* [KaTeX](https://khan.github.io/KaTeX/) Support
-* Dark/Light mode
-* Toolbar for basic Markdown formatting
-* Supports multiple cursors
-* Save the Markdown preview as PDF
-* Emoji support in preview :tada:
-* App will keep alive in tray for quick usage
-* Full screen mode
-  - Write distraction free.
-* Cross platform
-  - Windows, Mac and Linux ready.
+* Windows 10 x64
+  
+* Visual Studio 2017 
+
+
+## Used Library
+
+* [OpenMesh](https://www.openmesh.org)
+
+* [Libigl](http://libigl.github.io/libigl/)
+
+* [Eigen](http://eigen.tuxfamily.org)
+
+* [LBFGS++](https://github.com/yixuan/LBFGSpp)
 
 ## How To Use
 
