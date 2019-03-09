@@ -1,6 +1,6 @@
 # [Project for CSE528 On Surface Parameterization](https://github.com/xuan-li/GraphicsProject)
 
-![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/gui.png)
+![screenshot](https://github.com/xuan-li/GraphicsProject/blob/master/images/parameterizations.png)
 
 ## Project Overview
 
