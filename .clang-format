@@ -1,0 +1,11 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+AlwaysBreakTemplateDeclarations: true
+ColumnLimit: 160
+Language: Cpp
+Standard: Cpp11
+BinPackParameters: false
+BreakBeforeBraces: Allman
+### you may add more rules to fit your own taste
+#PointerBindsToType: true
