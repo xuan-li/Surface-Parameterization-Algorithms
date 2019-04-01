@@ -6,11 +6,9 @@
 
 In this project, I explore two kinds of parameterization algorithms. The first kind is from the view of Tutte embedding called Orbifold Tutte embedding (OTE). The other kind is from the view of differential geometry called boundary first flattening (BFF).
 
-The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Project-Proposal/Proposal.pdf). The other part is for the bonus points.
+[Full report on this project.](https://github.com/xuan-li/GraphicsProject/blob/master/docs/Report.pdf)
 
-[Full report on this project.](https://github.com/xuan-li/GraphicsProject/blob/master/Documents/Final-Report/main.pdf)
-
-[Software Demo](https://github.com/xuan-li/GraphicsProject/blob/master/SoftwareDemo.mp4)
+[Software Demo](https://github.com/xuan-li/GraphicsProject/blob/master/docs/SoftwareDemo.mp4)
 
 
 ## References
@@ -27,7 +25,7 @@ The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/
   
 * Visual Studio 2017 
 
-## Needed Library
+## Dependencies
 
 * [OpenMesh](https://www.openmesh.org): Data structure used to represent polygonal meshes.
 
@@ -36,8 +34,6 @@ The first part follows my [proposal](https://github.com/xuan-li/GraphicsProject/
 * [Eigen](http://eigen.tuxfamily.org): Handle matrix operations.
 
 * [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization.
-
-Needed libraries are all included in Code/external/ and compiled into static libraries (*.lib).
 
 
 ## How To Use
