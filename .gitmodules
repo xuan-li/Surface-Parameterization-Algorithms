@@ -1,6 +1,0 @@
-[submodule "Code/external/LBFGS"]
-	path = Code/external/LBFGS
-	url = https://github.com/yixuan/LBFGSpp.git
-[submodule "external/libigl"]
-	path = external/libigl
-	url = https://github.com/libigl/libigl

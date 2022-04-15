@@ -52,9 +52,9 @@ protected:
 	double CosineLaw(double a, double b, double c);
 	
 	// Compute mesh data
-	void ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
+	void ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd l = Eigen::VectorXd());
 	void ComputeHalfedgeWeights(SurfaceMesh &mesh);
-	void ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd &l = Eigen::VectorXd());
+	void ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd l = Eigen::VectorXd());
 
 	// Compute cotangent Laplacian operator.
 	void ComputeLaplacian(SurfaceMesh &mesh, bool mode = false);

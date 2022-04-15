@@ -6,7 +6,6 @@
 #include <igl/opengl/glfw/Viewer.h>
 #include <igl/opengl/glfw/imgui/ImGuiMenu.h>
 #include <igl/opengl/glfw/imgui/ImGuiHelpers.h>
-#include <imgui/imgui.h>
 #include <igl/png/texture_from_png.h>
 
 #include <Eigen/Dense>

@@ -4,7 +4,7 @@
 
 #include <complex>
 #include <iostream>
-#include <Eigen\Core>
+#include <Eigen/Core>
 #include <functional>
 
 typedef std::complex<double> Complex;

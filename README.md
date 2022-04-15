@@ -19,7 +19,7 @@ In this project, I explore two kinds of parameterization algorithms. The first k
 
 - Sawhney, R. and Crane, K. (2017). Boundary first flattening. https://arxiv.org/abs/1704.06873. 
 
-## Building Platform 
+<!-- ## Building Platform 
 
 * Windows 10 x64
   
@@ -33,7 +33,12 @@ In this project, I explore two kinds of parameterization algorithms. The first k
 
 * [Eigen](http://eigen.tuxfamily.org): Handle matrix operations.
 
-* [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization.
+* [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization. -->
+
+## Compile
+```
+sudo apt-get install freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+```
 
 
 ## How To Use

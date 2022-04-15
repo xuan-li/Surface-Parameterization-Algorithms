@@ -178,7 +178,7 @@ void OTEViewer::InitMouse()
 	callback_mouse_down = [this](igl::opengl::glfw::Viewer& viewer, int button, int modifier)->bool
 	{
 		if ( selection_mode_ && show_option_ == ORIGINAL && button == GLFW_MOUSE_BUTTON_1) {
-			Eigen::Vector4f viewport = viewer.core.viewport;
+			Eigen::Vector4f viewport = viewer.core().viewport;
 			Eigen::Vector2f center(viewport(2) / 2., viewport(3)/2.);
 			double x = viewer.down_mouse_x;
 			double y = viewer.down_mouse_y;
@@ -496,8 +496,8 @@ void OTEViewer::FindIntersection(double x, double y)
 	using namespace Eigen;
 	SurfaceMesh &mesh = mesh_;
 
-	Eigen::Matrix4f view = core.view;
-	Eigen::Matrix4f proj = core.proj;
+	Eigen::Matrix4f view = core().view;
+	Eigen::Matrix4f proj = core().proj;
 
 	Eigen::Matrix4f world = view;
 	

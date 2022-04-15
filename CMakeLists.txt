@@ -28,26 +28,61 @@ if(WITH_OPENMP)
  add_definitions(-DWITH_OPENMP)
 endif()
 
-####################### header-only dependencies ###################
+####################### eigen ###################
 
-set(EIGEN3_INCLUDE_DIR "EIGEN3-NOT-FOUND" CACHE PATH "Eigen3 include dir")
-include_directories(${EIGEN3_INCLUDE_DIR})
+include(FetchContent)
+FetchContent_Declare(
+    eigen
+    URL https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.bz2
+    URL_MD5 b9e98a200d2455f06db9c661c5610496
+)
+FetchContent_GetProperties(eigen)
+FetchContent_Populate(eigen)
+include_directories(${eigen_SOURCE_DIR})
 
-include_directories(${PROJECT_SOURCE_DIR}/external/LBFGS/include)
 
-########### libigl ##########
-set(LIBIGL_ROOT external/libigl)
+####################### lbfgs ###################
+
+FetchContent_Declare(
+    lbfgs
+    GIT_REPOSITORY https://github.com/yixuan/LBFGSpp.git
+    GIT_TAG 7fea82aab31607fc51c2ffd751a21c031b9a1061
+)
+FetchContent_GetProperties(lbfgs)
+FetchContent_Populate(lbfgs)
+include_directories(${lbfgs_SOURCE_DIR}/include)
+
+############### libigl #######################
+
 option(LIBIGL_WITH_OPENGL            "Use OpenGL"         ON)
-option(LIBIGL_WITH_OPENGL_GLFW       "Use GLFW"           ON)
-option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use ImGui"          ON)
+option(LIBIGL_WITH_GLFW              "Use GLFW"           ON)
+option(LIBIGL_WITH_IMGUI             "Use ImGui"          ON)
 option(LIBIGL_WITH_PNG               "Use PNG"            ON)
 
-find_package(LIBIGL REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    libigl
+    GIT_REPOSITORY https://github.com/libigl/libigl.git
+    GIT_TAG 237ffa20b1e2fd92e0be7862e9246c3774e4fc14
+)
+FetchContent_MakeAvailable(libigl)
 
-####################### precompiled dependencies ####################
 
-find_package(OpenMesh REQUIRED)
-include_directories(${OpenMesh_INCLUDE_DIRS})
+############## OpenMesh #################
+
+FetchContent_Declare(
+    openmesh
+    GIT_REPOSITORY https://gitlab.vci.rwth-aachen.de:9000/OpenMesh/OpenMesh.git
+    GIT_TAG d50cad4640d6d3657c4d0188fbf27ff38e4bfdca
+)
+FetchContent_MakeAvailable(openmesh)
+include_directories(${openmesh_SOURCE_DIR}/src)
+
+
+# ####################### precompiled dependencies ####################
+
+# find_package(OpenMesh REQUIRED)
+# include_directories(${OpenMesh_INCLUDE_DIRS})
 ##################### import files ##################
 add_definitions(-D_USE_MATH_DEFINES)
 add_subdirectory(src)

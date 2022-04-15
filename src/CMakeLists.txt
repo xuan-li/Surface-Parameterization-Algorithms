@@ -18,10 +18,10 @@ target_link_libraries(BoundaryFirstFlattening Mesh igl::core)
 file(GLOB OE_HEADERS OrbifoldEmbedding/*.h)
 file(GLOB OE_SOURCES OrbifoldEmbedding/*.cpp)
 add_library(OrbifoldEmbedding ${OE_HEADERS} ${OE_SOURCES})
-target_link_libraries(OrbifoldEmbedding Mesh)
+target_link_libraries(OrbifoldEmbedding Mesh Utilities)
 
 
 file(GLOB VIEWER_HEADERS Viewer/*.h)
 file(GLOB VIEWER_SOURCES Viewer/*.cpp)
 add_executable(Viewer ${VIEWER_HEADERS} ${VIEWER_SOURCES})
-target_link_libraries(Viewer Mesh Utilities OrbifoldEmbedding BoundaryFirstFlattening igl::png igl::core igl::opengl igl::opengl_glfw igl::opengl_glfw_imgui)
+target_link_libraries(Viewer Mesh Utilities OrbifoldEmbedding BoundaryFirstFlattening igl::png igl::core igl::opengl igl::glfw igl::imgui OpenMeshCore OpenMeshTools)

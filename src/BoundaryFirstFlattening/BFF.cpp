@@ -60,7 +60,7 @@ double BFFSolver::CosineLaw(double a, double b, double c)
 		return acos(cs);
 }
 
-void BFFSolver::ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd &L)
+void BFFSolver::ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd L)
 {
 	using namespace OpenMesh;
 	bool with_length = false;
@@ -91,7 +91,7 @@ void BFFSolver::ComputeCornerAngles(SurfaceMesh &mesh, Eigen::VectorXd &L)
 	}
 }
 
-void BFFSolver::ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd &L)
+void BFFSolver::ComputeVertexCurvatures(SurfaceMesh &mesh, Eigen::VectorXd L)
 {
 	using namespace OpenMesh;
 	ComputeCornerAngles(mesh, L);
