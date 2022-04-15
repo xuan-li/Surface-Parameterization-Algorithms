@@ -35,9 +35,13 @@ In this project, I explore two kinds of parameterization algorithms. The first k
 
 * [LBFGS++](https://github.com/yixuan/LBFGSpp): Solve first order optimization. -->
 
-## Compile
+## Compile and Run (Ubuntu)
 ```
 sudo apt-get install freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+mkidir build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j12
+src/Viewer
 ```
 
 
